@@ -1,0 +1,21 @@
+     <div>
+                    <input type=" text" placeholder="Catagory Name"
+                        class=" text-cupink border-red-200	border-2 rounded-md">
+                </div>
+                <div> <select name="catagory" id="catagory" class=" border-red-200 border-2 w-44 rounded-md">
+
+                        <option value="grocery">Grocery</option>
+                        <option value="baby-food">Baby-Food</option>
+                        <option value="pet-food">Pet-Food</option>
+                    </select>
+                </div>
+
+
+                <!-- <div> <a href="./Catagorypage.html"
+                        class="viewCatagory bg-cupink text-white py-2.5 px-10 w-44 rounded-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-1">
+                        <span class="text-base font-semibold text-center">Add Catagory</span></a>
+                </div> -->
+
+
+
+

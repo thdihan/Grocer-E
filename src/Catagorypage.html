@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catagory Page</title>
+    <link rel="stylesheet" href="/dist/output.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+
+<body>
+
+    <body>
+        <div class="flex w-full min-h-screen bg-white text-gray-500 text-2xl"> <span
+                class="absolute text-white text-4xl top-5 left-4 cursor-pointer" onclick="Openbar()">
+                <i class="bi bi-filter-left px-2 bg-slate-600 rounded-md"></i>
+
+            </span>
+            <div
+            class="sidebar relative top-0 bottom-0 lg:left-0 left-[-300px] w-[300px] overflow-y-auto text-center bg-white border-solid border-r border-gray-200">
+            <div class="text-gray-500 text-2xl ">
+                <div class="p-2.5 mt-8 ml-4 flex justify-start gap-5">
+                    <img src="/icons/grocery-cart.png" alt="" class="h-[49px] w-[50px]">
+                    <h1 class="font-semibold">Grocer-E</h1>
+                    <i class="bi bi-x cursor-pointer hover:bg-slate-600 rounded-full hover:text-white duration-300 lg:hidden w-8 h-8"
+                        onclick="Openbar()"></i>
+
+                </div>
+                <div class="sidebaritems mt-12">
+
+                    <div class="mt-3 p-2.5 flex items-center rounded-md px-10 duration-100 cursor-pointer 
+            group hover:bg-transparent hover:transition-transform ease-in-out  hover:duration-300 ">
+
+
+                        <i class="bi bi-bag-heart-fill group-hover:text-cupink"></i>
+                        <a href="./dashboard.html" class="text-[18px] font-normal ml-4 text-gray-600 group-hover:text-cupink">Products</a>
+                        <div
+                            class="absolute left-0 w-1.5 h-10  bg-cupink rounded-r-full transition-all duration-100 opacity-0 group-hover:opacity-100">
+                        </div>
+                    </div>
+                    <div class="mt-3 p-2.5 flex items-center rounded-md px-10 duration-100 cursor-pointer 
+            group hover:bg-transparent hover:transition-transform ease-in-out  hover:duration-300 ">
+
+
+                        <i class="bi bi-grid-fill group-hover:text-cupink"></i>
+                        <a href="./Catagorypage.html"
+                            class="text-[18px] font-normal ml-4 text-gray-600 group-hover:text-cupink">Catagories</a>
+                        <div
+                            class="absolute left-0 w-1.5 h-10  bg-cupink rounded-r-full transition-all duration-100 opacity-0 group-hover:opacity-100">
+                        </div>
+                    </div>
+                    <div class="mt-3 p-2.5 flex items-center rounded-md px-10 duration-100 cursor-pointer 
+            group hover:bg-transparent hover:transition-transform ease-in-out  hover:duration-300 ">
+
+
+                        <i class="bi bi-cart-check-fill group-hover:text-cupink"></i>
+                        <a href="#" class="text-[18px] font-normal ml-4 text-gray-600 group-hover:text-cupink">Orders</a>
+                        <div
+                            class="absolute left-0 w-1.5 h-10  bg-cupink rounded-r-full transition-all duration-100 opacity-0 group-hover:opacity-100">
+                        </div>
+                    </div>
+                    <div class="mt-3 p-2.5 flex items-center rounded-md px-10 duration-100 cursor-pointer 
+            group hover:bg-transparent hover:transition-transform ease-in-out  hover:duration-300 ">
+
+
+                        <i class="bi bi-chat-left-text-fill group-hover:text-cupink"></i>
+                        <a href="3" class="text-[18px] font-normal ml-4 text-gray-600 group-hover:text-cupink">Inbox</a>
+                        <div
+                            class="absolute left-0 w-1.5 h-10  bg-cupink rounded-r-full transition-all duration-100 opacity-0 group-hover:opacity-100">
+                        </div>
+                    </div>
+                    <div class="mt-3 p-2.5 flex items-center rounded-md px-10 duration-100 cursor-pointer 
+            group hover:bg-transparent hover:transition-transform ease-in-out  hover:duration-300 ">
+
+
+                        <i class="bi bi-grid-fill group-hover:text-cupink"></i>
+                        <a href="#" class="text-[18px] font-normal ml-4 text-gray-600 group-hover:text-cupink">Feedback</a>
+                        <div
+                            class="absolute left-0 w-1.5 h-10  bg-cupink rounded-r-full transition-all duration-100 opacity-0 group-hover:opacity-100">
+                        </div>
+                    </div>
+                    <div class="mt-3 p-2.5 flex items-center rounded-md px-10 duration-100 cursor-pointer 
+            group hover:bg-transparent hover:transition-transform ease-in-out  hover:duration-300 ">
+
+
+                        <i class="bi bi-gear-fill group-hover:text-cupink"></i>
+                        <a href="#" class="text-[18px] font-normal ml-4 text-gray-600 group-hover:text-cupink">Settings</a>
+                        <div
+                            class="absolute left-0 w-1.5 h-10  bg-cupink rounded-r-full transition-all duration-100 opacity-0 group-hover:opacity-100">
+                        </div>
+                    </div>
+
+                    <hr class="mx-6 my-3 text-gray-600">
+                    <div class="mt-3 p-2.5 flex items-center rounded-md px-10 duration-100 cursor-pointer 
+            group hover:bg-transparent hover:transition-transform ease-in-out  hover:duration-300 ">
+
+
+                        <i class="bi bi-box-arrow-right group-hover:text-cupink"></i>
+                        <a href="#" class="text-[18px] font-normal ml-4 text-gray-600 group-hover:text-cupink">Logout</a>
+                        <div
+                            class="absolute left-0 w-1.5 h-10  bg-cupink rounded-r-full transition-all duration-100 opacity-0 group-hover:opacity-100">
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+
+
+            </div>
+
+
+        </div>
+            <div class="flex-1 pb-8">
+                <div class="productnavbar flex items-center justify-between px-10 py-7 border-b border-gray-200">
+                    <h1 class="font-semibold">Catagories</h1>
+                    <button
+                        class="addCatagory bg-cupink text-white text-lg py-2.5 px-6 rounded-lg inline-flex items-center gap-x-2 hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-1">
+                        <i class="bi bi-plus text-2xl"></i>
+                        <a href="./AddCatagorypage.html" class="text-sm font-semibold tracking-wide">Add Catagory </a>
+
+                    </button>
+
+                </div>
+                <!-- <ul class="options flex px-9 py-3  gap-x-20 justify-start border-y border-gray-200">
+                    <li>
+                        <button class="flex items-center py-4  gap-x-4 hover:text-cupink relative group">
+                            <i class="bi bi-check2-square"></i>
+                            <span class="text-[18px] font-semibold">Published</span>
+                            <span
+                                class=" absolute w-full h-0.5 rounded bottom-0 left-1 bg-cupink scale-x-0 group-hover:scale-x-100 transition-transform ease-in-out"></span>
+                        </button>
+    
+                    </li>
+                    <li>
+                        <button class="flex items-center py-4 gap-x-4 hover:text-cupink relative group">
+                            <i class="bi bi-journal-bookmark-fill"></i>
+    
+                            <span class="text-[18px] font-semibold">Draft</span>
+                            <span
+                                class=" absolute w-full h-0.5 rounded bottom-0 left-1 bg-cupink scale-x-0 group-hover:scale-x-100 transition-transform ease-in-out"></span>
+                        </button>
+    
+                    </li>
+                    <li>
+                        <button class="flex items-center py-4 gap-x-4 hover:text-cupink relative group">
+                            <i class="bi bi-eye-slash-fill"></i>
+                            <span class="text-[18px] font-semibold">Hidden</span>
+                            <span
+                                class=" absolute w-full h-0.5 rounded bottom-0 left-1 bg-cupink scale-x-0 group-hover:scale-x-100 transition-transform ease-in-out"></span>
+                        </button>
+    
+                    </li>
+    
+                </ul> -->
+                <div class="md:overflow-x-scroll">
+                    <table class="table-auto w-full border-b border-gray-200">
+                        <thead>
+                            <tr class="text-center text-base font-medium border-b py-4 border-gray-200">
+                                <td class="">Catagory Name</td>
+                                <td class="">Parent Catagory</td>
+                                <td class="">Total Products</td>
+                                <!-- <td class="py-4 px-1 whitespace-nowrap text-center"><span>Stock</span></td>
+                                <td class="py-4 px-1 whitespace-nowrap text-center"><span>Rating</span></td> -->
+                                <td class=""> <input
+                                        class="placeholder:italic placeholder:text-slate-400 bg-white w-[150px] h-10 py-2 px-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:border-cupink focus:ring-cupink focus:ring-1 sm:text-sm"
+                                        placeholder="Search..." type="text" name="search">
+                                </td>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="font-medium text-base text-center hover:bg-red-100 border-b border-gray-200 transition-colors ease-in-out group">
+
+                                <td class="py-4">
+                                    Basmoti
+                                </td>
+
+
+                                <td class="py-4">
+                                    Rice
+                                </td>
+
+
+
+
+                                <td class="py-4">
+                                    20kg
+                                </td>
+
+
+                                <td class="py-4">
+                                    <div class="button_grp flex-l">
+                                        <button>
+                                            <i class="bi bi-trash3 hover:text-cupink"></i>
+
+                                        </button>
+                                        <button>
+                                            <i class="bi bi-pencil-square hover:text-cupink "></i>
+
+                                        </button>
+
+                                    </div>
+
+                                </td>
+
+
+
+                            </tr>
+                            <!-- <tr class="hover:bg-red-100 border-b border-gray-200 transition-colors ease-in-out group">
+                                <td class="flex gap-x-6 whitespace-nowrap items-center py-4 pl-10">
+
+
+                                    <a href="#" class="text-lg font-semibold text-gray-600">Basmoti Rice (Premium)</a>
+
+
+
+                                </td>
+                                <td class="font-medium whitespace-nowrap text-base text-center">
+                                    Rice
+                                </td>
+                                <td class="font-medium whitespace-nowrap  text-base text-center">
+                                    20kg
+                                </td>
+
+                                <td class="text-center whitespace-nowrap">
+                                    <div class="button_grp flex justify gap-x-6">
+                                        <div> <button>
+                                                <i class="bi bi-trash3 hover:text-cupink"></i>
+
+                                            </button></div>
+                                        <div> <button>
+                                                <i class="bi bi-pencil-square hover:text-cupink"></i>
+
+                                            </button></div>
+
+                                    </div>
+
+                                </td>
+                            </tr> -->
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+
+        <script>
+            function Openbar() {
+                document.querySelector('.sidebar').classList.toggle('left-[-300px]');
+            }
+        </script>
+
+    </body>
+</body>
+
+</html>
