@@ -1,10 +1,17 @@
 import TextInput from "../Common/FormComponents/TextInput";
 import classes from "../../Style/Seller/Login.module.css";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 export default function Login() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    function handleLogin(e) {
+        e.preventDefault();
+        console.log("Handle Login Function Called");
+    }
     return (
         <div className={classes["login-form-container"]}>
-            <form className={classes["login-form"]}>
+            <form onSubmit={handleLogin} className={classes["login-form"]}>
                 <div className="row mb-3">
                     <label
                         htmlFor="inputEmail3"
@@ -15,8 +22,13 @@ export default function Login() {
                     <div className="col-sm-12">
                         <input
                             type="email"
+                            name="email"
                             className="form-control"
                             id="inputEmail3"
+                            value={email}
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                            }}
                         />
                     </div>
                 </div>
@@ -30,8 +42,13 @@ export default function Login() {
                     <div className="col-sm-12">
                         <input
                             type="password"
+                            name="password"
                             className="form-control"
                             id="inputPassword3"
+                            value={password}
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                            }}
                         />
                     </div>
                 </div>

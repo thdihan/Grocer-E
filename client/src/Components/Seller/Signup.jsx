@@ -1,9 +1,19 @@
 import { Link } from "react-router-dom";
 import classes from "../../Style/Seller/Login.module.css";
+import { useState } from "react";
 export default function Signup() {
+    const [fullname, setFullName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
+    function handleSignup(e) {
+        e.preventDefault();
+        console.log("Handle Signup Function Called");
+    }
     return (
         <div className={classes["login-form-container"]}>
-            <form className={classes["login-form"]}>
+            <form onSubmit={handleSignup} className={classes["login-form"]}>
                 <div className="row mb-3">
                     <label
                         htmlFor="fullname"
@@ -14,8 +24,13 @@ export default function Signup() {
                     <div className="col-sm-12">
                         <input
                             type="text"
+                            name="fullname"
                             className="form-control"
                             id="fullname"
+                            value={fullname}
+                            onChange={(e) => {
+                                setFullName(e.target.value);
+                            }}
                         />
                     </div>
                 </div>
@@ -28,9 +43,14 @@ export default function Signup() {
                     </label>
                     <div className="col-sm-12">
                         <input
+                            name="email"
                             type="email"
                             className="form-control"
                             id="inputEmail3"
+                            value={email}
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                            }}
                         />
                     </div>
                 </div>
@@ -43,9 +63,14 @@ export default function Signup() {
                     </label>
                     <div className="col-sm-12">
                         <input
+                            name="password"
                             type="password"
                             className="form-control"
                             id="inputPassword3"
+                            value={password}
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                            }}
                         />
                     </div>
                 </div>
@@ -59,8 +84,13 @@ export default function Signup() {
                     <div className="col-sm-12">
                         <input
                             type="password"
+                            name="confirmPassword"
                             className="form-control"
                             id="inputPassword3"
+                            value={confirmPassword}
+                            onChange={(e) => {
+                                setConfirmPassword(e.target.value);
+                            }}
                         />
                     </div>
                 </div>
