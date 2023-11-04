@@ -20,7 +20,7 @@ export default function SellerSingleProduct() {
             <td className="px-3 py-3 align-middle">10%</td>
             <td className="px-3 py-3 align-middle">220kg</td>
             <td className="px-3 py-3 align-middle">3.4</td>
-            <td className="px-3 py-3 align-middle">
+            <td className="px-3 py-3 align-middle text-end">
                 <button
                     className={`btn fw-semibold ${classes["details-button"]}`}
                 >

@@ -1,0 +1,7 @@
+.category-table table tr:hover td {
+    background-color: var(--green-primary-transparent) !important;
+}
+
+.category-table input {
+    min-width: 200px;
+}

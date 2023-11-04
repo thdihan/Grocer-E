@@ -1,6 +1,6 @@
 import classes from "../../Style/Seller/SellerDashboardBody.module.css";
 import Products from "./Pages/Products";
-export default function SellerDashboardBody({ setActiveSidebar }) {
+export default function SellerDashboardBody({ setActiveSidebar, children }) {
     return (
         <div
             className={`col col-12 col-md-10 ${classes["dashboard-body"]} container-fluid`}
@@ -24,7 +24,7 @@ export default function SellerDashboardBody({ setActiveSidebar }) {
                 </div>
             </div>
 
-            <Products />
+            {children}
         </div>
     );
 }

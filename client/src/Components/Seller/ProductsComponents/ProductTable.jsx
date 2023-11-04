@@ -12,7 +12,12 @@ export default function ProductTable() {
                         <th className="px-3 py-3">Stock</th>
                         <th className="px-3 py-3">Rating</th>
                         <th className="px-3 py-3">
-                            <input type="text" name="search" id="" />
+                            <input
+                                type="text"
+                                name="search"
+                                id=""
+                                className="w-100"
+                            />
                         </th>
                     </tr>
                 </thead>

@@ -11,3 +11,12 @@
 .product-status-bar li:hover {
     border-bottom: 5px solid var(--green-primary);
 }
+
+.add-product-button {
+    background-color: var(--green-primary);
+    padding: 10px 20px !important;
+    border: 2px solid var(--green-primary);
+}
+.add-product-button:hover {
+    border: 2px solid var(--green-primary);
+}

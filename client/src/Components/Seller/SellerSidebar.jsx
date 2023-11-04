@@ -28,8 +28,16 @@ export default function SellerSidebar({ activeSidebar, setActiveSidebar }) {
             <div className={`${classes["sidebar-element"]} mt-4`}>
                 <ul>
                     <SellerNavItems icon="view_cozy" text="Dashboard" />
-                    <SellerNavItems icon="checklist" text="Products" />
-                    <SellerNavItems icon="category" text="Categories" />
+                    <SellerNavItems
+                        icon="checklist"
+                        text="Products"
+                        to="/admin/products"
+                    />
+                    <SellerNavItems
+                        icon="category"
+                        text="Categories"
+                        to="/admin/categories"
+                    />
                 </ul>
             </div>
         </div>
