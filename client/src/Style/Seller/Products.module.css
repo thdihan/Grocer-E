@@ -1,0 +1,13 @@
+.product-status-bar a {
+    color: #000;
+}
+.product-status-bar li:hover,
+.product-status-bar li:hover a {
+    color: var(--green-primary);
+}
+.product-status-bar li {
+    border-bottom: 5px solid white;
+}
+.product-status-bar li:hover {
+    border-bottom: 5px solid var(--green-primary);
+}
