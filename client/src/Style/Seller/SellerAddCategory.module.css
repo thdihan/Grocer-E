@@ -1,4 +1,6 @@
-.add-category-form input[type="text"] {
+.add-category-form input[type="text"],
+.add-category-form input[type="file"],
+.add-category-form textarea {
     width: 100%;
     outline: 1px solid #666;
 }

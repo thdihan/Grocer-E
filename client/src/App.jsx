@@ -2,6 +2,7 @@ import "./App.css";
 import Login from "./Components/Seller/Login";
 import Products from "./Components/Seller/Pages/Products";
 import SellerAddCategory from "./Components/Seller/Pages/SellerAddCategory";
+import SellerAddProduct from "./Components/Seller/Pages/SellerAddProduct";
 import SellerCategories from "./Components/Seller/Pages/SellerCategories";
 import SellerDashboard from "./Components/Seller/SellerDashboard";
 import Signup from "./Components/Seller/Signup";
@@ -19,6 +20,7 @@ function App() {
                         path="add-category"
                         element={<SellerAddCategory />}
                     />
+                    <Route path="add-product" element={<SellerAddProduct />} />
                 </Route>
             </Routes>
         </Router>

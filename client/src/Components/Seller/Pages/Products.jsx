@@ -1,6 +1,7 @@
 import SellerNavItems from "../SidebarComponents/SellerNavItems";
 import classes from "../../../Style/Seller/Products.module.css";
 import ProductTable from "../ProductsComponents/ProductTable";
+import { Link } from "react-router-dom";
 export default function Products() {
     return (
         <>
@@ -18,11 +19,12 @@ export default function Products() {
                 </ul>
 
                 <div className="d-flex align-items-center">
-                    <button
+                    <Link
+                        to="/admin/add-product"
                         className={`btn fw-semibold ${classes["add-product-button"]}`}
                     >
                         Add New Product
-                    </button>
+                    </Link>
                 </div>
             </div>
             <ProductTable />
