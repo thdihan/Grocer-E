@@ -55,11 +55,7 @@ const signup = async (req, res) => {
 
   try {
     await validateUser(email, fullname, password, confirm_password);
-    // const result = await pool.query("select * from users where email=$1", [
-    //   email,
-    // ]);
 
-    // if (!result.rowCount) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -67,14 +63,10 @@ const signup = async (req, res) => {
       "insert into users (fullname,password,email,user_type) values ($1,$2,$3,$4) returning *",
       [fullname, hashedPassword, email, "admin"]
     );
-    //   );
 
-    // console.log(fullname);
     console.log(newUser.rows[0]);
     res.status(201).json({
-      //   status: "success",
       data: newUser.rows[0],
-      // token: generateToken(newUser.rows[0].email),
     });
   } catch (error) {
     console.log(error.message);
@@ -82,16 +74,47 @@ const signup = async (req, res) => {
       from: "signup",
       error: error.message,
     });
+  }
+};
 
-    // else {
-    //   res.status(401).json({
-    //     status: "failure",
-    //   });
-    // }
-    //   }
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    if (!validator.isEmail(email)) {
+      throw Error("Invalid email");
+    }
+    const result = await pool.query("select * from users where email=$1", [
+      email,
+    ]);
+    if (!result.rowCount) {
+      throw Error("Account doesn't exist");
+    }
+
+    const record = result.rows[0];
+
+    const match = await bcrypt.compare(password, record.password);
+
+    if (!match) {
+      throw Error("Invalid password");
+    }
+
+    console.log(record);
+
+    const token = generateToken(record.email);
+    res.status(200).json({
+      token,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({
+      from: "login",
+      error: error.message,
+    });
   }
 };
 
 module.exports = {
   signup,
+  login,
 };
