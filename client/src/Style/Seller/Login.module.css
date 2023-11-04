@@ -12,14 +12,14 @@
 .login-form {
     border-radius: 10px;
     border: 2px solid var(--green-primary);
-    padding: 2rem;
+    padding: 2rem !important;
     background-color: #ffffffcc;
-
     margin: 10px;
 }
 
 .login-form input {
     outline: 2px solid #555;
+    padding: 10px !important;
 }
 .btn-primary {
     background-color: var(--green-primary);

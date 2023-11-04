@@ -1,0 +1,22 @@
+.add-category-form input[type="text"] {
+    width: 100%;
+    outline: 1px solid #666;
+}
+
+.parent-category button {
+    width: 100%;
+}
+
+.parent-category li {
+    min-width: 300px;
+    text-align: left;
+}
+
+.add-category-btn {
+    background-color: var(--green-primary);
+    padding: 10px 20px !important;
+    border: 2px solid var(--green-primary);
+}
+.add-category-btn:hover {
+    border: 2px solid var(--green-primary);
+}

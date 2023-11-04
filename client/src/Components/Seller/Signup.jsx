@@ -96,7 +96,7 @@ export default function Signup() {
                 </div>
                 <button
                     type="submit"
-                    className={`btn  ${classes["btn-primary"]}`}
+                    className={`btn p-2  ${classes["btn-primary"]}`}
                 >
                     Sign in
                 </button>

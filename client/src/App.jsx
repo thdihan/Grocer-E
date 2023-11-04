@@ -1,6 +1,7 @@
 import "./App.css";
 import Login from "./Components/Seller/Login";
 import Products from "./Components/Seller/Pages/Products";
+import SellerAddCategory from "./Components/Seller/Pages/SellerAddCategory";
 import SellerCategories from "./Components/Seller/Pages/SellerCategories";
 import SellerDashboard from "./Components/Seller/SellerDashboard";
 import Signup from "./Components/Seller/Signup";
@@ -14,6 +15,10 @@ function App() {
                 <Route path="/admin/*" element={<SellerDashboard />}>
                     <Route path="products" element={<Products />} />
                     <Route path="categories" element={<SellerCategories />} />
+                    <Route
+                        path="add-category"
+                        element={<SellerAddCategory />}
+                    />
                 </Route>
             </Routes>
         </Router>

@@ -18,7 +18,9 @@ export default function Products() {
                 </ul>
 
                 <div className="d-flex align-items-center">
-                    <button className={`btn ${classes["add-product-button"]}`}>
+                    <button
+                        className={`btn fw-semibold ${classes["add-product-button"]}`}
+                    >
                         Add New Product
                     </button>
                 </div>
