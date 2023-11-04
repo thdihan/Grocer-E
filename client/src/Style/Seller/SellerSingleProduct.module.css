@@ -1,0 +1,14 @@
+.product-thumbnail {
+    width: 150px !important;
+}
+.product-category {
+    color: var(--light-font-color);
+}
+.details-button {
+    background-color: var(--green-primary);
+    padding: 10px 20px !important;
+    border: 2px solid var(--green-primary);
+}
+.details-button:hover {
+    border: 2px solid var(--green-primary);
+}

@@ -1,0 +1,3 @@
+.product-table table tr:hover td {
+    background-color: var(--green-primary-transparent) !important;
+}
