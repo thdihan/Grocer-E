@@ -1,0 +1,9 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+:root {
+    --dark-green: #139e94;
+    --green-primary: #61bd6c;
+    --blue-primary: #00425a;
+}
