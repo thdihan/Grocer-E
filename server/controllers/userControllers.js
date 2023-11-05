@@ -5,7 +5,7 @@ const validator = require("validator");
 
 //Token Generation
 const generateToken = (_id) => {
-  return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+  return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
 
 function isValidFullname(fullname) {
@@ -114,7 +114,30 @@ const login = async (req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+  const { authorization } = req.headers;
+  const token = authorization.split(" ")[1];
+
+  try {
+    const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await pool.query(
+      "SELECT user_id, fullname, email, user_type FROM users WHERE user_id = $1;",
+      [_id]
+    );
+    res.status(200).json({
+      user: user.rows[0],
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({
+      from: "getuser",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   signup,
   login,
+  getUser,
 };

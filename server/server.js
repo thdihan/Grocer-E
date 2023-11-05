@@ -17,9 +17,11 @@ app.use(errorHandler);
 
 //route imports
 const userRoutes = require("./routes/userRoutes");
+const sellerRoutes = require("./routes/sellerRoutes");
 
 //routes
 app.use("/api/user", userRoutes);
+app.use("/api/seller", sellerRoutes);
 
 //listening the server
 app.listen(process.env.SERVER_PORT || 5001, () => {
