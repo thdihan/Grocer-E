@@ -8,7 +8,7 @@ create database grocere;
 drop table users;
 
 CREATE TABLE users (
-    -- user_id bigserial PRIMARY KEY,
+    user_id bigserial PRIMARY KEY,
     fullname VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,

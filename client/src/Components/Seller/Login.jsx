@@ -106,7 +106,7 @@ export default function Login() {
             type="submit"
             className={`btn  ${classes["btn-primary"]}`}
           >
-            Sign in
+            Log in
           </button>
           <p>
             {`Don't Have an account?`}{" "}

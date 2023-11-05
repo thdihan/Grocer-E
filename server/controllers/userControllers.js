@@ -101,7 +101,7 @@ const login = async (req, res) => {
 
     console.log(record);
 
-    const token = generateToken(record.email);
+    const token = generateToken(record.user_id);
     res.status(200).json({
       token,
     });
