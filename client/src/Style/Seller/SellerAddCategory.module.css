@@ -2,7 +2,7 @@
 .add-category-form input[type="file"],
 .add-category-form textarea {
     width: 100%;
-    outline: 1px solid #666;
+    outline: 1px solid #ddd;
 }
 
 .parent-category button {
@@ -21,4 +21,24 @@
 }
 .add-category-btn:hover {
     border: 2px solid var(--green-primary);
+}
+
+.category-header {
+    border: 1px solid #aaa;
+}
+
+.selected-category span {
+    vertical-align: middle;
+}
+.selected-category p {
+    background-color: var(--green-primary);
+}
+
+.category-details {
+    border: 1px solid #aaa;
+    height: 200px;
+}
+
+.category-list label {
+    vertical-align: middle;
 }

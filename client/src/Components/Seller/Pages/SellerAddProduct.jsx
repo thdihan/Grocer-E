@@ -1,8 +1,37 @@
+import { useEffect, useState } from "react";
 import classes from "../../../Style/Seller/SellerAddCategory.module.css";
+import TextInput from "../../Common/FormComponents/TextInput";
 
 export default function SellerAddProduct() {
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState([]);
+
+    const addCategorySelection = (e) => {
+        const category = e.target.value;
+        setSelectedCategory((prevSelected) => [...prevSelected, category]);
+    };
+
+    const deleteCategorySelection = (e) => {
+        const category = e.target.value;
+        setSelectedCategory((prevSelected) =>
+            prevSelected.filter((item) => item !== category)
+        );
+    };
+    const handleFileChange = (e) => {
+        // Get the selected files from the input element
+        const files = e.target.files;
+        const selectedFilesArray = [];
+
+        for (let i = 0; i < files.length; i++) {
+            selectedFilesArray.push(files[i]);
+        }
+
+        // Update the state with the selected files
+        setSelectedFiles(selectedFilesArray);
+    };
     function handleSubmit(e) {
         e.preventDefault();
+        console.log(selectedFiles);
         const formData = new FormData(e.target);
         const formDataObject = Object.fromEntries(formData);
         console.log("Form Data Example : ", formDataObject);
@@ -15,121 +44,140 @@ export default function SellerAddProduct() {
             <div className="p-3">
                 <form
                     onSubmit={handleSubmit}
+                    encType="multipart/form-data"
                     className={`row gx-3 ${classes["add-category-form"]}`}
                 >
-                    <div className=" col col-md-12">
-                        <label htmlFor="category" className="form-label">
-                            Product Name
-                        </label>
-                        <input
-                            name="product-name"
-                            type="text"
-                            className="form-control p-2"
-                            id="category"
-                        />
+                    <TextInput
+                        bclass={`col-12 my-2`}
+                        id={`product-name`}
+                        type={`text`}
+                        name="product-name"
+                        labelText={`Product Name`}
+                    />
+
+                    <div className="col-12 my-2">
+                        <div className="row gx-2">
+                            <TextInput
+                                bclass={`col col-6 pe-2`}
+                                id={`base-price`}
+                                type={`text`}
+                                name="base-price"
+                                labelText={`Base Price (tk)`}
+                            />
+                            <TextInput
+                                bclass={`col col-6 ps-2`}
+                                id={`discount`}
+                                type={`text`}
+                                name="discount"
+                                labelText={`Discount (%)`}
+                            />
+                        </div>
                     </div>
-                    <div className="col col-md-6">
-                        <label htmlFor="base-price" className="form-label">
-                            Base Price
-                        </label>
-                        <input
-                            name="base-price"
-                            type="text"
-                            className="form-control p-2"
-                            id="base-price"
-                        />
-                    </div>
-                    <div className="col col-md-6">
-                        <label htmlFor="base-price" className="form-label">
-                            Discount
-                        </label>
-                        <input
-                            name="discount"
-                            type="text"
-                            className="form-control p-2"
-                            id="discount"
-                        />
+                    <div className="col-12 my-2">
+                        <div className="row gx-2">
+                            <TextInput
+                                bclass={`col col-6 pe-2`}
+                                id={`stock`}
+                                type={`text`}
+                                name="stock"
+                                labelText={`Avaiable Stock`}
+                            />
+
+                            <TextInput
+                                bclass={`col col-6 ps-2`}
+                                id={`unit`}
+                                type={`text`}
+                                name="unit"
+                                labelText={`Unit of product`}
+                            />
+                        </div>
                     </div>
 
-                    <div className="col col-md-12">
-                        <label htmlFor="base-price" className="form-label">
-                            Stock
-                        </label>
-                        <input
-                            name="stock"
-                            type="text"
-                            className="form-control p-2"
-                            id="stock"
-                        />
+                    <div className="col-12 my-2">
+                        <div className="container-fluid">
+                            <div
+                                className={`${classes["category-header"]} p-2 row`}
+                            >
+                                <div
+                                    className={`col-10 d-flex align-items-center ${classes["selected-category-list"]}`}
+                                >
+                                    <p>Selected Category: </p>{" "}
+                                    <div
+                                        className={`${classes["selected-category"]} d-flex ms-2`}
+                                    >
+                                        {selectedCategory?.map((category) => (
+                                            <p
+                                                key={category}
+                                                className="d-flex align-items-center rounded-pill px-2 me-2"
+                                            >
+                                                <span className="me-2">
+                                                    {category}
+                                                </span>
+                                            </p>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div
+                                    className={`col-2 ${classes["category-search-box"]}`}
+                                >
+                                    <input
+                                        type="text"
+                                        className={`py-2`}
+                                        name=""
+                                        id=""
+                                    />
+                                </div>
+                            </div>
+                            <div
+                                className={`${classes["category-details"]} p-2 row`}
+                            >
+                                <div
+                                    className={`col-12 d-flex flex-wrap ${classes["category-list"]}`}
+                                >
+                                    <label htmlFor="checkbox1" className="me-3">
+                                        <input
+                                            type="checkbox"
+                                            className="me-2"
+                                            value={`category1`}
+                                            onChange={(e) => {
+                                                e.target.checked
+                                                    ? addCategorySelection(e)
+                                                    : deleteCategorySelection(
+                                                          e
+                                                      );
+                                            }}
+                                        />
+                                        Category 1
+                                    </label>
+                                    <label htmlFor="checkbox2" className="me-3">
+                                        <input
+                                            type="checkbox"
+                                            className="me-2"
+                                            value={`category2`}
+                                            onChange={(e) => {
+                                                e.target.checked
+                                                    ? addCategorySelection(e)
+                                                    : deleteCategorySelection(
+                                                          e
+                                                      );
+                                            }}
+                                        />
+                                        Category 2
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="col col-md-12">
-                        <label htmlFor="floatingTextarea2">
-                            Product Description
-                        </label>
-                        <textarea
-                            className="form-control"
-                            name="description"
-                            id="floatingTextarea2"
-                            style={{ height: "100px" }}
-                        ></textarea>
-                    </div>
-                    <div className="col col-md-12">
-                        <label htmlFor="formFile" className="form-label">
-                            Product Image
-                        </label>
+
+                    <div className="col-12">
+                        <label htmlFor="product-image">Product Image</label>
                         <input
-                            className="form-control"
+                            multiple
                             type="file"
-                            id="formFile"
+                            name="product-image"
+                            id="product-image"
+                            onChange={handleFileChange}
                         />
-                    </div>
-
-                    <div
-                        className={`dropdown ${classes["parent-category"]} col-md-12`}
-                    >
-                        <button
-                            className="btn btn-secondary dropdown-toggle p-2 mt-3"
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
-                            Parent Category
-                        </button>
-                        <ul className="dropdown-menu">
-                            <li className="p-2">
-                                <label htmlFor="" className="d-inline">
-                                    <input
-                                        type="checkbox"
-                                        name="cat1"
-                                        value="cat1"
-                                        id=""
-                                    />{" "}
-                                    Category
-                                </label>
-                            </li>
-                            <li className="p-2">
-                                <label htmlFor="" className="d-inline">
-                                    <input
-                                        type="checkbox"
-                                        name="cat2"
-                                        value="cat2"
-                                        id=""
-                                    />{" "}
-                                    Category
-                                </label>
-                            </li>
-                            <li className="p-2">
-                                <label htmlFor="" className="d-inline">
-                                    <input
-                                        type="checkbox"
-                                        name="cat3"
-                                        value="cat3"
-                                        id=""
-                                    />{" "}
-                                    Category
-                                </label>
-                            </li>
-                        </ul>
                     </div>
                     <input
                         className={`btn py-2 mt-2 ${classes["add-category-btn"]}`}
