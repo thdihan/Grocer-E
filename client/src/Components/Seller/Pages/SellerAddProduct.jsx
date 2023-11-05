@@ -4,39 +4,14 @@ import TextInput from "../../Common/FormComponents/TextInput";
 
 export default function SellerAddProduct() {
     const [selectedFiles, setSelectedFiles] = useState([]);
-    const [modifiedCategoryList, setModifiedCategoryList] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState([]);
 
-    useEffect(() => {
-        console.log("Run Use Effect");
-        setSelectedCategory(modifiedCategoryList);
-    }, [modifiedCategoryList]);
     const addCategorySelection = (e) => {
-        // console.log("Modified Category ");
-        // const getSelection = modifiedCategoryList;
-        // if (!getSelection.includes(e.target.value)) {
-        //     console.log("Adding Category: ", e.target.value);
-        //     getSelection.push(e.target.value);
-        // }
-
-        // console.log(getSelection);
-        // setModifiedCategoryList(() => getSelection);
         const category = e.target.value;
         setSelectedCategory((prevSelected) => [...prevSelected, category]);
     };
 
     const deleteCategorySelection = (e) => {
-        // console.log("Modified Category ", modifiedCategoryList);
-        // const getSelection = modifiedCategoryList;
-
-        // const index = getSelection.findIndex(
-        //     (element) => element === e.target.value
-        // );
-        // getSelection.splice(index, 1);
-
-        // console.log(getSelection);
-        // setModifiedCategoryList(() => getSelection);
-
         const category = e.target.value;
         setSelectedCategory((prevSelected) =>
             prevSelected.filter((item) => item !== category)
@@ -210,20 +185,6 @@ export default function SellerAddProduct() {
                         value="Add Product"
                     />
                 </form>
-
-                <div>
-                    <h2>Selected Image Files:</h2>
-                    {selectedFiles.map((file, index) => (
-                        <div key={index}>
-                            <p>{file.name}</p>
-                            <img
-                                src={URL.createObjectURL(file)}
-                                alt={file.name}
-                                style={{ maxWidth: "200px" }}
-                            />
-                        </div>
-                    ))}
-                </div>
             </div>
         </>
     );
