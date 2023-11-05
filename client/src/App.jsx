@@ -8,23 +8,37 @@ import SellerCategories from "./Components/Seller/Pages/SellerCategories";
 import SellerDashboard from "./Components/Seller/SellerDashboard";
 import Signup from "./Components/Seller/Signup";
 import { AuthContextProvider } from "./Context/AuthContext";
+import Layout from "./Components/Buyer/Layout";
+import Home from "./Components/Buyer/Pages/Home";
 function App() {
-  return (
-    <AuthContextProvider>
-      <Router>
-        <Routes>
-          <Route path="/admin/login" element={<Login />} />
-          <Route path="/admin/signup" element={<Signup />} />
-          <Route path="/admin/*" element={<SellerDashboard />}>
-            <Route path="products" element={<Products />} />
-            <Route path="categories" element={<SellerCategories />} />
-            <Route path="add-category" element={<SellerAddCategory />} />
-            <Route path="add-product" element={<SellerAddProduct />} />
-          </Route>
-        </Routes>
-      </Router>
-    </AuthContextProvider>
-  );
+    return (
+        <AuthContextProvider>
+            <Router>
+                <Routes>
+                    <Route path="/admin/login" element={<Login />} />
+                    <Route path="/admin/signup" element={<Signup />} />
+                    <Route path="/admin/*" element={<SellerDashboard />}>
+                        <Route path="products" element={<Products />} />
+                        <Route
+                            path="categories"
+                            element={<SellerCategories />}
+                        />
+                        <Route
+                            path="add-category"
+                            element={<SellerAddCategory />}
+                        />
+                        <Route
+                            path="add-product"
+                            element={<SellerAddProduct />}
+                        />
+                    </Route>
+                    <Route path="/*" element={<Layout />}>
+                        <Route path="" element={<Home />} />
+                    </Route>
+                </Routes>
+            </Router>
+        </AuthContextProvider>
+    );
 }
 
 export default App;

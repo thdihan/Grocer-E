@@ -1,0 +1,42 @@
+.search-box-container input {
+    padding: 10px;
+    vertical-align: middle;
+    outline: none;
+    border: 0;
+}
+.search-box-container label {
+    border: 1px solid #ddd;
+}
+
+.custom-search-button {
+    vertical-align: middle;
+    padding: 8px 20px;
+    font-weight: bold;
+    font-size: 1.8rem;
+    background-color: var(--green-primary);
+}
+
+.user-nav ul li span {
+    vertical-align: middle;
+}
+.user-nav ul {
+    margin: 0 !important;
+}
+
+.user-nav ul li {
+    position: relative;
+}
+
+.user-nav ul li .cart-update {
+    background-color: var(--green-primary);
+    padding: 1px 6px;
+    font-size: 12px;
+    font-weight: bold;
+    position: absolute;
+    top: -8px;
+}
+
+.active,
+.nav-list-item:hover {
+    background-color: var(--green-primary);
+}

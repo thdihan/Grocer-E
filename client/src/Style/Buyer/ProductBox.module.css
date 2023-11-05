@@ -1,0 +1,47 @@
+.product-box-header p {
+    color: #6d6d6d;
+}
+
+.product-box-header a {
+    color: var(--green-primary);
+}
+
+.single-product:not(:last-child) {
+    border-right: 1px solid #ddd;
+}
+
+.image-container {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+}
+
+.product-thumnail {
+    position: relative;
+}
+.special-message {
+    position: absolute;
+    background-color: rgb(249, 216, 3);
+    padding: 2px 8px;
+    font-size: 12px;
+    top: 0;
+}
+.fade-base-price {
+    color: #aaa;
+}
+
+.quantity input {
+    width: 50px;
+    border-radius: 10px;
+    border: 0;
+    border: 1px solid #aaa;
+}
+
+.add-to-cart button {
+    margin-left: 10px;
+    border: 0;
+    padding: 3px 10px;
+    background: var(--green-primary);
+    border-radius: 10px;
+}

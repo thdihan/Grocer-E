@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom";
 export default function SellerDashboard() {
     const [activeSidebar, setActiveSidebar] = useState(false);
     return (
-        <div className="row">
+        <div className="row sellerDashboard">
             <SellerSidebar
                 activeSidebar={activeSidebar}
                 setActiveSidebar={setActiveSidebar}
