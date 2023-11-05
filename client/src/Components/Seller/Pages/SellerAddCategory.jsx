@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import classes from "../../../Style/Seller/SellerAddCategory.module.css";
@@ -8,7 +8,34 @@ import { useAuthContext } from "../../../hooks/useAuthContext";
 export default function SellerAddCategory() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [categoryLoading, setCategoryLoading] = useState(false);
+  const [categoryList, setCategoryList] = useState([]);
   const { user } = useAuthContext();
+
+  useEffect(() => {
+    async function getCategoryList() {
+      try {
+        setCategoryLoading(true);
+        const response = await SellerApi.get("/get-all-categories", {
+          headers: {
+            Authorization: `Bearer ${user}`,
+            "Content-Type": "application/json",
+          },
+        });
+        console.log("CATEGORIES: ", response.data.categories);
+        const categories = response.data.categories;
+        setCategoryList(categories);
+        setCategoryLoading(false);
+      } catch (error) {
+        console.log(error);
+        setCategoryLoading(false);
+      }
+    }
+    getCategoryList();
+    //  const categories = response.data.categories;
+    // setCategoryList(getCategoryList());
+    // setCategoryLoading(false);
+  }, [user]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -75,7 +102,21 @@ export default function SellerAddCategory() {
               Parent Category
             </button>
             <ul className="dropdown-menu">
-              <li className="p-2">
+              {!categoryLoading &&
+                categoryList.map((category, index) => (
+                  <li className="p-2" key={index}>
+                    <label htmlFor={`cat${index}`} className="d-inline">
+                      <input
+                        type="checkbox"
+                        name={`cat${index}`}
+                        value={category.parent_category_id}
+                        id={`cat${index}`}
+                      />{" "}
+                      {category.parent_category_name}
+                    </label>
+                  </li>
+                ))}
+              {/* <li className="p-2">
                 <label htmlFor="" className="d-inline">
                   <input type="checkbox" name="cat1" value="cat1" id="" />{" "}
                   Category
@@ -92,7 +133,7 @@ export default function SellerAddCategory() {
                   <input type="checkbox" name="cat3" value="cat3" id="" />{" "}
                   Category
                 </label>
-              </li>
+              </li> */}
             </ul>
           </div>
           {error && <p style={{ color: "red" }}>{error}</p>}
