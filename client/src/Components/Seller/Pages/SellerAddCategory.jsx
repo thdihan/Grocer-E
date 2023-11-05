@@ -1,41 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import classes from "../../../Style/Seller/SellerAddCategory.module.css";
 import SellerApi from "../../../apis/SellerApi";
 import { useAuthContext } from "../../../hooks/useAuthContext";
+import { useParentCategoryList } from "../../../hooks/useParentCategoryList";
 
 export default function SellerAddCategory() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [categoryLoading, setCategoryLoading] = useState(false);
-  const [categoryList, setCategoryList] = useState([]);
   const { user } = useAuthContext();
-
-  useEffect(() => {
-    async function getCategoryList() {
-      try {
-        setCategoryLoading(true);
-        const response = await SellerApi.get("/get-all-categories", {
-          headers: {
-            Authorization: `Bearer ${user}`,
-            "Content-Type": "application/json",
-          },
-        });
-        console.log("CATEGORIES: ", response.data.categories);
-        const categories = response.data.categories;
-        setCategoryList(categories);
-        setCategoryLoading(false);
-      } catch (error) {
-        console.log(error);
-        setCategoryLoading(false);
-      }
-    }
-    getCategoryList();
-    //  const categories = response.data.categories;
-    // setCategoryList(getCategoryList());
-    // setCategoryLoading(false);
-  }, [user]);
+  const { parentCategoryList, parentError, parentLoading } =
+    useParentCategoryList(user);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -102,8 +78,9 @@ export default function SellerAddCategory() {
               Parent Category
             </button>
             <ul className="dropdown-menu">
-              {!categoryLoading &&
-                categoryList.map((category, index) => (
+              {!parentLoading &&
+                !parentError &&
+                parentCategoryList.map((category, index) => (
                   <li className="p-2" key={index}>
                     <label htmlFor={`cat${index}`} className="d-inline">
                       <input
