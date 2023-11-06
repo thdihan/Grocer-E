@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import SellerApi from "../apis/SellerApi";
 
-export const useParentCategoryList = (user) => {
+export const useCategoryList = (user) => {
   const [error, setError] = useState(false);
   const [categoryLoading, setCategoryLoading] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
@@ -30,8 +30,8 @@ export const useParentCategoryList = (user) => {
     getCategoryList();
   }, [user]);
   return {
-    parentCategoryList: categoryList,
-    parentLoading: categoryLoading,
-    parentError: error,
+    categoryList: categoryList,
+    categoryLoading: categoryLoading,
+    categoryError: error,
   };
 };

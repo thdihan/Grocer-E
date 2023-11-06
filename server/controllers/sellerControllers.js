@@ -12,7 +12,7 @@ async function addParentCategory(user_id, category_name) {
   //   }
 
   const alreadyAddedByUser = await pool.query(
-    "select * from parent_categories where parent_category_name=$1",
+    "select * from categories where category_name=$1",
     [category_name]
   );
 
@@ -20,7 +20,7 @@ async function addParentCategory(user_id, category_name) {
     throw Error("This category already exist");
   }
   const addedParentCategory = await pool.query(
-    "insert into parent_categories (adder_id,parent_category_name) values ($1,$2) returning *",
+    "insert into categories (seller_id,category_name) values ($1,$2) returning *",
     [user_id, category_name]
   );
   return addedParentCategory;
@@ -40,27 +40,37 @@ async function addChildCategory(user_id, category_name, parent_category_id) {
   let addedCategory;
 
   if (alreadyAddedByUser.rowCount) {
+    const categoryId = BigInt(alreadyAddedByUser.rows[0].category_id);
+    //if the category is already added
+    if (categoryId === parent_category_id) {
+      throw Error("Category can't be parent of itself");
+    }
     const alreadyAddedRelation = await pool.query(
       "select * from category_parent_relationship where category_id=$1 and parent_category_id=$2",
-      [alreadyAddedByUser.rows[0].category_id, parent_category_id]
+      [categoryId, parent_category_id]
     );
 
     if (alreadyAddedRelation.rowCount) {
       throw Error("This category under the parent exists");
     }
     const addInJunctionTable = await pool.query(
-      "insert into category_parent_relationship (parent_category_id,adder_id,category_id) values ($1,$2,$3) returning *",
-      [parent_category_id, user_id, alreadyAddedByUser.rows[0].category_id]
+      "insert into category_parent_relationship (parent_category_id,seller_id,category_id) values ($1,$2,$3) returning *",
+      [parent_category_id, user_id, categoryId]
     );
     addedCategory = addInJunctionTable.rows[0];
   } else {
+    //if the category is not added (add then make relation)
     const addedChildCategory = await pool.query(
-      "insert into categories (adder_id,category_name) values ($1,$2) returning *",
+      "insert into categories (seller_id,category_name) values ($1,$2) returning *",
       [user_id, category_name]
     );
     const addInJunctionTable = await pool.query(
-      "insert into category_parent_relationship (parent_category_id,adder_id,category_id) values ($1,$2,$3) returning *",
-      [parent_category_id, user_id, addedChildCategory.rows[0].category_id]
+      "insert into category_parent_relationship (parent_category_id,seller_id,category_id) values ($1,$2,$3) returning *",
+      [
+        parent_category_id,
+        user_id,
+        BigInt(addedChildCategory.rows[0].category_id),
+      ]
     );
     addedCategory = addInJunctionTable.rows[0];
   }
@@ -80,7 +90,7 @@ const addCategory = async (req, res) => {
     if (Object.keys(categoryObject).length === 1) {
       //if object with only one property (i.e. category_name) then it is added to parent category
       const addedParentCategory = await addParentCategory(
-        _id,
+        BigInt(_id),
         categoryObject.category_name
       );
       res.status(200).json({
@@ -92,7 +102,12 @@ const addCategory = async (req, res) => {
         if (key !== "category_name") {
           console.log("INN");
           const parentId = BigInt(categoryObject[key]);
-          console.log("DATA: ", _id, categoryObject.category_name, parentId);
+          console.log(
+            "DATA: ",
+            BigInt(_id),
+            categoryObject.category_name,
+            parentId
+          );
           const addedChildCategory = await addChildCategory(
             _id,
             categoryObject.category_name,
@@ -114,7 +129,7 @@ const addCategory = async (req, res) => {
 
 const getAllCategories = async (req, res) => {
   try {
-    const categories = await pool.query("select * from parent_categories");
+    const categories = await pool.query("select * from categories");
     console.log(categories.rows);
     res.status(200).json({
       categories: categories.rows,

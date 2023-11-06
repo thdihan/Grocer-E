@@ -1,19 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import classes from "../../../Style/Seller/SellerAddCategory.module.css";
 import SellerApi from "../../../apis/SellerApi";
 import { useAuthContext } from "../../../hooks/useAuthContext";
-import { useParentCategoryList } from "../../../hooks/useParentCategoryList";
+import { useCategoryList } from "../../../hooks/useCategoryList";
 
 export default function SellerAddCategory() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const { user } = useAuthContext();
-  const { parentCategoryList, parentError, parentLoading } =
-    useParentCategoryList(user);
+  const { categoryList, categoryError, categoryLoading } =
+    useCategoryList(user);
+
+  useEffect(() => {
+    toast.onChange((payload) => {
+      if (payload.status === "removed") {
+        // Refresh the page
+        window.location.reload();
+      }
+    });
+  }, []);
 
   async function handleSubmit(e) {
+    console.log(user);
     e.preventDefault();
     setError(false);
     setLoading(true);
@@ -78,18 +88,18 @@ export default function SellerAddCategory() {
               Parent Category
             </button>
             <ul className="dropdown-menu">
-              {!parentLoading &&
-                !parentError &&
-                parentCategoryList.map((category, index) => (
+              {!categoryLoading &&
+                !categoryError &&
+                categoryList.map((category, index) => (
                   <li className="p-2" key={index}>
                     <label htmlFor={`cat${index}`} className="d-inline">
                       <input
                         type="checkbox"
                         name={`cat${index}`}
-                        value={category.parent_category_id}
+                        value={category.category_id}
                         id={`cat${index}`}
                       />{" "}
-                      {category.parent_category_name}
+                      {category.category_name}
                     </label>
                   </li>
                 ))}

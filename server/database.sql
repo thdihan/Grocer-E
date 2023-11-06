@@ -22,29 +22,29 @@ CREATE TABLE users (
 drop table categories;
 drop table parent_categories;
 
-CREATE TABLE parent_categories (
-    parent_category_id bigserial PRIMARY KEY,
-    parent_category_name varchar(255) UNIQUE NOT NULL,
-    adder_id bigint,
-    CONSTRAINT parent_user_fk FOREIGN KEY (adder_id) REFERENCES users(user_id)
-);
+-- CREATE TABLE parent_categories (
+--     parent_category_id bigserial PRIMARY KEY,
+--     parent_category_name varchar(255) UNIQUE NOT NULL,
+--     adder_id bigint,
+--     CONSTRAINT parent_user_fk FOREIGN KEY (adder_id) REFERENCES users(user_id)
+-- );
 
 CREATE TABLE categories (
     category_id serial PRIMARY KEY,
     category_name varchar(255) NOT NULL,
     -- parent_category_id bigint,
-    adder_id bigint,
+    seller_id bigint,
     -- CONSTRAINT category_fk FOREIGN KEY (parent_category_id) REFERENCES parent_categories(parent_category_id),
-    CONSTRAINT category_user_fk FOREIGN KEY (adder_id) REFERENCES users(user_id)
+    CONSTRAINT category_user_fk FOREIGN KEY (seller_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE category_parent_relationship (
     category_id bigint,
     parent_category_id bigint,
-    adder_id bigint,
-     CONSTRAINT category_parent_pk PRIMARY KEY (category_id, parent_category_id),
+    seller_id bigint,
+    CONSTRAINT category_parent_pk PRIMARY KEY (category_id, parent_category_id),
     CONSTRAINT category_fk FOREIGN KEY (category_id) REFERENCES categories(category_id),
-    CONSTRAINT parent_category_fk FOREIGN KEY (parent_category_id) REFERENCES parent_categories(parent_category_id) ON DELETE CASCADE
+    CONSTRAINT parent_category_fk FOREIGN KEY (parent_category_id) REFERENCES categories(category_id)
 );
 
 
