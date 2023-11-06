@@ -1,11 +1,17 @@
 import { useState } from "react";
 import classes from "../../../Style/Seller/SellerAddCategory.module.css";
+import SellerApi from "../../../apis/SellerApi";
+import { useAuthContext } from "../../../hooks/useAuthContext";
+import { isNumber } from "../../../utilities/utilities";
 import TextInput from "../../Common/FormComponents/TextInput";
 
 export default function SellerAddProduct() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [fileError, setFileError] = useState(false);
+  const { user } = useAuthContext();
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const addCategorySelection = (e) => {
     const category = e.target.value;
@@ -38,18 +44,64 @@ export default function SellerAddProduct() {
     // Update the state with the selected files
     setSelectedFiles(selectedFilesArray);
   };
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
+    setError(false);
     const formData = new FormData(e.target);
     const formDataObject = Object.fromEntries(formData);
+    console.log("FORMDATAAAA: ", ...formData);
     if (!selectedFiles[0]) {
       //if no file selected/invalid files
       setFileError(true);
+      setLoading(false);
       return;
     }
-    formDataObject["product_image"] = selectedFiles[0];
+    // formDataObject["product_image"] = selectedFiles[0];
+    if (!isNumber(formDataObject["base_price"])) {
+      setError("Base price must be a number");
+      setLoading(false);
+      return;
+    }
+    if (!isNumber(formDataObject["discount"])) {
+      setError("Discount must be a number");
+      setLoading(false);
+      return;
+    }
+    if (!isNumber(formDataObject["stock"])) {
+      setError("Stock must be a number");
+      setLoading(false);
+      return;
+    }
+    formDataObject["base_price"] = parseFloat(formDataObject["base_price"]);
+    formDataObject["discount"] = parseFloat(formDataObject["discount"]);
+    formDataObject["stock"] = parseFloat(formDataObject["stock"]);
+
+    formData.append("image", selectedFiles[0]);
 
     console.log("Form Data Example : ", formDataObject);
+    console.log(...formData);
+    try {
+      const response = await SellerApi.post("/add-product", formData, {
+        headers: {
+          Authorization: `Bearer ${user}`,
+        },
+      });
+
+      setLoading(false);
+      e.target.reset();
+
+      // toast.success("Category added successfully...", {
+      //   position: toast.POSITION.TOP_RIGHT,
+      //   autoClose: 1200, // Time in milliseconds to auto-close the toast (1.5 seconds in this case)
+      // });
+      console.log("ADD CAT: ", response.data);
+    } catch (err) {
+      setError(err.response.data.error);
+      setLoading(false);
+
+      console.log("ADD CAT: ", err);
+    }
   }
   return (
     <>
@@ -63,6 +115,7 @@ export default function SellerAddProduct() {
           className={`row gx-3 ${classes["add-category-form"]}`}
         >
           <TextInput
+            required
             bclass={`col-12 my-2`}
             id={`product-name`}
             type={`text`}
@@ -78,6 +131,7 @@ export default function SellerAddProduct() {
                 type={`text`}
                 name="base_price"
                 labelText={`Base Price (tk)`}
+                required
               />
               <TextInput
                 bclass={`col col-6 ps-2`}
@@ -85,6 +139,7 @@ export default function SellerAddProduct() {
                 type={`text`}
                 name="discount"
                 labelText={`Discount (%)`}
+                required
               />
             </div>
           </div>
@@ -96,6 +151,7 @@ export default function SellerAddProduct() {
                 type={`text`}
                 name="stock"
                 labelText={`Avaiable Stock`}
+                required
               />
 
               <TextInput
@@ -104,6 +160,7 @@ export default function SellerAddProduct() {
                 type={`text`}
                 name="unit"
                 labelText={`Unit of product`}
+                required
               />
             </div>
           </div>
@@ -170,21 +227,23 @@ export default function SellerAddProduct() {
           <div className="col-12">
             <label htmlFor="product-image">Product Image</label>
             <input
-              multiple
+              accept="image/*"
               type="file"
-              name="product_image"
+              name="image"
               id="product-image"
               onChange={handleFileChange}
+              required
             />
           </div>
           {fileError && (
             <p style={{ color: "red" }}>Only jpeg, jpg and png files allowed</p>
           )}
-          {/* {fileError && <p style={{ color: "red" }}>{fileError}</p>} */}
+          {error && <p style={{ color: "red" }}>{error}</p>}
           <input
             className={`btn py-2 mt-2 ${classes["add-category-btn"]}`}
             type="submit"
             value="Add Product"
+            disabled={loading}
           />
         </form>
       </div>

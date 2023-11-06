@@ -142,7 +142,49 @@ const getAllCategories = async (req, res) => {
   }
 };
 
+const addProduct = async (req, res) => {
+  const { authorization } = req.headers;
+  const token = authorization.split(" ")[1];
+  const { product_name, discount, base_price, unit, stock } = req.body;
+  const imageFile = req.files[0];
+  console.log(imageFile.filename);
+  console.log(product_name);
+
+  try {
+    const productExists = await pool.query(
+      "select * from products where product_name=$1",
+      [product_name]
+    );
+    if (productExists.rowCount) {
+      throw Error("Product already exists");
+    }
+    const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+    const imageEntry = await pool.query(
+      "INSERT INTO products (product_name, discount, base_price, unit, stock,seller_id,product_image ) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *",
+      [
+        product_name,
+        discount,
+        base_price,
+        unit,
+        stock,
+        BigInt(_id),
+        imageFile.filename,
+      ]
+    );
+    console.log(imageEntry.rows);
+    res.status(200).json({
+      categories: imageEntry.rows,
+    });
+  } catch (error) {
+    res.status(400).json({
+      from: "add product",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   addCategory,
   getAllCategories,
+  addProduct,
 };

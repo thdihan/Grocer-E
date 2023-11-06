@@ -47,6 +47,20 @@ CREATE TABLE category_parent_relationship (
     CONSTRAINT parent_category_fk FOREIGN KEY (parent_category_id) REFERENCES categories(category_id)
 );
 
+drop table products;
+
+CREATE TABLE products (
+    product_id bigserial PRIMARY KEY,
+    product_name VARCHAR(255) UNIQUE NOT NULL,
+    base_price NUMERIC NOT NULL,
+    discount NUMERIC DEFAULT 0.00,
+    unit VARCHAR(50) NOT NULL,
+    stock NUMERIC NOT NULL,
+    product_image VARCHAR(100),
+    seller_id bigint,
+    CONSTRAINT category_user_fk FOREIGN KEY (seller_id) REFERENCES users(user_id)
+);
+
 
 -- -- Trigger function to handle parent category deletion and category updates
 -- CREATE OR REPLACE FUNCTION delete_empty_categories()
