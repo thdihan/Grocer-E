@@ -99,7 +99,11 @@ export default function SingleProductDetails() {
                     </div>
                 </div>
             </div>
-            <ProductBox itemCount={4} boxTitle={`Realated Product`} />
+            <ProductBox
+                itemCount={4}
+                boxTitle={`Realated Product`}
+                category={["1", "2"]}
+            />
         </div>
     );
 }

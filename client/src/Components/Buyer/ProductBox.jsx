@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import classes from "../../Style/Buyer/ProductBox.module.css";
 import SingleProduct from "./SingleProduct";
-export default function ProductBox({ itemCount, boxTitle }) {
+export default function ProductBox({ itemCount, boxTitle, category }) {
+    // [Todo] : Hook call
+
     const SingleProductCount = Array(itemCount).fill(null);
     return (
         <div className="container p-0">
