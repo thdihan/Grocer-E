@@ -1,6 +1,9 @@
+import { Link } from "react-router-dom";
 import classes from "../../Style/Buyer/Navbar.module.css";
 import MainNav from "./MainNav";
+import { useCartContext } from "../../hooks/useCartContext";
 export default function Navbar() {
+    const { productCount } = useCartContext();
     return (
         <section className="header-area">
             <div className="container">
@@ -32,16 +35,24 @@ export default function Navbar() {
                         className={`${classes["user-nav"]} col-md-4 col-12 mt-4 mt-md-0 d-flex align-items-center flex-wrap`}
                     >
                         <ul className="row w-100">
-                            <li className="col-6 ">
-                                <span className="material-symbols-outlined me-2">
-                                    shopping_cart
-                                </span>
-                                <span>Cart</span>
-                                <span
-                                    className={`${classes["cart-update"]} rounded-circle`}
+                            <li className="col-6">
+                                <Link
+                                    to="/cart"
+                                    className={`${classes["cart-link"]}`}
                                 >
-                                    12
-                                </span>
+                                    <span className="material-symbols-outlined me-2">
+                                        shopping_cart
+                                    </span>
+                                    <span>Cart</span>
+
+                                    {productCount > 0 && (
+                                        <span
+                                            className={`${classes["cart-update"]} rounded-circle`}
+                                        >
+                                            {productCount}
+                                        </span>
+                                    )}
+                                </Link>
                             </li>
                             <li className="col-6">
                                 <span className="material-symbols-outlined me-2">

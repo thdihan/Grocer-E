@@ -5,6 +5,7 @@
 :root {
     --dark-green: #139e94;
     --green-primary: #61bd6c;
+    --green-primary-deep: #33823d;
     --green-primary-transparent: #61bd6c3d;
     --blue-primary: #00425a;
     --dark: #232d3f;
@@ -16,6 +17,7 @@ li {
 }
 a {
     text-decoration: none;
+    color: black;
 }
 
 body {

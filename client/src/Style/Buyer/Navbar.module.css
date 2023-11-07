@@ -36,6 +36,9 @@
     top: -8px;
 }
 
+.cart-link {
+    color: black;
+}
 .active,
 .nav-list-item:hover {
     background-color: var(--green-primary);

@@ -1,0 +1,29 @@
+.cart-area-table table a {
+    color: var(--green-primary);
+    font-weight: bold;
+}
+
+.cart-area-table thead th {
+    background-color: var(--green-primary);
+}
+.cart-section {
+    min-height: 100vh;
+}
+
+.continue-shopping-btn {
+    padding: 10px 20px;
+    background-color: #ddd;
+    border-radius: 10px;
+}
+.continue-shopping-btn:hover {
+    background-color: #aaa;
+}
+.checkout-btn {
+    padding: 10px 20px;
+    background-color: var(--green-primary);
+    border-radius: 10px;
+}
+
+.checkout-btn:hover {
+    background-color: var(--green-primary-deep);
+}
