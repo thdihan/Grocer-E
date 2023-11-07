@@ -2,20 +2,26 @@ import { useState } from "react";
 import classes from "../../../Style/Seller/SellerAddCategory.module.css";
 import SellerApi from "../../../apis/SellerApi";
 import { useAuthContext } from "../../../hooks/useAuthContext";
+import { useCategoryList } from "../../../hooks/useCategoryList";
 import { isNumber } from "../../../utilities/utilities";
 import TextInput from "../../Common/FormComponents/TextInput";
 
 export default function SellerAddProduct() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
+  // const [relatedCategories, setRelatedCategories] = useState([]);
   const [fileError, setFileError] = useState(false);
   const { user } = useAuthContext();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { categoryList, categoryError, categoryLoading } =
+    useCategoryList(user);
 
   const addCategorySelection = (e) => {
     const category = e.target.value;
+    console.log(e.target.value);
     setSelectedCategory((prevSelected) => [...prevSelected, category]);
+    // setRelatedCategories((prevSelected) => [...prevSelected, category]);
   };
 
   const deleteCategorySelection = (e) => {
@@ -23,6 +29,9 @@ export default function SellerAddProduct() {
     setSelectedCategory((prevSelected) =>
       prevSelected.filter((item) => item !== category)
     );
+    // setRelatedCategories((prevSelected) =>
+    //   prevSelected.filter((item) => item !== category)
+    // );
   };
   const handleFileChange = (e) => {
     // Get the selected files from the input element
@@ -76,7 +85,21 @@ export default function SellerAddProduct() {
     formDataObject["base_price"] = parseFloat(formDataObject["base_price"]);
     formDataObject["discount"] = parseFloat(formDataObject["discount"]);
     formDataObject["stock"] = parseFloat(formDataObject["stock"]);
+    if (selectedCategory.length === 0) {
+      setError("Please select a category");
+      setLoading(false);
+      return;
+    }
+    const selectedCategoryIds = selectedCategory.map((selectedCategoryName) => {
+      console.log("CATNAMES: ", selectedCategoryName);
+      const selectedCategory = categoryList.find(
+        (category) => category.category_name === selectedCategoryName
+      );
+      return selectedCategory ? selectedCategory.category_id : null; // Handle if the category name is not found
+    });
+    // formDataObject["categories"] = selectedCategoryIds;
 
+    formData.append("categories", selectedCategoryIds);
     formData.append("image", selectedFiles[0]);
 
     console.log("Form Data Example : ", formDataObject);
@@ -89,6 +112,7 @@ export default function SellerAddProduct() {
       });
 
       setLoading(false);
+      setSelectedCategory([]);
       e.target.reset();
 
       // toast.success("Category added successfully...", {
@@ -193,7 +217,29 @@ export default function SellerAddProduct() {
                 <div
                   className={`col-12 d-flex flex-wrap ${classes["category-list"]}`}
                 >
-                  <label htmlFor="checkbox1" className="me-3">
+                  {categoryList &&
+                    !categoryLoading &&
+                    !categoryError &&
+                    categoryList.map((category, index) => (
+                      <label
+                        key={index}
+                        htmlFor={`checkbox${index + 1}`}
+                        className="me-3"
+                      >
+                        <input
+                          type="checkbox"
+                          className="me-2"
+                          value={category.category_name}
+                          onChange={(e) => {
+                            e.target.checked
+                              ? addCategorySelection(e)
+                              : deleteCategorySelection(e);
+                          }}
+                        />
+                        {category.category_name}
+                      </label>
+                    ))}
+                  {/* <label htmlFor="checkbox1" className="me-3">
                     <input
                       type="checkbox"
                       className="me-2"
@@ -218,7 +264,7 @@ export default function SellerAddProduct() {
                       }}
                     />
                     Category 2
-                  </label>
+                  </label> */}
                 </div>
               </div>
             </div>

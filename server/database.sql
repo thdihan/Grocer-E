@@ -43,8 +43,8 @@ CREATE TABLE category_parent_relationship (
     parent_category_id bigint,
     seller_id bigint,
     CONSTRAINT category_parent_pk PRIMARY KEY (category_id, parent_category_id),
-    CONSTRAINT category_fk FOREIGN KEY (category_id) REFERENCES categories(category_id),
-    CONSTRAINT parent_category_fk FOREIGN KEY (parent_category_id) REFERENCES categories(category_id)
+    CONSTRAINT category_fk FOREIGN KEY (category_id) REFERENCES categories(category_id) ON delete cascade,
+    CONSTRAINT parent_category_fk FOREIGN KEY (parent_category_id) REFERENCES categories(category_id) On delete cascade
 );
 
 drop table products;
@@ -59,6 +59,15 @@ CREATE TABLE products (
     product_image VARCHAR(100),
     seller_id bigint,
     CONSTRAINT category_user_fk FOREIGN KEY (seller_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE product_category_relationship (
+    product_id bigint,
+    category_id bigint,
+    seller_id bigint,
+    CONSTRAINT product_category_pk PRIMARY KEY (product_id, category_id),
+    CONSTRAINT category_fk FOREIGN KEY (category_id) REFERENCES categories(category_id) ON delete cascade,
+    CONSTRAINT product_fk FOREIGN KEY (product_id) REFERENCES products(product_id) On delete cascade
 );
 
 

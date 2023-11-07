@@ -145,7 +145,9 @@ const getAllCategories = async (req, res) => {
 const addProduct = async (req, res) => {
   const { authorization } = req.headers;
   const token = authorization.split(" ")[1];
-  const { product_name, discount, base_price, unit, stock } = req.body;
+  const { product_name, discount, base_price, unit, stock, categories } =
+    req.body;
+  console.log(req.body);
   const imageFile = req.files[0];
   console.log(imageFile.filename);
   console.log(product_name);
@@ -159,7 +161,7 @@ const addProduct = async (req, res) => {
       throw Error("Product already exists");
     }
     const { _id } = jwt.verify(token, process.env.JWT_SECRET);
-    const imageEntry = await pool.query(
+    const productEntry = await pool.query(
       "INSERT INTO products (product_name, discount, base_price, unit, stock,seller_id,product_image ) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *",
       [
         product_name,
@@ -171,9 +173,21 @@ const addProduct = async (req, res) => {
         imageFile.filename,
       ]
     );
-    console.log(imageEntry.rows);
+
+    const product_id = productEntry.rows[0].product_id; // Assuming _id is the product ID
+
+    const categoryArray = categories.split(",");
+    // Insert records into product_category for each category ID
+    for (const category_id of categoryArray) {
+      const relation = await pool.query(
+        "INSERT INTO product_category_relationship (product_id, category_id,seller_id) VALUES ($1, $2, $3)",
+        [BigInt(product_id), BigInt(category_id), BigInt(_id)]
+      );
+      console.log(relation.rows[0]);
+    }
+    console.log(productEntry.rows);
     res.status(200).json({
-      categories: imageEntry.rows,
+      categories: productEntry.rows,
     });
   } catch (error) {
     res.status(400).json({
