@@ -4,7 +4,7 @@ import SingleProduct from "./SingleProduct";
 export default function ProductBox({ itemCount, boxTitle }) {
     const SingleProductCount = Array(itemCount).fill(null);
     return (
-        <div className="container">
+        <div className="container p-0">
             <div className={`${classes["product-box"]} w-100 border bg-white`}>
                 <div
                     className={`${classes["product-box-header"]} border-bottom px-4 py-2 d-flex justify-content-between align-items-center`}

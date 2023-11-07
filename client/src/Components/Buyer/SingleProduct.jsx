@@ -1,8 +1,11 @@
 import classes from "../../Style/Buyer/ProductBox.module.css";
 import product_image from "../../assets/rice.webp";
+import { Link } from "react-router-dom";
 export default function SingleProduct() {
     return (
-        <div className={`${classes["single-product"]} py-2 col-12 col-md-3`}>
+        <div
+            className={`${classes["single-product"]} py-2 col-12 col-md-3 border-bottom`}
+        >
             <div
                 className={`${classes["product-thumnail"]} d-flex justify-content-center align-items-center w-100`}
             >
@@ -18,8 +21,12 @@ export default function SingleProduct() {
             <div
                 className={`${classes["product-info"]} d-flex align-items-center flex-column`}
             >
-                <p className={`fw-semibold m-0`}>Basmoti Rice</p>
-                <p className={`m-0`}>Category</p>
+                <p className={`${classes["product-title"]} fw-semibold m-0`}>
+                    <Link to={`/product/1`}>Basmoti Rice</Link>
+                </p>
+                <p className={`${classes["product-category"]} m-0`}>
+                    <Link>Category</Link>
+                </p>
                 <p className={`m-0 mt-3`}>
                     <del className={`${classes["fade-base-price"]}`}>
                         520 tk

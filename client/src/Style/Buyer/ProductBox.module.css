@@ -10,6 +10,14 @@
     border-right: 1px solid #ddd;
 }
 
+.product-title a {
+    color: var(--green-primary);
+}
+
+.product-category a {
+    color: #6d6d6d;
+    font-size: 14px;
+}
 .image-container {
     width: 200px;
     height: 200px;
@@ -33,7 +41,7 @@
 
 .quantity input {
     width: 50px;
-    border-radius: 10px;
+    border-radius: 5px;
     border: 0;
     border: 1px solid #aaa;
 }
@@ -41,7 +49,8 @@
 .add-to-cart button {
     margin-left: 10px;
     border: 0;
+    font-size: 14px;
     padding: 3px 10px;
     background: var(--green-primary);
-    border-radius: 10px;
+    border-radius: 5px;
 }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import classes from "../../Style/Buyer/Navbar.module.css";
+import { Link } from "react-router-dom";
 export default function NavItems({ items }) {
     const [activeIndex, setActiveIndex] = useState(0);
 

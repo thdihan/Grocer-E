@@ -10,6 +10,7 @@ import Signup from "./Components/Seller/Signup";
 import { AuthContextProvider } from "./Context/AuthContext";
 import Layout from "./Components/Buyer/Layout";
 import Home from "./Components/Buyer/Pages/Home";
+import SingleProductDetails from "./Components/Buyer/SingleProductDetails";
 function App() {
     return (
         <AuthContextProvider>
@@ -34,6 +35,10 @@ function App() {
                     </Route>
                     <Route path="/*" element={<Layout />}>
                         <Route path="" element={<Home />} />
+                        <Route
+                            path="product/:id"
+                            element={<SingleProductDetails />}
+                        />
                     </Route>
                 </Routes>
             </Router>
