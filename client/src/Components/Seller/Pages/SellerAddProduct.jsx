@@ -29,9 +29,6 @@ export default function SellerAddProduct() {
     setSelectedCategory((prevSelected) =>
       prevSelected.filter((item) => item !== category)
     );
-    // setRelatedCategories((prevSelected) =>
-    //   prevSelected.filter((item) => item !== category)
-    // );
   };
   const handleFileChange = (e) => {
     // Get the selected files from the input element
@@ -188,7 +185,15 @@ export default function SellerAddProduct() {
               />
             </div>
           </div>
-
+          <div className={`col-12`}>
+            <label htmlFor="product-description">Product Description</label>
+            <textarea
+              name="product-description"
+              id="product-description"
+              cols="30"
+              rows="10"
+            ></textarea>
+          </div>
           <div className="col-12 my-2">
             <div className="container-fluid">
               <div className={`${classes["category-header"]} p-2 row`}>

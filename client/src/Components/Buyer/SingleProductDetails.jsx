@@ -26,6 +26,21 @@ export default function SingleProductDetails() {
                                 <p className={`${classes["product-category"]}`}>
                                     Rice
                                 </p>
+
+                                <p
+                                    className={`${classes["product-price"]} m-0 my-3`}
+                                >
+                                    <del
+                                        className={`${classes["fade-base-price"]}`}
+                                    >
+                                        520 tk
+                                    </del>{" "}
+                                    <span
+                                        className={`${classes["discounted-price"]}`}
+                                    >
+                                        500 tk
+                                    </span>
+                                </p>
                             </div>
 
                             <div
