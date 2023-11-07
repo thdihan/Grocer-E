@@ -1,56 +1,60 @@
 .product-box-header p {
-    color: #6d6d6d;
+  color: #6d6d6d;
 }
 
 .product-box-header a {
-    color: var(--green-primary);
+  color: var(--green-primary);
 }
 
 .single-product:not(:last-child) {
-    border-right: 1px solid #ddd;
+  border-right: 1px solid #ddd;
 }
 
 .product-title a {
-    color: var(--green-primary);
+  color: var(--green-primary);
 }
 
 .product-category a {
-    color: #6d6d6d;
-    font-size: 14px;
+  color: #6d6d6d;
+  font-size: 14px;
 }
 .image-container {
-    width: 200px;
-    height: 200px;
-    display: flex;
-    align-items: center;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+}
+
+.image-container img {
+  max-height: 100%;
 }
 
 .product-thumnail {
-    position: relative;
+  position: relative;
 }
 .special-message {
-    position: absolute;
-    background-color: rgb(249, 216, 3);
-    padding: 2px 8px;
-    font-size: 12px;
-    top: 0;
+  position: absolute;
+  background-color: rgb(249, 216, 3);
+  padding: 2px 8px;
+  font-size: 12px;
+  top: 0;
 }
 .fade-base-price {
-    color: #aaa;
+  color: #aaa;
 }
 
 .quantity input {
-    width: 50px;
-    border-radius: 5px;
-    border: 0;
-    border: 1px solid #aaa;
+  width: 50px;
+  border-radius: 5px;
+  border: 0;
+  border: 1px solid #aaa;
 }
 
 .add-to-cart button {
-    margin-left: 10px;
-    border: 0;
-    font-size: 14px;
-    padding: 3px 10px;
-    background: var(--green-primary);
-    border-radius: 5px;
+  margin-left: 10px;
+  border: 0;
+  font-size: 14px;
+  padding: 3px 10px;
+  background: var(--green-primary);
+  border-radius: 5px;
 }

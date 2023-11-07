@@ -7,6 +7,7 @@ const {
   addCategory,
   getAllCategories,
   addProduct,
+  getProducts,
 } = require("../controllers/sellerControllers");
 
 const router = express.Router();
