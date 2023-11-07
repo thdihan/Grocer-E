@@ -52,6 +52,7 @@ drop table products;
 CREATE TABLE products (
     product_id bigserial PRIMARY KEY,
     product_name VARCHAR(255) UNIQUE NOT NULL,
+    description VARCHAR(255),
     base_price NUMERIC NOT NULL,
     discount NUMERIC DEFAULT 0.00,
     unit VARCHAR(50) NOT NULL,
@@ -61,6 +62,7 @@ CREATE TABLE products (
     CONSTRAINT category_user_fk FOREIGN KEY (seller_id) REFERENCES users(user_id)
 );
 
+drop table product_category_relationship;
 CREATE TABLE product_category_relationship (
     product_id bigint,
     category_id bigint,

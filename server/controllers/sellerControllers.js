@@ -145,8 +145,15 @@ const getAllCategories = async (req, res) => {
 const addProduct = async (req, res) => {
   const { authorization } = req.headers;
   const token = authorization.split(" ")[1];
-  const { product_name, discount, base_price, unit, stock, categories } =
-    req.body;
+  const {
+    product_name,
+    discount,
+    base_price,
+    unit,
+    stock,
+    categories,
+    description,
+  } = req.body;
   console.log(req.body);
   const imageFile = req.files[0];
   console.log(imageFile.filename);
@@ -162,7 +169,7 @@ const addProduct = async (req, res) => {
     }
     const { _id } = jwt.verify(token, process.env.JWT_SECRET);
     const productEntry = await pool.query(
-      "INSERT INTO products (product_name, discount, base_price, unit, stock,seller_id,product_image ) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *",
+      "INSERT INTO products (product_name, discount, base_price, unit, stock,seller_id,product_image,description ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *",
       [
         product_name,
         discount,
@@ -171,6 +178,7 @@ const addProduct = async (req, res) => {
         stock,
         BigInt(_id),
         imageFile.filename,
+        description,
       ]
     );
 

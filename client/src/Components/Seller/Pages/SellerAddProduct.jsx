@@ -188,7 +188,8 @@ export default function SellerAddProduct() {
           <div className={`col-12`}>
             <label htmlFor="product-description">Product Description</label>
             <textarea
-              name="product-description"
+              required
+              name="description"
               id="product-description"
               cols="30"
               rows="10"
@@ -244,32 +245,6 @@ export default function SellerAddProduct() {
                         {category.category_name}
                       </label>
                     ))}
-                  {/* <label htmlFor="checkbox1" className="me-3">
-                    <input
-                      type="checkbox"
-                      className="me-2"
-                      value={`category1`}
-                      onChange={(e) => {
-                        e.target.checked
-                          ? addCategorySelection(e)
-                          : deleteCategorySelection(e);
-                      }}
-                    />
-                    Category 1
-                  </label>
-                  <label htmlFor="checkbox2" className="me-3">
-                    <input
-                      type="checkbox"
-                      className="me-2"
-                      value={`category2`}
-                      onChange={(e) => {
-                        e.target.checked
-                          ? addCategorySelection(e)
-                          : deleteCategorySelection(e);
-                      }}
-                    />
-                    Category 2
-                  </label> */}
                 </div>
               </div>
             </div>
