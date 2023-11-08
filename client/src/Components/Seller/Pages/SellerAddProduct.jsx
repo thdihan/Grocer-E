@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import classes from "../../../Style/Seller/SellerAddCategory.module.css";
 import SellerApi from "../../../apis/SellerApi";
 import { useAuthContext } from "../../../hooks/useAuthContext";
@@ -50,6 +52,17 @@ export default function SellerAddProduct() {
     // Update the state with the selected files
     setSelectedFiles(selectedFilesArray);
   };
+
+  useEffect(() => {
+    toast.onChange((payload) => {
+      if (payload.status === "removed") {
+        // Refresh the page
+        setSelectedCategory([]);
+        setLoading(false);
+      }
+    });
+  }, []);
+
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
@@ -108,14 +121,14 @@ export default function SellerAddProduct() {
         },
       });
 
-      setLoading(false);
+      toast.success("Category added successfully...", {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 1100, // Time in milliseconds to auto-close the toast (1.5 seconds in this case)
+      });
+
       setSelectedCategory([]);
       e.target.reset();
 
-      // toast.success("Category added successfully...", {
-      //   position: toast.POSITION.TOP_RIGHT,
-      //   autoClose: 1200, // Time in milliseconds to auto-close the toast (1.5 seconds in this case)
-      // });
       console.log("ADD CAT: ", response.data);
     } catch (err) {
       setError(err.response.data.error);
@@ -273,6 +286,7 @@ export default function SellerAddProduct() {
           />
         </form>
       </div>
+      <ToastContainer position="top-right" />
     </>
   );
 }
