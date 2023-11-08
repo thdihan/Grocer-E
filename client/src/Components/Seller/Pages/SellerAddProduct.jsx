@@ -121,7 +121,7 @@ export default function SellerAddProduct() {
         },
       });
 
-      toast.success("Category added successfully...", {
+      toast.success("Product added successfully...", {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 1100, // Time in milliseconds to auto-close the toast (1.5 seconds in this case)
       });
