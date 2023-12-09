@@ -1,100 +1,110 @@
 import { Link } from "react-router-dom";
 import classes from "../../Style/Buyer/ProductBox.module.css";
 import { makeSourceURL } from "../../utilities/utilities";
+import demoImg from "../../assets/rice.webp";
 export default function SingleProduct({ product }) {
-  // {
-  //     "product_id": "1",
-  //     "product_name": "qqqqq",
-  //     "description": "sfasdfsfsdf",
-  //     "base_price": "122",
-  //     "discount": "12",
-  //     "unit": "sdfsd",
-  //     "stock": "12",
-  //     "product_image": "image_1699380571849.png",
-  //     "category_ids": [
-  //         7,
-  //         8,
-  //         11
-  //     ],
-  //     "category_names": [
-  //         "Category A",
-  //         "Category B",
-  //         "Category E"
-  //     ]
-  // }
-  const {
-    product_id,
-    product_name,
-    description,
-    base_price,
-    discount,
-    unit,
-    stock,
-    product_image,
-    category_ids,
-    category_names,
-  } = product;
-  console.log(category_names);
+    // {
+    //     "product_id": "1",
+    //     "product_name": "qqqqq",
+    //     "description": "sfasdfsfsdf",
+    //     "base_price": "122",
+    //     "discount": "12",
+    //     "unit": "sdfsd",
+    //     "stock": "12",
+    //     "product_image": "image_1699380571849.png",
+    //     "category_ids": [
+    //         7,
+    //         8,
+    //         11
+    //     ],
+    //     "category_names": [
+    //         "Category A",
+    //         "Category B",
+    //         "Category E"
+    //     ]
+    // }
+    const {
+        product_id,
+        product_name,
+        description,
+        base_price,
+        discount,
+        unit,
+        stock,
+        product_image,
+        category_ids,
+        category_names,
+    } = product;
+    console.log(category_names);
 
-  return (
-    <div
-      className={`${classes["single-product"]} py-2 col-12 col-md-3 border-bottom`}
-    >
-      <div
-        className={`${classes["product-thumnail"]} d-flex justify-content-center align-items-center w-100`}
-      >
-        <div className={`${classes["image-container"]}`}>
-          <img
-            className="img-fluid"
-            src={makeSourceURL(product_image)}
-            alt=""
-          />
+    return (
+        <div className={`${classes["single-product"]} py-2 col-12 col-md-4`}>
+            <div
+                className={`${classes["single-product-inner-box"]}  rounded border border-light-subtle`}
+            >
+                <div
+                    className={`${classes["product-thumnail"]} d-flex justify-content-center align-items-center w-100 px-4 py-2`}
+                >
+                    <div className={`${classes["image-container"]} mt-3`}>
+                        <img
+                            className="img-fluid"
+                            src={makeSourceURL(product_image)}
+                            // src={demoImg}
+                            alt=""
+                        />
+                    </div>
+
+                    <span
+                        className={`${classes["special-message"]} rounded-pill fw-semibold`}
+                    >
+                        {discount}% Off
+                    </span>
+                </div>
+                <div
+                    className={`${classes["product-info"]} d-flex align-items-start flex-column px-4`}
+                >
+                    <p className={`${classes["product-title"]}  m-0`}>
+                        <Link to={`/product/${product_id}`} state={product}>
+                            {product_name}{" "}
+                            <span
+                                className={`${classes["product-category"]} ms-2`}
+                            >
+                                {category_names?.map((category, index) => (
+                                    <Link key={index}> {category} </Link>
+                                ))}
+                            </span>
+                        </Link>
+                    </p>
+
+                    <p
+                        className={`m-0 d-flex w-100 justify-content-between align-items-center`}
+                    >
+                        <div className={`p-0`}>
+                            <span
+                                className={`${classes["base-price"]} fw-semibold`}
+                            >
+                                {(
+                                    base_price -
+                                    base_price * (discount / 100.0)
+                                ).toFixed(2)}{" "}
+                                tk
+                            </span>
+                            <del
+                                className={`${classes["fade-base-price"]} ms-2`}
+                            >
+                                {base_price} tk
+                            </del>
+                        </div>
+
+                        <div className={`${classes["add-to-cart"]} text-end`}>
+                            <i className="bi bi-plus-lg fw-bold"></i>
+                        </div>
+                    </p>
+                </div>
+                <div
+                    className={`${classes["order-info"]} py-3 d-flex justify-content-center`}
+                ></div>
+            </div>
         </div>
-
-        {/* <span className={`${classes["special-message"]} rounded-pill`}>
-          Stock Limited
-        </span> */}
-      </div>
-
-      <div
-        className={`${classes["product-info"]} d-flex align-items-center flex-column`}
-      >
-        <p className={`${classes["product-title"]} fw-semibold m-0`}>
-          <Link to={`/product/${product_id}`} state={product}>
-            {product_name}
-          </Link>
-        </p>
-        <p className={`${classes["product-category"]} m-0`}>
-          {category_names?.map((category, index) => (
-            <Link key={index}>{category}, </Link>
-          ))}
-        </p>
-
-        <p className={`m-0 mt-3`}>
-          <del className={`${classes["fade-base-price"]}`}>{base_price} tk</del>{" "}
-          <span>{base_price - base_price * (discount / 100.0)} tk</span>
-        </p>
-      </div>
-
-      <div
-        className={`${classes["order-info"]} py-3 d-flex justify-content-center`}
-      >
-        <div className={`${classes["quantity"]}`}>
-          <label htmlFor="product-qty">
-            Qty:
-            <input
-              className={`ms-2`}
-              type="number"
-              name="product-qty"
-              id="product-qty"
-              min="0"
-            />
-          </label>
-        </div>
-        <div className={`${classes["add-to-cart"]} `}>
-          <button className={``}>Add to cart</button>
-        </div>
-      </div>
-    </div>
-  );
+    );
 }

@@ -1,0 +1,32 @@
+.ProductSlider {
+    margin-bottom: 30px;
+}
+.section-header i {
+    color: var(--green-primary);
+}
+
+.single-product div {
+    width: 100% !important;
+    padding: 5px;
+}
+
+.slider-container {
+    position: relative;
+}
+
+.slider-container i.prev-btn {
+    font-size: 2rem;
+    position: absolute;
+    z-index: 1;
+    cursor: pointer;
+    top: 50%;
+    left: -10px;
+}
+.slider-container i.next-btn {
+    font-size: 2rem;
+    position: absolute;
+    z-index: 1;
+    cursor: pointer;
+    top: 50%;
+    right: -10px;
+}

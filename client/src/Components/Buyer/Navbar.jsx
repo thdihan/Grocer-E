@@ -5,45 +5,43 @@ import { useCartContext } from "../../hooks/useCartContext";
 export default function Navbar() {
     const { productCount } = useCartContext();
     return (
-        <section className="header-area">
+        <section className={`${classes["header-area"]} shadow`}>
             <div className="container">
-                <div className={`${classes["top-header"]} row py-3`}>
+                <div className={`${classes["top-header"]} row py-4`}>
                     <h2 className={`${classes["logo"]} col-md-2 col-12`}>
                         Grocer-E
                     </h2>
                     <div
-                        className={`${classes["search-box-container"]} col-12 col-md-6`}
+                        className={`${classes["search-box-container"]} col-12 col-md-8  d-flex align-items-center`}
                     >
                         <label
                             htmlFor="search-box"
-                            className="w-100n d-flex justify-content-between"
+                            className="w-100 px-3 d-flex border border-2 rounded-pill justify-content-between align-items-center"
                         >
                             <input
                                 type="text"
                                 name="search-box"
                                 id="search-box"
                                 className="w-75"
+                                placeholder="Search"
                             />
                             <span
-                                className={`material-symbols-outlined ${classes["custom-search-button"]}`}
+                                className={`${classes["custom-search-button"]}`}
                             >
-                                search
+                                <i className="bi bi-search"></i>
                             </span>
                         </label>
                     </div>
                     <nav
-                        className={`${classes["user-nav"]} col-md-4 col-12 mt-4 mt-md-0 d-flex align-items-center flex-wrap`}
+                        className={`${classes["user-nav"]} col-md-2 col-12 mt-4 mt-md-0 d-flex align-items-center justify-content-center flex-wrap`}
                     >
-                        <ul className="row w-100">
+                        <ul className="row p-0 d-flex justify-content-center">
                             <li className="col-6">
                                 <Link
                                     to="/cart"
                                     className={`${classes["cart-link"]}`}
                                 >
-                                    <span className="material-symbols-outlined me-2">
-                                        shopping_cart
-                                    </span>
-                                    <span>Cart</span>
+                                    <i className="bi bi-bag-plus-fill rounded-circle"></i>
 
                                     {productCount > 0 && (
                                         <span
@@ -55,10 +53,7 @@ export default function Navbar() {
                                 </Link>
                             </li>
                             <li className="col-6">
-                                <span className="material-symbols-outlined me-2">
-                                    account_circle
-                                </span>
-                                <span>My Account</span>
+                                <i className="bi bi-person-fill rounded-circle"></i>
                             </li>
                         </ul>
                     </nav>

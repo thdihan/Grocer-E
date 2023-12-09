@@ -1,23 +1,29 @@
+.header-area {
+    background-color: #fff;
+    position: relative;
+    z-index: 1;
+}
 .search-box-container input {
-    padding: 10px;
+    padding: 1px;
     vertical-align: middle;
     outline: none;
     border: 0;
 }
 .search-box-container label {
-    border: 1px solid #ddd;
 }
 
 .custom-search-button {
     vertical-align: middle;
-    padding: 8px 20px;
+    padding: 3px 5px;
     font-weight: bold;
-    font-size: 1.8rem;
-    background-color: var(--green-primary);
+    font-size: 1.5rem;
 }
 
-.user-nav ul li span {
+.user-nav ul li i {
     vertical-align: middle;
+    background-color: #f3f5f9;
+    padding: 15px 17px;
+    font-size: 1.4rem;
 }
 .user-nav ul {
     margin: 0 !important;
@@ -39,7 +45,7 @@
 .cart-link {
     color: black;
 }
-.active,
-.nav-list-item:hover {
-    background-color: var(--green-primary);
+.active a,
+.nav-list-item:hover a {
+    color: var(--green-primary);
 }
