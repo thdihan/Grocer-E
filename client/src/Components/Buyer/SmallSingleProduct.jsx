@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import classes from "../../Style/Buyer/ProductBox.module.css";
 import { makeSourceURL } from "../../utilities/utilities";
 import demoImg from "../../assets/rice.webp";
-export default function SingleProduct({ product }) {
+export default function SmallSingleProduct({ product }) {
     const {
         product_id,
         product_name,
@@ -18,9 +18,11 @@ export default function SingleProduct({ product }) {
     console.log(category_names);
 
     return (
-        <div className={`${classes["single-product"]} py-2 col-12 col-md-4`}>
+        <div
+            className={`${classes["small-single-product"]} py-2 col-12 col-md-3`}
+        >
             <div
-                className={`${classes["single-product-inner-box"]}  rounded border border-light-subtle`}
+                className={`${classes["small-single-product-inner-box"]}  rounded border border-light-subtle`}
             >
                 <div
                     className={`${classes["product-thumnail"]} d-flex justify-content-center align-items-center w-100 px-4 py-2`}

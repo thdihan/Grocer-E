@@ -3,7 +3,8 @@ import classes from "../../Style/Buyer/ProductBox.module.css";
 import { useGetProduct } from "../../hooks/useGetProduct";
 import SingleProduct from "./SingleProduct";
 import { demoProducts } from "../../demoData/demoProducts";
-export default function ProductBox({ itemCount, boxTitle, category }) {
+import SmallSingleProduct from "./SmallSingleProduct";
+export default function ProductBox({ itemCount, boxTitle, category, boxSize }) {
     // [Todo] : Hook call
     const { productList, productLoading, productError } =
         useGetProduct(category);
@@ -29,7 +30,30 @@ export default function ProductBox({ itemCount, boxTitle, category }) {
                 </div>
                 <div className={`${classes["product-box-content"]} row`}>
                     {productList?.slice(0, itemCount).map((product, index) => (
-                        <SingleProduct key={index} product={product} />
+                        <>
+                            {boxSize === "big" ? (
+                                <SingleProduct key={index} product={product} />
+                            ) : (
+                                <>
+                                    <SmallSingleProduct
+                                        key={index}
+                                        product={product}
+                                    />
+                                    <SmallSingleProduct
+                                        key={index}
+                                        product={product}
+                                    />
+                                    <SmallSingleProduct
+                                        key={index}
+                                        product={product}
+                                    />
+                                    <SmallSingleProduct
+                                        key={index}
+                                        product={product}
+                                    />
+                                </>
+                            )}
+                        </>
                     ))}
                 </div>
             </div>

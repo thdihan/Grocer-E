@@ -27,7 +27,13 @@
     align-items: center;
     /* background-color: green; */
 }
-
+.small-single-product-inner-box .image-container {
+    width: 50%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .image-container img {
     max-height: 100%;
 }
@@ -35,6 +41,10 @@
 .product-thumnail {
     position: relative;
     /* background-color: red; */
+}
+
+.small-single-product-inner-box {
+    background-color: #fff;
 }
 .special-message {
     position: absolute;

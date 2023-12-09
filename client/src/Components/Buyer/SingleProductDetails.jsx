@@ -19,7 +19,7 @@ export default function SingleProductDetails() {
     } = location.state;
     const [quantity, setQuantity] = useState(1);
     return (
-        <div style={{ background: "#dddddd8d" }} className={`py-5`}>
+        <div className={`py-5`}>
             <div className={`${classes["single-product-details"]} pb-5`}>
                 <div
                     className={`${classes["product-basic-info"]} container bg-white border py-5`}
