@@ -8,7 +8,7 @@ export default function NavItems({ items }) {
         setActiveIndex(index);
     };
     return (
-        <ul className="navbar-nav ms-auto py-3">
+        <ul className="navbar-nav mx-auto py-3">
             {items.map((item, index) => (
                 <li
                     key={index}

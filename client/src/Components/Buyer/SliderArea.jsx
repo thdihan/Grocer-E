@@ -20,6 +20,10 @@ const SliderArea = () => {
                         <ul
                             className={`shadow py-4  px-0 ${classes["category-list"]}`}
                         >
+                            <h5>
+                                <i className="fa-solid fa-border-all"></i>
+                                &nbsp; &nbsp; Top Categories
+                            </h5>
                             <li>
                                 <i className="bi bi-tags-fill"></i> Dairy and
                                 Eggs

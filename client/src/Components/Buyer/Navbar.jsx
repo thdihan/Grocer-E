@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import classes from "../../Style/Buyer/Navbar.module.css";
 import MainNav from "./MainNav";
 import { useCartContext } from "../../hooks/useCartContext";
@@ -8,9 +8,12 @@ export default function Navbar() {
         <section className={`${classes["header-area"]} shadow`}>
             <div className="container">
                 <div className={`${classes["top-header"]} row py-4`}>
-                    <h2 className={`${classes["logo"]} col-md-2 col-12`}>
+                    <Link
+                        to="/"
+                        className={`${classes["logo"]} col-md-2 col-12 h2`}
+                    >
                         Grocer-E
-                    </h2>
+                    </Link>
                     <div
                         className={`${classes["search-box-container"]} col-12 col-md-8  d-flex align-items-center`}
                     >
@@ -41,7 +44,7 @@ export default function Navbar() {
                                     to="/cart"
                                     className={`${classes["cart-link"]}`}
                                 >
-                                    <i className="bi bi-bag-plus-fill rounded-circle"></i>
+                                    <i className="bi bi-bag-plus-fill "></i>
 
                                     {productCount > 0 && (
                                         <span
@@ -53,7 +56,7 @@ export default function Navbar() {
                                 </Link>
                             </li>
                             <li className="col-6">
-                                <i className="bi bi-person-fill rounded-circle"></i>
+                                <i className="bi bi-person-fill "></i>
                             </li>
                         </ul>
                     </nav>

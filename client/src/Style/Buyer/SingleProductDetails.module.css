@@ -2,19 +2,26 @@
     width: 50px;
     border-radius: 5px;
     border: 0;
+    padding: 5px 10px;
 }
-
-.add-to-cart button {
+.quantity input:focus {
+    outline: none;
+}
+.add-to-cart i {
     margin-left: 10px;
     border: 0;
     font-size: 14px;
-    padding: 3px 10px;
-    background: var(--green-primary);
+    padding: 10px 11px;
+    font-weight: bold;
     border-radius: 5px;
+    border: 1px solid var(--green-primary);
+}
+.add-to-cart i:hover {
+    background: var(--green-primary);
+    color: #fff;
 }
 
 .product-unit span {
-    background-color: #ddd;
     padding: 4px 5px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
