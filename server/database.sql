@@ -70,7 +70,21 @@ CREATE TABLE product_category_relationship (
     CONSTRAINT product_category_pk PRIMARY KEY (product_id, category_id),
     CONSTRAINT category_fk FOREIGN KEY (category_id) REFERENCES categories(category_id) ON delete cascade,
     CONSTRAINT product_fk FOREIGN KEY (product_id) REFERENCES products(product_id) On delete cascade
+    CONSTRAINT seller_fk FOREIGN KEY (seller_id) REFERENCES users(user_id)
 );
+
+drop table cart;
+
+CREATE TABLE cart (
+    cart_id bigserial PRIMARY KEY,
+    customer_id bigint,
+    product_list JSONB[],
+    total_price NUMERIC NOT NULL,
+    discount_total NUMERIC NOT NULL DEFAULT 0.0,
+    product_count INTEGER NOT NULL DEFAULT 0,
+    CONSTRAINT category_cart_fk FOREIGN KEY (customer_id) REFERENCES users(user_id)
+);
+
 
 
 -- -- Trigger function to handle parent category deletion and category updates
@@ -95,3 +109,6 @@ CREATE TABLE product_category_relationship (
 -- AFTER DELETE ON parent_categories
 -- FOR EACH ROW
 -- EXECUTE FUNCTION delete_empty_categories();
+
+
+

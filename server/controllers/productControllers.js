@@ -1,4 +1,5 @@
 const pool = require("../db");
+const jwt = require("jsonwebtoken");
 
 const getSingleProductDetails = async (req, res) => {
   const { product_id } = req.body;
@@ -19,6 +20,29 @@ const getSingleProductDetails = async (req, res) => {
   }
 };
 
+const addToCart = async (req, res) => {
+  const { authorization } = req.headers;
+  const token = authorization.split(" ")[1];
+  const { productList, priceTotal, discountTotal, productCount } = req.body;
+  try {
+    const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+    const cart = await pool.query(
+      "INSERT INTO cart (customer_id,product_list, total_price, discount_total, product_count) VALUES ($1, $2, $3, $4,$5) RETURNING *",
+      [_id, productList, priceTotal, discountTotal, productCount]
+    );
+    console.log(cart.rows[0]);
+    res.status(200).json({
+      cart: cart.rows[0],
+    });
+  } catch (error) {
+    res.status(400).json({
+      from: "add to cart",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getSingleProductDetails,
+  addToCart,
 };
