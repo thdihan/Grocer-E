@@ -8,11 +8,7 @@ export default function Home() {
         <div className="">
             <SliderArea />
             <ProductSlider />
-            <ProductBox
-                itemCount={6}
-                boxTitle={`All Product`}
-                boxSize={"big"}
-            />
+            <ProductBox itemCount={6} boxTitle={`All Product`} boxSize="big" />
         </div>
     );
 }

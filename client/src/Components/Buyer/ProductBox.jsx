@@ -43,14 +43,6 @@ export default function ProductBox({ itemCount, boxTitle, category, boxSize }) {
                                         key={index}
                                         product={product}
                                     />
-                                    <SmallSingleProduct
-                                        key={index}
-                                        product={product}
-                                    />
-                                    <SmallSingleProduct
-                                        key={index}
-                                        product={product}
-                                    />
                                 </>
                             )}
                         </>

@@ -28,8 +28,8 @@
     /* background-color: green; */
 }
 .small-single-product-inner-box .image-container {
-    width: 50%;
-    height: 200px;
+    width: 100%;
+    max-height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;

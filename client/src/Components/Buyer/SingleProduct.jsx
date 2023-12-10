@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import classes from "../../Style/Buyer/ProductBox.module.css";
 import { makeSourceURL } from "../../utilities/utilities";
 import demoImg from "../../assets/rice.webp";
+import { useCartContext } from "../../hooks/useCartContext";
 export default function SingleProduct({ product }) {
     const {
         product_id,
@@ -16,6 +17,8 @@ export default function SingleProduct({ product }) {
         category_names,
     } = product;
     console.log(category_names);
+
+    const { addProductToCart } = useCartContext();
 
     return (
         <div className={`${classes["single-product"]} py-2 col-12 col-md-4`}>
@@ -76,7 +79,21 @@ export default function SingleProduct({ product }) {
                             </del>
                         </div>
 
-                        <div className={`${classes["add-to-cart"]} text-end`}>
+                        <div
+                            className={`${classes["add-to-cart"]} text-end`}
+                            onClick={() => {
+                                addProductToCart({
+                                    ...product,
+                                    quantity: 1,
+                                    discountedPrice: (
+                                        base_price -
+                                        base_price * (discount / 100.0)
+                                    ).toFixed(2),
+                                    discountTotal:
+                                        base_price * (discount / 100.0),
+                                });
+                            }}
+                        >
                             <i className="bi bi-plus-lg fw-bold"></i>
                         </div>
                     </p>

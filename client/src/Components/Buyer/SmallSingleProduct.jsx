@@ -19,13 +19,13 @@ export default function SmallSingleProduct({ product }) {
 
     return (
         <div
-            className={`${classes["small-single-product"]} py-2 col-12 col-md-3`}
+            className={`${classes["small-single-product"]} py-2 col-6 col-md-2`}
         >
             <div
                 className={`${classes["small-single-product-inner-box"]}  rounded border border-light-subtle`}
             >
                 <div
-                    className={`${classes["product-thumnail"]} d-flex justify-content-center align-items-center w-100 px-4 py-2`}
+                    className={`${classes["product-thumnail"]} d-flex justify-content-center align-items-center  px-4 py-2`}
                 >
                     <div className={`${classes["image-container"]} mt-3`}>
                         <img
