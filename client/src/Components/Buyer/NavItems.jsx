@@ -8,16 +8,16 @@ export default function NavItems({ items }) {
         setActiveIndex(index);
     };
     return (
-        <ul className="navbar-nav">
+        <ul className="navbar-nav mx-auto py-3">
             {items.map((item, index) => (
                 <li
                     key={index}
-                    className={`nav-item px-3 ${classes["nav-list-item"]} ${
+                    className={`nav-item me-4 ${classes["nav-list-item"]} ${
                         index === activeIndex ? classes["active"] : ""
                     }`}
                 >
                     <a
-                        className=" nav-link fw-semibold"
+                        className="p-0 nav-link fw-normal"
                         aria-current="page"
                         href="#"
                         onClick={() => handleItemClick(index)}

@@ -1,0 +1,28 @@
+.SliderArea {
+    background-color: #fff;
+}
+.category-list {
+    background-color: #fff;
+}
+.category-list h5 {
+    padding: 10px 25px;
+    font-weight: 700;
+}
+.category-list li {
+    padding: 10px 25px;
+    background-color: #f5f5f5;
+    margin: 10px 20px;
+    border-radius: 10px;
+}
+.category-list li i {
+    font-size: 1.2rem;
+    margin-right: 1rem !important;
+}
+
+.category-list li:hover {
+    background-color: #ddd;
+}
+
+.single-slide h1 {
+    font-weight: 700;
+}

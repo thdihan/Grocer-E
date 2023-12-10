@@ -1,0 +1,9 @@
+.Button {
+    background-color: var(--green-primary);
+    border: 0;
+    padding: 8px 30px;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.9rem;
+}

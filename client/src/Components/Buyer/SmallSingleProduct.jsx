@@ -2,8 +2,7 @@ import { Link } from "react-router-dom";
 import classes from "../../Style/Buyer/ProductBox.module.css";
 import { makeSourceURL } from "../../utilities/utilities";
 import demoImg from "../../assets/rice.webp";
-import { useCartContext } from "../../hooks/useCartContext";
-export default function SingleProduct({ product }) {
+export default function SmallSingleProduct({ product }) {
     const {
         product_id,
         product_name,
@@ -18,15 +17,15 @@ export default function SingleProduct({ product }) {
     } = product;
     console.log(category_names);
 
-    const { addProductToCart } = useCartContext();
-
     return (
-        <div className={`${classes["single-product"]} py-2 col-12 col-md-4`}>
+        <div
+            className={`${classes["small-single-product"]} py-2 col-6 col-md-2`}
+        >
             <div
-                className={`${classes["single-product-inner-box"]}  rounded border border-light-subtle`}
+                className={`${classes["small-single-product-inner-box"]}  rounded border border-light-subtle`}
             >
                 <div
-                    className={`${classes["product-thumnail"]} d-flex justify-content-center align-items-center w-100 px-4 py-2`}
+                    className={`${classes["product-thumnail"]} d-flex justify-content-center align-items-center  px-4 py-2`}
                 >
                     <div className={`${classes["image-container"]} mt-3`}>
                         <img
@@ -79,21 +78,7 @@ export default function SingleProduct({ product }) {
                             </del>
                         </div>
 
-                        <div
-                            className={`${classes["add-to-cart"]} text-end`}
-                            onClick={() => {
-                                addProductToCart({
-                                    ...product,
-                                    quantity: 1,
-                                    discountedPrice: (
-                                        base_price -
-                                        base_price * (discount / 100.0)
-                                    ).toFixed(2),
-                                    discountTotal:
-                                        base_price * (discount / 100.0),
-                                });
-                            }}
-                        >
+                        <div className={`${classes["add-to-cart"]} text-end`}>
                             <i className="bi bi-plus-lg fw-bold"></i>
                         </div>
                     </p>
