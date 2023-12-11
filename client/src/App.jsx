@@ -12,6 +12,7 @@ import Layout from "./Components/Buyer/Layout";
 import Home from "./Components/Buyer/Pages/Home";
 import SingleProductDetails from "./Components/Buyer/SingleProductDetails";
 import Cart from "./Components/Buyer/Pages/Cart";
+import Checkout from "./Components/Buyer/Pages/Checkout";
 function App() {
     return (
         <AuthContextProvider>
@@ -37,6 +38,7 @@ function App() {
                     <Route path="/*" element={<Layout />}>
                         <Route path="" element={<Home />} />
                         <Route path="cart" element={<Cart />} />
+                        <Route path="checkout" element={<Checkout />} />
                         <Route
                             path="product/:id"
                             element={<SingleProductDetails />}

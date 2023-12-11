@@ -48,3 +48,14 @@
 .nav-list-item:hover a {
     color: var(--green-primary);
 }
+
+.header-profile:hover {
+    cursor: pointer;
+    color: #fff;
+    background-color: var(--green-primary);
+}
+
+.logout-btn:hover {
+    cursor: pointer;
+    color: #ed3a3c;
+}
