@@ -4,10 +4,19 @@ import { useGetProduct } from "../../hooks/useGetProduct";
 import SingleProduct from "./SingleProduct";
 import { demoProducts } from "../../demoData/demoProducts";
 import SmallSingleProduct from "./SmallSingleProduct";
-export default function ProductBox({ itemCount, boxTitle, category, boxSize }) {
+export default function ProductBox({
+    itemCount,
+    boxTitle,
+    category,
+    boxSize,
+    productList,
+    productLoading,
+    productError,
+    viewAll = true,
+}) {
     // [Todo] : Hook call
-    const { productList, productLoading, productError } =
-        useGetProduct(category);
+    // const { productList, productLoading, productError } =
+    //     useGetProduct(category);
     console.log("PRODUCT LIST: ", productList);
 
     // Demo products
@@ -24,9 +33,11 @@ export default function ProductBox({ itemCount, boxTitle, category, boxSize }) {
                         <i className="fa-solid fa-border-all"></i> {boxTitle}
                     </p>
                     {/* View All Button  */}
-                    <Link className={`fw-bol`} to={`#`}>
-                        View All <i className="bi bi-caret-right-fill"></i>
-                    </Link>
+                    {viewAll && (
+                        <Link className={`fw-bol`} to={`#`}>
+                            View All <i className="bi bi-caret-right-fill"></i>
+                        </Link>
+                    )}
                 </div>
                 <div className={`${classes["product-box-content"]} row`}>
                     {productList?.slice(0, itemCount).map((product, index) => (

@@ -52,9 +52,21 @@ export default function SingleProduct({ product }) {
                             <span
                                 className={`${classes["product-category"]} ms-2`}
                             >
-                                {category_names?.map((category, index) => (
-                                    <Link key={index}> {category} </Link>
-                                ))}
+                                {category_names?.map((category, index) => {
+                                    console.log(
+                                        "Category Index",
+                                        category_ids[index]
+                                    );
+                                    return (
+                                        <Link
+                                            to={`/category-all-product/${category_ids[index]}`}
+                                            key={index}
+                                        >
+                                            {" "}
+                                            {category}{" "}
+                                        </Link>
+                                    );
+                                })}
                             </span>
                         </Link>
                     </p>

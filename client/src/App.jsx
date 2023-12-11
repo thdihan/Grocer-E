@@ -16,6 +16,7 @@ import Checkout from "./Components/Buyer/Pages/Checkout";
 import Profile from "./Components/Buyer/Profile";
 import UserInfo from "./Components/Buyer/Pages/UserInfo";
 import OrderList from "./Components/Buyer/Pages/OrderList";
+import CategoryAllProduct from "./Components/Buyer/Pages/CategoryAllProduct";
 function App() {
     return (
         <AuthContextProvider>
@@ -45,6 +46,10 @@ function App() {
                         <Route
                             path="product/:id"
                             element={<SingleProductDetails />}
+                        />
+                        <Route
+                            path="category-all-product/:id"
+                            element={<CategoryAllProduct />}
                         />
                         <Route path="profile/*" element={<Profile />}>
                             <Route path="" element={<UserInfo />} />
