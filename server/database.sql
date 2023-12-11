@@ -92,61 +92,32 @@ CREATE TABLE cart_product (
     CONSTRAINT unique_cart_product_combination UNIQUE (cart_id, product_id, customer_id,quantity)
 );
 
+drop table orders;
 
+CREATE TABLE orders (
+    order_id bigserial PRIMARY KEY,
+    cart_id bigint,
+    customer_id bigint,
+    order_date DATE DEFAULT CURRENT_DATE,
+    customer_details JSONB,
+    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('approved', 'shipping', 'pending', 'completed')),
+    
+    CONSTRAINT cart_fk FOREIGN KEY (cart_id) REFERENCES cart(cart_id),
+    CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES users(user_id)
+);
 
+CREATE TABLE ordered_product (
+    ordered_product_id bigserial PRIMARY KEY,
+    product_id bigint,
+    order_id bigint,
+    quantity INTEGER NOT NULL,
+    
+    CONSTRAINT product_fk FOREIGN KEY (product_id) REFERENCES products(product_id),
+    CONSTRAINT order_fk FOREIGN KEY (order_id) REFERENCES orders(order_id)
+);
 
-"WITH RECURSIVE category_hierarchy AS (
-  SELECT
-    c.category_id,
-    c.category_name,
-    cp.parent_category_id
-  FROM
-    categories c
-  LEFT JOIN
-    category_parent_relationship cp ON c.category_id = cp.category_id
-  WHERE
-    c.category_id = $1-- Replace with the input category_id
-  UNION ALL
-  SELECT
-    c.category_id,
-    c.category_name,
-    cp.parent_category_id
-  FROM
-    categories c
-  JOIN
-    category_parent_relationship cp ON c.category_id = cp.category_id
-  JOIN
-    category_hierarchy ch ON c.category_id = ch.parent_category_id
-)
-SELECT
-    ch.category_id,
-    -- ch.category_name,
-    -- COUNT(DISTINCT p.product_id) AS product_count,
-    p.product_id,
-    p.product_name,
-    p.description,
-    p.base_price,
-    p.discount,
-    p.unit,
-    p.stock,
-    p.product_image
-FROM
-    category_hierarchy ch
-JOIN
-    product_category_relationship pcr ON ch.category_id = pcr.category_id
-JOIN
-    products p ON pcr.product_id = p.product_id
-GROUP BY
-    ch.category_id,
-    ch.category_name,
-    p.product_id,
-    p.product_name,
-    p.description,
-    p.base_price,
-    p.discount,
-    p.unit,
-    p.stock,
-    p.product_image;"
+-- GIVEN A PRODUCT ID, Cart id, userid and count ++++ just update the count in cart array and cart_product
+
 
 
 

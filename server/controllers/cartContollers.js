@@ -72,6 +72,27 @@ const getCurrentCart = async (req, res) => {
   }
 };
 
+const getPendingCartProducts = async (req, res) => {
+  const { authorization } = req.headers;
+  const token = authorization.split(" ")[1];
+  try {
+    const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+    const cart = await pool.query(
+      "SELECT * FROM cart WHERE customer_id = $1 AND status = 'pending';",
+      [_id]
+    );
+    console.log(cart.rows[0]);
+    res.status(200).json({
+      cart: cart.rows[0],
+    });
+  } catch (error) {
+    res.status(400).json({
+      from: "get cart",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   addToCart,
   getCurrentCart,
