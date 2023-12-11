@@ -95,6 +95,63 @@ CREATE TABLE cart_product (
 
 
 
+"WITH RECURSIVE category_hierarchy AS (
+  SELECT
+    c.category_id,
+    c.category_name,
+    cp.parent_category_id
+  FROM
+    categories c
+  LEFT JOIN
+    category_parent_relationship cp ON c.category_id = cp.category_id
+  WHERE
+    c.category_id = $1-- Replace with the input category_id
+  UNION ALL
+  SELECT
+    c.category_id,
+    c.category_name,
+    cp.parent_category_id
+  FROM
+    categories c
+  JOIN
+    category_parent_relationship cp ON c.category_id = cp.category_id
+  JOIN
+    category_hierarchy ch ON c.category_id = ch.parent_category_id
+)
+SELECT
+    ch.category_id,
+    -- ch.category_name,
+    -- COUNT(DISTINCT p.product_id) AS product_count,
+    p.product_id,
+    p.product_name,
+    p.description,
+    p.base_price,
+    p.discount,
+    p.unit,
+    p.stock,
+    p.product_image
+FROM
+    category_hierarchy ch
+JOIN
+    product_category_relationship pcr ON ch.category_id = pcr.category_id
+JOIN
+    products p ON pcr.product_id = p.product_id
+GROUP BY
+    ch.category_id,
+    ch.category_name,
+    p.product_id,
+    p.product_name,
+    p.description,
+    p.base_price,
+    p.discount,
+    p.unit,
+    p.stock,
+    p.product_image;"
+
+
+
+
+
 
 
 
