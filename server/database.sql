@@ -17,24 +17,14 @@ CREATE TABLE users (
     CONSTRAINT valid_user_type CHECK (user_type IN ('admin', 'customer'))
 );
 
---delete from parent_categories;
 
 drop table categories;
 drop table parent_categories;
 
--- CREATE TABLE parent_categories (
---     parent_category_id bigserial PRIMARY KEY,
---     parent_category_name varchar(255) UNIQUE NOT NULL,
---     adder_id bigint,
---     CONSTRAINT parent_user_fk FOREIGN KEY (adder_id) REFERENCES users(user_id)
--- );
-
 CREATE TABLE categories (
     category_id serial PRIMARY KEY,
     category_name varchar(255) NOT NULL,
-    -- parent_category_id bigint,
     seller_id bigint,
-    -- CONSTRAINT category_fk FOREIGN KEY (parent_category_id) REFERENCES parent_categories(parent_category_id),
     CONSTRAINT category_user_fk FOREIGN KEY (seller_id) REFERENCES users(user_id)
 );
 
@@ -82,8 +72,121 @@ CREATE TABLE cart (
     total_price NUMERIC NOT NULL,
     discount_total NUMERIC NOT NULL DEFAULT 0.0,
     product_count INTEGER NOT NULL DEFAULT 0,
+    status VARCHAR(20) NOT NULL DEFAULT 'pending',
+    CONSTRAINT valid_status CHECK (status IN ('pending', 'done')),
     CONSTRAINT category_cart_fk FOREIGN KEY (customer_id) REFERENCES users(user_id)
 );
+
+drop table cart_product;
+
+CREATE TABLE cart_product (
+    cart_id bigint,
+    product_id bigint,
+    customer_id bigint,
+    quantity INTEGER NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'pending',
+    CONSTRAINT valid_cart_product_status CHECK (status IN ('pending', 'done')),
+    CONSTRAINT cart_product_fk_cart FOREIGN KEY (cart_id) REFERENCES cart(cart_id),
+    CONSTRAINT cart_product_fk_product FOREIGN KEY (product_id) REFERENCES products(product_id),
+    CONSTRAINT cart_product_fk_customer FOREIGN KEY (customer_id) REFERENCES users(user_id),
+    CONSTRAINT unique_cart_product_combination UNIQUE (cart_id, product_id, customer_id,quantity)
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- CREATE OR REPLACE FUNCTION before_cart_insert_update()
+-- RETURNS TRIGGER AS $$
+-- BEGIN
+--   IF NEW.status = 'pending' THEN
+--     IF EXISTS (
+--       SELECT 1
+--       FROM cart
+--       WHERE customer_id = NEW.customer_id AND status = 'pending'
+--     ) THEN
+--       UPDATE cart
+--       SET
+--         product_list = NEW.product_list,
+--         total_price = NEW.total_price,
+--         discount_total = NEW.discount_total,
+--         product_count = NEW.product_count
+--       WHERE customer_id = NEW.customer_id AND status = 'pending';
+--       RETURN NULL; -- Cancel the original insert/update
+--     END IF;
+--   END IF;
+
+--   -- Insert a new record
+--   INSERT INTO cart (customer_id, product_list, total_price, discount_total, product_count, status)
+--   VALUES (NEW.customer_id, NEW.product_list, NEW.total_price, NEW.discount_total, NEW.product_count, NEW.status);
+--   RETURN NEW; -- Allow the original insert/update to proceed
+-- END;
+-- $$ LANGUAGE plpgsql;
+
+
+-- CREATE OR REPLACE TRIGGER  before_cart_insert_update_trigger
+-- BEFORE INSERT OR UPDATE
+-- ON cart
+-- FOR EACH ROW
+-- EXECUTE FUNCTION before_cart_insert_update();
+
+
 
 
 

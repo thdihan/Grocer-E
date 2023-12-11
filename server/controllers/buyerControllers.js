@@ -33,5 +33,3 @@ const getProducts = async (req, res) => {
 module.exports = {
   getProducts,
 };
-
-("SELECT p.product_id, p.product_name, p.description, p.base_price, p.discount, p.unit, p.stock, p.product_image,( SELECT array_agg(c.category_id)  FROM product_category_relationship AS pcr INNER JOIN categories AS c ON pcr.category_id = c.category_id WHERE pcr.product_id = p.product_id ) AS category_ids, ( SELECT array_agg(c.category_name) FROM product_category_relationship AS pcr INNER JOIN categories AS c ON pcr.category_id = c.category_id WHERE pcr.product_id = p.product_id ) AS category_names FROM products AS p WHERE EXISTS ( SELECT 1 FROM product_category_relationship AS pcr WHERE pcr.product_id = p.product_id AND pcr.category_id = $1);");

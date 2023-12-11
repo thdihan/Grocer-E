@@ -11,7 +11,7 @@ const router = express.Router();
 router.route("/").get(requireAuth, getUser);
 router.route("/signup").post(signup);
 router.route("/login").post(login);
-router.route("/get-single-product").post(getSingleProductDetails);
+router.route("/get-single-product").get(getSingleProductDetails);
 //   router.route("/login").post(checkLogin);
 //   router.route("/").get(requireAuth, getUser);
 //   router.route("/forgot-password").post(checkEmail);
