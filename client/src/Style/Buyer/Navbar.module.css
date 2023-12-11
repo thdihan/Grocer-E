@@ -33,12 +33,14 @@
 }
 
 .user-nav ul li .cart-update {
-    background-color: var(--green-primary);
-    padding: 1px 6px;
-    font-size: 12px;
+    /* background-color: var(--green-primary); */
+    color: #ed3a3c;
+    padding: 1px 8px;
+    font-size: 16px;
     font-weight: bold;
     position: absolute;
-    top: -8px;
+    top: -5px;
+    left: 35px;
 }
 
 .cart-link {
@@ -49,7 +51,7 @@
     color: var(--green-primary);
 }
 
-.header-profile:hover {
+.header-profile a:hover {
     cursor: pointer;
     color: #fff;
     background-color: var(--green-primary);
