@@ -93,7 +93,52 @@ const getPendingCartProducts = async (req, res) => {
   }
 };
 
+const updateCartProducts = async (req, res) => {
+  const { authorization } = req.headers;
+  const token = authorization.split(" ")[1];
+  const { product_id, cart_id, quantity } = req.body;
+  try {
+    const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+    //Updating the quantity in cart table
+    const cart_product = await pool.query(
+      "UPDATE cart_product SET quantity = $1 WHERE product_id = $2 AND cart_id = $3 AND customer_id = $4 returning *;",
+      [quantity, product_id, cart_id, _id]
+    );
+    //Updating the quantity in cart_product table
+    const previousCart = await pool.query(
+      "select product_list from  cart where cart_id=$1 and customer_id=$2;",
+      [cart_id, _id]
+    );
+
+    //UPDATING THE CART TABLE PRODUCTLIST ARRAY
+    const productsArray = previousCart.rows[0].product_list;
+    const indexOfProduct = productsArray.findIndex(
+      (product) => product.product_id === parseInt(product_id)
+    );
+    if (indexOfProduct !== -1) {
+      console.log("IN");
+      productsArray[indexOfProduct].quantity = parseInt(quantity);
+    }
+
+    /**NEED TO UPDATE THE TOTAL COUNT,TOTAL COST AND DISCOUNT */
+    const cart = await pool.query(
+      "UPDATE cart SET product_list = $1 WHERE customer_id = $2 AND cart_id = $3 returning *;",
+      [productsArray, _id, cart_id]
+    );
+    console.log(cart.rows[0]);
+    res.status(200).json({
+      cart: cart.rows[0],
+    });
+  } catch (error) {
+    res.status(400).json({
+      from: "update cart",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   addToCart,
   getCurrentCart,
+  updateCartProducts,
 };

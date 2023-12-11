@@ -180,6 +180,7 @@ CREATE TABLE ordered_product (
 
 
 
+
 -- CREATE OR REPLACE FUNCTION before_cart_insert_update()
 -- RETURNS TRIGGER AS $$
 -- BEGIN

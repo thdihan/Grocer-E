@@ -19,3 +19,11 @@ export default axios.create({
 //     "Content-Type": "application/json",
 //   },
 // });
+
+/** UPDATE CART */
+// const response = await BuyerApi.put("/update-cart",{ product_id, cart_id, quantity },{
+//   headers: {
+// Authorization: `Bearer ${user}`,
+//     "Content-Type": "application/json",
+//   },
+// });
