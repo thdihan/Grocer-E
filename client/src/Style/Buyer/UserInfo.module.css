@@ -1,0 +1,11 @@
+.profile-form table tr td {
+    padding: 10px;
+    color: #000000;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #ffffff;
+}
+
+.profile-form table tr td:first-child {
+    width: 10%;
+}

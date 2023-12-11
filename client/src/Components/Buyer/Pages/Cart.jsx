@@ -59,10 +59,13 @@ export default function Cart() {
                             </table>
                             <div className={`text-end`}>
                                 {productCount > 0 && (
-                                    <button className={`btn fw-semibold`}>
+                                    <Link
+                                        to={`/checkout`}
+                                        className={`btn fw-semibold`}
+                                    >
                                         Checkout{" "}
                                         <i className="fa-solid fa-cart-shopping"></i>
-                                    </button>
+                                    </Link>
                                 )}
                             </div>
                         </div>

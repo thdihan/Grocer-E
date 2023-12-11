@@ -38,25 +38,40 @@ export default function Navbar() {
                     <nav
                         className={`${classes["user-nav"]} col-md-2 col-12 mt-4 mt-md-0 d-flex align-items-center justify-content-center flex-wrap`}
                     >
-                        <ul className="row p-0 d-flex justify-content-center">
-                            <li className="col-6">
+                        <ul className=" p-0 d-flex justify-content-center align-items-center w-100">
+                            <li className="me-4 p-0">
                                 <Link
                                     to="/cart"
                                     className={`${classes["cart-link"]}`}
                                 >
-                                    <i className="bi bi-bag-plus-fill "></i>
+                                    <i
+                                        className={`bi bi-bag-plus-fill ${
+                                            productCount > 0 ? "text-red" : ""
+                                        } `}
+                                    ></i>
 
                                     {productCount > 0 && (
                                         <span
                                             className={`${classes["cart-update"]} rounded-circle`}
                                         >
-                                            {productCount}
+                                            {productCount + 11}
                                         </span>
                                     )}
                                 </Link>
                             </li>
-                            <li className="col-6">
-                                <i className="bi bi-person-fill "></i>
+                            <li className={`${classes["header-profile"]} `}>
+                                <Link
+                                    to={`/profile`}
+                                    className={`px-2 border border-2 d-flex justify-content-end align-items-center rounded`}
+                                >
+                                    <span className={`fw-semibold pe-2`}>
+                                        Tanvir
+                                    </span>{" "}
+                                    <i className="bi bi-person-fill p-0"></i>
+                                </Link>
+                            </li>
+                            <li className={`${classes["logout-btn"]}`}>
+                                <i className="fa-solid fa-right-from-bracket ms-4 p-0"></i>
                             </li>
                         </ul>
                     </nav>

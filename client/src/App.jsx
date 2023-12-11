@@ -12,6 +12,10 @@ import Layout from "./Components/Buyer/Layout";
 import Home from "./Components/Buyer/Pages/Home";
 import SingleProductDetails from "./Components/Buyer/SingleProductDetails";
 import Cart from "./Components/Buyer/Pages/Cart";
+import Checkout from "./Components/Buyer/Pages/Checkout";
+import Profile from "./Components/Buyer/Profile";
+import UserInfo from "./Components/Buyer/Pages/UserInfo";
+import OrderList from "./Components/Buyer/Pages/OrderList";
 function App() {
     return (
         <AuthContextProvider>
@@ -37,10 +41,15 @@ function App() {
                     <Route path="/*" element={<Layout />}>
                         <Route path="" element={<Home />} />
                         <Route path="cart" element={<Cart />} />
+                        <Route path="checkout" element={<Checkout />} />
                         <Route
                             path="product/:id"
                             element={<SingleProductDetails />}
                         />
+                        <Route path="profile/*" element={<Profile />}>
+                            <Route path="" element={<UserInfo />} />
+                            <Route path="orders" element={<OrderList />} />
+                        </Route>
                     </Route>
                 </Routes>
             </Router>
