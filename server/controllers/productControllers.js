@@ -2,7 +2,7 @@ const pool = require("../db");
 const jwt = require("jsonwebtoken");
 
 const getSingleProductDetails = async (req, res) => {
-  const { product_id } = req.body;
+  const { product_id } = req.query;
   try {
     const product = await pool.query(
       " SELECT p.product_id, p.product_name, p.description, p.base_price, p.discount,p.unit, p.stock, p.product_image, p.seller_id, array_agg(DISTINCT c.category_name) AS categories, array_agg(DISTINCT pc.parent_category_id) AS parent_categories FROM products p JOIN product_category_relationship pcr ON p.product_id = pcr.product_id JOIN categories c ON pcr.category_id = c.category_id LEFT JOIN category_parent_relationship pc ON c.category_id = pc.category_id WHERE p.product_id = $1 GROUP BY p.product_id;",
@@ -20,23 +20,27 @@ const getSingleProductDetails = async (req, res) => {
   }
 };
 
-const addToCart = async (req, res) => {
-  const { authorization } = req.headers;
-  const token = authorization.split(" ")[1];
-  const { productList, priceTotal, discountTotal, productCount } = req.body;
+const categoryBasedProductList = async (req, res) => {
+  const { category_id } = req.query;
   try {
-    const { _id } = jwt.verify(token, process.env.JWT_SECRET);
-    const cart = await pool.query(
-      "INSERT INTO cart (customer_id,product_list, total_price, discount_total, product_count) VALUES ($1, $2, $3, $4,$5) RETURNING *",
-      [_id, productList, priceTotal, discountTotal, productCount]
+    const category = await pool.query(
+      "select category_name from categories where category_id=$1",
+      [category_id]
     );
-    console.log(cart.rows[0]);
+    const products = await pool.query(
+      "WITH RECURSIVE category_hierarchy AS (SELECT c.category_id, c.category_name, cp.parent_category_id FROM categories c LEFT JOIN category_parent_relationship cp ON c.category_id = cp.category_id WHERE c.category_id = $1 UNION ALL SELECT c.category_id, c.category_name, cp.parent_category_id FROM categories c JOIN category_parent_relationship cp ON c.category_id = cp.category_id JOIN category_hierarchy ch ON c.category_id = ch.parent_category_id ) SELECT ch.category_id, p.product_id, p.product_name, p.description, p.base_price, p.discount, p.unit, p.stock, p.product_image FROM category_hierarchy ch JOIN product_category_relationship pcr ON ch.category_id = pcr.category_id JOIN products p ON pcr.product_id = p.product_id GROUP BY ch.category_id, ch.category_name, p.product_id, p.product_name, p.description, p.base_price, p.discount, p.unit, p.stock, p.product_image;",
+      [category_id]
+    );
     res.status(200).json({
-      cart: cart.rows[0],
+      products: {
+        count: products?.rowCount,
+        category_name: category?.rows[0].category_name,
+        productList: products?.rows,
+      },
     });
   } catch (error) {
     res.status(400).json({
-      from: "add to cart",
+      from: "get category based product",
       error: error.message,
     });
   }
@@ -44,5 +48,5 @@ const addToCart = async (req, res) => {
 
 module.exports = {
   getSingleProductDetails,
-  addToCart,
+  categoryBasedProductList,
 };
