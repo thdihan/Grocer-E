@@ -3,7 +3,7 @@ import SellerNavItems from "./SidebarComponents/SellerNavItems";
 export default function SellerSidebar({ activeSidebar, setActiveSidebar }) {
     return (
         <div
-            className={`col col-12 col-md-2 ${classes["sidebar"]} ${
+            className={`col col-12 col-md-2 px-2 ${classes["sidebar"]} ${
                 activeSidebar ? classes["active"] : ""
             } `}
         >

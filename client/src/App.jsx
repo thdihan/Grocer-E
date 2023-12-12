@@ -38,6 +38,10 @@ function App() {
                             path="add-product"
                             element={<SellerAddProduct />}
                         />
+                        <Route
+                            path="add-product/:product_Id"
+                            element={<SellerAddProduct />}
+                        />
                     </Route>
                     <Route path="/*" element={<Layout />}>
                         <Route path="" element={<Home />} />
