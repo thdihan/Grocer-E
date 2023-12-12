@@ -1,12 +1,15 @@
 .add-category-form input[type="text"],
 .add-category-form input[type="file"],
+.add-category-form input[type="submit"],
 .add-category-form textarea {
     width: 100%;
     outline: 1px solid #ddd;
 }
 
 .parent-category button {
-    width: 100%;
+    background-color: var(--green-primary);
+    padding: 10px 20px !important;
+    border: 2px solid var(--green-primary);
 }
 
 .parent-category li {
