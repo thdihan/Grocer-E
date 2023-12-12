@@ -3,6 +3,7 @@ create database grocere;
 \l --Use this to see all the databases present in your system
 \c grocere -- Use this to connect to the grocere database
 \dt --use this to see all the relations in the database
+\! cls -- to clear screen
 
 
 drop table users;
@@ -89,9 +90,10 @@ CREATE TABLE cart_product (
     CONSTRAINT cart_product_fk_cart FOREIGN KEY (cart_id) REFERENCES cart(cart_id),
     CONSTRAINT cart_product_fk_product FOREIGN KEY (product_id) REFERENCES products(product_id),
     CONSTRAINT cart_product_fk_customer FOREIGN KEY (customer_id) REFERENCES users(user_id),
-    CONSTRAINT unique_cart_product_combination UNIQUE (cart_id, product_id, customer_id,quantity)
+    CONSTRAINT unique_cart_product_combination UNIQUE (cart_id, product_id, customer_id)
 );
 
+drop table ordered_product;
 drop table orders;
 
 CREATE TABLE orders (
@@ -100,23 +102,24 @@ CREATE TABLE orders (
     customer_id bigint,
     order_date DATE DEFAULT CURRENT_DATE,
     customer_details JSONB,
-    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('approved', 'shipping', 'pending', 'completed')),
+    status VARCHAR(20) DEFAULT 'Pending' CHECK (status IN ('Approved', 'Shipped', 'Pending', 'Completed')),
     
     CONSTRAINT cart_fk FOREIGN KEY (cart_id) REFERENCES cart(cart_id),
-    CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES users(user_id)
+    CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES users(user_id),
+    CONSTRAINT unique_cart_customer_combination UNIQUE (cart_id, customer_id)
 );
 
+
 CREATE TABLE ordered_product (
-    ordered_product_id bigserial PRIMARY KEY,
     product_id bigint,
     order_id bigint,
     quantity INTEGER NOT NULL,
     
+    CONSTRAINT order_product_pk PRIMARY KEY (product_id,order_id),
     CONSTRAINT product_fk FOREIGN KEY (product_id) REFERENCES products(product_id),
     CONSTRAINT order_fk FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
 
--- GIVEN A PRODUCT ID, Cart id, userid and count ++++ just update the count in cart array and cart_product
 
 
 
@@ -169,6 +172,13 @@ CREATE TABLE ordered_product (
 
 
 
+-- { 
+--     "cart_id":626,
+--     "customer_details":{
+--         "address":"abcd",
+--         "contact":"01222222222"
+--     }
+-- }
 
 
 
@@ -176,7 +186,18 @@ CREATE TABLE ordered_product (
 
 
 
-
+-- { 
+--     "productList":
+--     [
+--         {"product_id":5, "quantity":4,"product_name":"Chicken Egg"},
+--         {"product_id":6, "quantity":3,"product_name":"Tofu"},
+--         {"product_id":7, "quantity":1,"product_name":"Rupchanda Fortified Soyabean Oil"}
+--     ], 
+--     "priceTotal":1230, 
+--     "discountTotal":200, 
+--     "productCount":8,
+--     "cart_id":626
+-- }
 
 
 

@@ -20,6 +20,14 @@ export default axios.create({
 //   },
 // });
 
+/** GET PENDING CART PRODUCTS*/
+// const response = await BuyerApi.get("/get-pending-products",{
+//   headers: {
+// Authorization: `Bearer ${user}`,
+//     "Content-Type": "application/json",
+//   },
+// });
+
 /** UPDATE CART */
 // const response = await BuyerApi.put("/update-cart",{ product_id, cart_id, quantity },{
 //   headers: {
