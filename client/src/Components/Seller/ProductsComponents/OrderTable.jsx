@@ -32,7 +32,12 @@ const OrderTable = () => {
                                 Pending...
                             </td>
                             <td className="px-3 py-3 text-center">
-                                <Link className={`btn`}>View Details</Link>
+                                <Link
+                                    to={`/admin/orders/singleOrder`}
+                                    className={`btn`}
+                                >
+                                    View Details
+                                </Link>
                             </td>
                         </tr>
                     </tbody>

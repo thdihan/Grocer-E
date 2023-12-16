@@ -1,0 +1,8 @@
+.SellerSingleOrder table tr td {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+.SellerSingleOrder table tr td:first-child {
+    font-weight: 600;
+    width: 200px;
+}
