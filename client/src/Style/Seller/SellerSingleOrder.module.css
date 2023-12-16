@@ -6,3 +6,16 @@
     font-weight: 600;
     width: 200px;
 }
+
+.SellerSingleOrder table tr td button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 2px solid var(--green-primary);
+    background-color: var(--green-primary);
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.SellerSingleOrder table tr td button:hover {
+    border: 2px solid var(--green-primary);
+}
