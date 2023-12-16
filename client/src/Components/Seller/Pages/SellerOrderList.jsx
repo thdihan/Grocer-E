@@ -6,7 +6,7 @@ const SellerOrderList = () => {
     return (
         <div className={classes.SellerOrderList}>
             <div className="px-3 py-3 border-bottom d-flex justify-content-between align-items-center">
-                <h4>Orders</h4>
+                <h4 className={`m-0`}>Orders</h4>
             </div>
 
             <OrderTable />

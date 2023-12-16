@@ -19,6 +19,7 @@ import OrderList from "./Components/Buyer/Pages/OrderList";
 import CategoryAllProduct from "./Components/Buyer/Pages/CategoryAllProduct";
 import SellerOrderList from "./Components/Seller/Pages/SellerOrderList";
 import SellerSingleOrder from "./Components/Seller/Pages/SellerSingleOrder";
+import SellerSingleProductDetails from "./Components/Seller/Pages/SellerSingleProductDetails";
 function App() {
     return (
         <AuthContextProvider>
@@ -29,6 +30,10 @@ function App() {
                     <Route path="/admin/*" element={<SellerDashboard />}>
                         <Route path="products" element={<Products />} />
                         <Route path="orders" element={<SellerOrderList />} />
+                        <Route
+                            path="product/:product_Id"
+                            element={<SellerSingleProductDetails />}
+                        />
                         <Route
                             path="orders/singleOrder"
                             element={<SellerSingleOrder />}

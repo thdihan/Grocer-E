@@ -38,7 +38,6 @@ const SellerSingleOrder = () => {
                         <td>
                             <a
                                 href="mailto:
-
                             "
                             >
                                 username@gmail.columns
@@ -65,7 +64,7 @@ const SellerSingleOrder = () => {
                             {orderStatus}
                             <button
                                 type="button"
-                                className="btn ms-5"
+                                className="btn ms-5 text-black fw-semibold"
                                 data-bs-toggle="modal"
                                 data-bs-target="#exampleModal"
                             >

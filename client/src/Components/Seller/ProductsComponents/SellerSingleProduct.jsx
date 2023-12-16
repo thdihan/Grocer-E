@@ -39,8 +39,8 @@ export default function SellerSingleProduct({ product }) {
             <td className="px-3 py-3 align-middle">3.4</td>
             <td className="px-3 py-3 align-middle text-end">
                 <Link
-                    to={`/admin/add-product/${product_id}`}
-                    className={`btn fw-semibold ${classes["details-button"]}`}
+                    to={`/admin/product/${product_id}`}
+                    className={`btn fw-semibold text-black ${classes["details-button"]}`}
                 >
                     View Details{" "}
                 </Link>

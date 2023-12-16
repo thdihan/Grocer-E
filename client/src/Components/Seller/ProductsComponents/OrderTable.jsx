@@ -34,7 +34,7 @@ const OrderTable = () => {
                             <td className="px-3 py-3 text-center">
                                 <Link
                                     to={`/admin/orders/singleOrder`}
-                                    className={`btn`}
+                                    className={`btn text-black fw-semibold`}
                                 >
                                     View Details
                                 </Link>
