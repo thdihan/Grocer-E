@@ -1,10 +1,46 @@
 import classes from "../../../Style/Buyer/Checkout.module.css";
+import BuyerApi from "../../../apis/BuyerApi";
 import { useCartContext } from "../../../hooks/useCartContext";
 import TextInput from "../../Common/FormComponents/TextInput";
-
+import { useAuthContext } from "../../../hooks/useAuthContext";
 const Checkout = () => {
-    const { productList, priceTotal, discountTotal, productCount } =
-        useCartContext();
+    const {
+        productList,
+        priceTotal,
+        discountTotal,
+        productCount,
+        cart_id,
+        clearContext,
+    } = useCartContext();
+    const { user } = useAuthContext();
+
+    // [Todo] : Input must be cleared after order is placed
+    const placeOrder = async (e) => {
+        e.preventDefault();
+        console.log(e.target);
+        const customer_details = {
+            full_name: e.target["full-name"].value,
+            address: e.target["address"].value,
+            contact: e.target["contact"].value,
+        };
+        try {
+            /** CONFIRM ORDER */
+            const response = await BuyerApi.post(
+                "/confirm-order",
+                { cart_id, customer_details },
+                {
+                    headers: {
+                        Authorization: `Bearer ${user}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            console.log("CONFIRM ORDER RESPONSE : ", response);
+            clearContext();
+        } catch (error) {
+            console.log("CONFIRM ORDER ERROR : ", error);
+        }
+    };
     return (
         <div className={classes.Checkout}>
             <div className={`container py-5`}>
@@ -21,6 +57,7 @@ const Checkout = () => {
                             </div>
                             <form
                                 className={`${classes["checkout-form"]} px-4 py-3`}
+                                onSubmit={placeOrder}
                             >
                                 <TextInput
                                     type="text"

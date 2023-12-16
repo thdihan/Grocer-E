@@ -1,4 +1,44 @@
-products= [
-    {product1 info(productid... name... cat name.... [cat id]... rest..)}
-    {product2 info}
-]
+1. Category Based product list -- done 
+2. Pending Cart Product -- Done
+3. Add to cart api -- Done
+4. Update / delete cart -- Done
+
+5. Single product sell report (start and ending time)
+6. Category based sell report (st and end time) 
+7. Frequently bought product for buyer
+8. Retention (last month purchase customer / total customer)
+9. Recency (last order time of a user)
+10. Sell Count for each product.
+11. Get all orders from seller {
+    count(pending, shipment, delivered),
+    rest of the data
+}
+12. Get all orders from buyer. +  All product of order
+13. Update status for a order.
+14. Update product details.
+15. All category show 
+16. Category update.
+17. Email (
+    1. New order notification : Buyer (invoice.), seller (order details.)
+    2. Status change : Buyer
+    3. Stock management
+)
+18. Stock management. 
+19. Product Status and update based on stock
+20. Place Order. -- Done
+21. Get profile info
+22. Update profile info
+
+23. Popular Categories.
+24. Popular Products
+25. Search (
+    input: text 
+    output based on: title, cateogory
+)
+26. filter (but frontend)
+
+
+
+
+1. Categories list. 
+2. 20 product (Name, Base price, discount, available stock, unit, description, categories, image - png format transparent image)

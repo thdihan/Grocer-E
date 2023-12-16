@@ -54,7 +54,7 @@ export default function Navbar() {
                                         <span
                                             className={`${classes["cart-update"]} rounded-circle`}
                                         >
-                                            {productCount + 11}
+                                            {productCount}
                                         </span>
                                     )}
                                 </Link>

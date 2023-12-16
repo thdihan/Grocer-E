@@ -8,6 +8,8 @@ export default function Cart() {
     const [items, setItems] = useState(true);
     const { productList, priceTotal, discountTotal, productCount } =
         useCartContext();
+    // console.log("PRODUCT LIST : ", productList);
+    // console.log("PRICE TOTAL : ", priceTotal);
     return (
         <section className={`${classes["cart-section"]}`}>
             <div className={`container py-5`}>
