@@ -8,7 +8,7 @@ export default function SellerDashboardBody({ setActiveSidebar, children }) {
             <div
                 className={`${classes["dashboard-body-header"]} border-bottom px-2 container`}
             >
-                <div className={`row px-4 `}>
+                <div className={`row px-4 bg-white`}>
                     <div className="col-1 col-md-0 menu-toggle d-flex d-md-none align-items-center">
                         <span
                             className="material-symbols-outlined fs-2 fw-bold"

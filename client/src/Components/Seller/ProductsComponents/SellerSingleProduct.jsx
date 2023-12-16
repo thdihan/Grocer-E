@@ -27,9 +27,10 @@ export default function SellerSingleProduct({ product }) {
                 <div>
                     <p className="fs-5"> {product_name}</p>
                     <p className={`${classes["product-category"]}`}>
-                        {/* {" "}
-            {category_names?.map((category, index) => ({ category }))} */}
-                        Category A, Category B
+                        {/* {category_names?.map((cat, index) => {
+                            return cat;
+                        })} */}
+                        {category_names?.map((cat, index) => cat).join(", ")}
                     </p>
                 </div>
             </td>

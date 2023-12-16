@@ -47,6 +47,7 @@ export default function SellerAddProduct() {
             setProductImage(productDetails.product_image);
             setCategoryIds(productDetails.category_ids);
             setCategoryNames(productDetails.category_names);
+            setSelectedCategory(productDetails.categories);
         }
     }, [productDetails, product_Id]);
 
@@ -323,6 +324,9 @@ export default function SellerAddProduct() {
                                                                   e
                                                               );
                                                     }}
+                                                    checked={selectedCategory?.includes(
+                                                        category.category_name
+                                                    )}
                                                 />
                                                 {category.category_name}
                                             </label>
