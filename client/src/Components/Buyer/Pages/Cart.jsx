@@ -9,12 +9,20 @@ export default function Cart() {
     const { productList, priceTotal, discountTotal, productCount } =
         useCartContext();
     return (
-        <section className={`${classes["cart-section"]} py-4`}>
-            <div className={`container`}>
+        <section className={`${classes["cart-section"]}`}>
+            <div className={`container py-5`}>
                 <div className={`row gx-5`}>
                     <div
                         className={`${classes["cart-list"]} col col-12 col-md-9`}
                     >
+                        <div
+                            className={`px-4 py-3 border-bottom d-flex justify-content-between align-items-center bg-white border mb-3`}
+                        >
+                            <h5 className={`m-0`}>
+                                <i className="fa-solid fa-cart-shopping me-2"></i>
+                                Cart
+                            </h5>
+                        </div>
                         {productCount === 0 && (
                             <div
                                 className={`px-3 py-4 bg-white mb-3 border rounded-3`}
@@ -33,31 +41,38 @@ export default function Cart() {
                         <SingleCartItem /> */}
                     </div>
                     <div className={`col col-12 col-md-3`}>
-                        <div className={`py-3 px-4 bg-white border rounded`}>
-                            <h6 className={`mb-3 text-green fw-bold`}>
-                                Cart Summary
-                            </h6>
-                            <table className={`w-100`}>
-                                <tr>
-                                    <td>Total: </td>
-                                    <td className={`text-end py-2`}>
-                                        {priceTotal} tk
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Discount: </td>
-                                    <td className={`text-end py-2`}>
-                                        {discountTotal} tk
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Sub-total: </td>
-                                    <td className={`text-end py-2`}>
-                                        {priceTotal - discountTotal} tk
-                                    </td>
-                                </tr>
-                            </table>
-                            <div className={`text-end`}>
+                        <div className={` bg-white border rounded`}>
+                            <div
+                                className={`px-4 py-3 border-bottom d-flex justify-content-between align-items-center`}
+                            >
+                                <h5 className={`m-0`}>
+                                    <i className="fa-solid fa-money-check-dollar pe-2"></i>
+                                    Cart Summary
+                                </h5>
+                            </div>
+                            <div className={`py-3 px-4`}>
+                                <table className={`w-100`}>
+                                    <tr>
+                                        <td>Total: </td>
+                                        <td className={`text-end py-2`}>
+                                            {priceTotal} tk
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Discount: </td>
+                                        <td className={`text-end py-2`}>
+                                            {discountTotal} tk
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sub-total: </td>
+                                        <td className={`text-end py-2`}>
+                                            {priceTotal - discountTotal} tk
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div className={`text-end pb-3 px-4`}>
                                 {productCount > 0 && (
                                     <Link
                                         to={`/checkout`}

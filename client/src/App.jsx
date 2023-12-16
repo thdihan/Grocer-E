@@ -17,6 +17,7 @@ import Profile from "./Components/Buyer/Profile";
 import UserInfo from "./Components/Buyer/Pages/UserInfo";
 import OrderList from "./Components/Buyer/Pages/OrderList";
 import CategoryAllProduct from "./Components/Buyer/Pages/CategoryAllProduct";
+import SellerOrderList from "./Components/Seller/Pages/SellerOrderList";
 function App() {
     return (
         <AuthContextProvider>
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/admin/signup" element={<Signup />} />
                     <Route path="/admin/*" element={<SellerDashboard />}>
                         <Route path="products" element={<Products />} />
+                        <Route path="orders" element={<SellerOrderList />} />
                         <Route
                             path="categories"
                             element={<SellerCategories />}

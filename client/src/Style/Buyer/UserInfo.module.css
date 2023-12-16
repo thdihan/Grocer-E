@@ -9,3 +9,11 @@
 .profile-form table tr td:first-child {
     width: 10%;
 }
+
+.profile-form td input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ffffff;
+}

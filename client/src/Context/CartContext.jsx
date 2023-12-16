@@ -16,8 +16,10 @@ export function CartContextProvider(props) {
         console.log("INDEX: ", index);
         if (index === -1) {
             setProductList((prev) => [...prev, product]);
-            setPriceTotal((prev) => prev + product.base_price);
-            setDiscountTotal((prev) => prev + product.discountTotal);
+            setPriceTotal((prev) => prev + parseFloat(product.base_price));
+            setDiscountTotal(
+                (prev) => prev + parseFloat(product.discountTotal)
+            );
             setProductCount((prev) => prev + 1);
         }
     }

@@ -38,6 +38,11 @@ export default function SellerSidebar({ activeSidebar, setActiveSidebar }) {
                         text="Categories"
                         to="/admin/categories"
                     />
+                    <SellerNavItems
+                        icon="category"
+                        text="Orders"
+                        to="/admin/orders"
+                    />
                 </ul>
             </div>
         </div>

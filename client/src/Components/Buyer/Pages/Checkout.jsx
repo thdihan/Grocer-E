@@ -10,9 +10,18 @@ const Checkout = () => {
             <div className={`container py-5`}>
                 <div className={`row gx-5 gy-3`}>
                     <div className={`col col-12 col-md-9`}>
-                        <div className={`bg-white px-4 py-3 border`}>
-                            <h6 className={`text-green fw-bold`}>Checkout </h6>
-                            <form className={`${classes["checkout-form"]}`}>
+                        <div className={`bg-white border`}>
+                            <div
+                                className={`px-4 py-3 border-bottom d-flex justify-content-between align-items-center`}
+                            >
+                                <h5 className={`m-0`}>
+                                    <i className="fa-regular fa-credit-card pe-2"></i>
+                                    Checkout
+                                </h5>
+                            </div>
+                            <form
+                                className={`${classes["checkout-form"]} px-4 py-3`}
+                            >
                                 <TextInput
                                     type="text"
                                     className="Full Name"
@@ -35,9 +44,7 @@ const Checkout = () => {
                                     name="contact"
                                 />
 
-                                <div
-                                    className={`border-top border-3 py-2 my-2`}
-                                >
+                                <div className={` py-2 my-2`}>
                                     <h6>Payment Method</h6>
                                     <label htmlFor="cod">
                                         <input
@@ -71,37 +78,36 @@ const Checkout = () => {
                         </div>
                     </div>
                     <div className={`col col-12 col-md-3`}>
-                        <div className={`py-3 px-4 bg-white border rounded`}>
-                            <h6 className={`mb-3 text-green fw-bold`}>
-                                Cart Summary
-                            </h6>
-                            <table className={`w-100`}>
-                                <tr>
-                                    <td>Total: </td>
-                                    <td className={`text-end py-2`}>
-                                        {priceTotal} tk
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Discount: </td>
-                                    <td className={`text-end py-2`}>
-                                        {discountTotal} tk
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Sub-total: </td>
-                                    <td className={`text-end py-2`}>
-                                        {priceTotal - discountTotal} tk
-                                    </td>
-                                </tr>
-                            </table>
-                            <div className={`text-end`}>
-                                {productCount > 0 && (
-                                    <button className={`btn fw-semibold`}>
-                                        Checkout{" "}
-                                        <i className="fa-solid fa-cart-shopping"></i>
-                                    </button>
-                                )}
+                        <div className={` bg-white border rounded`}>
+                            <div
+                                className={`px-4 py-3 border-bottom d-flex justify-content-between align-items-center`}
+                            >
+                                <h5 className={`m-0`}>
+                                    <i className="fa-solid fa-money-check-dollar pe-2"></i>
+                                    Cart Summary
+                                </h5>
+                            </div>
+                            <div className={`py-3 px-4`}>
+                                <table className={`w-100 `}>
+                                    <tr>
+                                        <td>Total: </td>
+                                        <td className={`text-end py-2`}>
+                                            {priceTotal} tk
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Discount: </td>
+                                        <td className={`text-end py-2`}>
+                                            {discountTotal} tk
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sub-total: </td>
+                                        <td className={`text-end py-2`}>
+                                            {priceTotal - discountTotal} tk
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>
