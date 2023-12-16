@@ -47,11 +47,19 @@ CREATE TABLE products (
     base_price NUMERIC NOT NULL,
     discount NUMERIC DEFAULT 0.00,
     unit VARCHAR(50) NOT NULL,
-    stock NUMERIC NOT NULL,
+    stock NUMERIC NOT NULL CONSTRAINT check_stock_non_negative CHECK (stock >= 0),
     product_image VARCHAR(100),
     seller_id bigint,
+    status VARCHAR(20) DEFAULT 'Published' CHECK (status IN ('Hidden', 'Published')),
     CONSTRAINT category_user_fk FOREIGN KEY (seller_id) REFERENCES users(user_id)
 );
+
+-- ALTER TABLE products
+-- ADD COLUMN status VARCHAR(20) DEFAULT 'Published' CHECK (status IN ('Hidden', 'Published'));
+
+-- UPDATE products
+-- SET status = 'Published'
+-- WHERE status IS NULL;
 
 drop table product_category_relationship;
 CREATE TABLE product_category_relationship (
