@@ -268,8 +268,60 @@ WITH RankedProducts AS (
     products.product_id
 )
 SELECT
-  *
+  RankedProducts.*, categories.*
 FROM
-  RankedProducts
+  RankedProducts, categories, product_category_relationship
 WHERE
-  ROWNUM <= 5;
+  RankedProducts.product_id = product_category_relationship.product_id and categories.category_id = product_category_relationship.category_id  and ROWNUM <= 5;
+
+
+// Popular products.
+WITH RankedProducts AS (
+  SELECT
+    p.*,
+    COUNT(op.product_id) AS productCount,
+    ROW_NUMBER() OVER (ORDER BY COUNT(op.product_id) DESC) AS ROWNUM
+  FROM
+    products p
+  LEFT JOIN
+    ordered_product op ON p.product_id = op.product_id
+  GROUP BY
+    p.product_id
+)
+SELECT
+  p.product_id,
+  p.product_name,
+  p.description,
+  p.base_price,
+  p.discount,
+  p.unit,
+  p.stock,
+  p.product_image,
+  p.seller_id,
+  array_agg(DISTINCT c.category_name) AS categories,
+  array_agg(DISTINCT pc.parent_category_id) AS parent_categories
+FROM
+  RankedProducts p
+JOIN
+  product_category_relationship pcr ON p.product_id = pcr.product_id
+JOIN
+  categories c ON c.category_id = pcr.category_id
+JOIN
+  category_parent_relationship pc ON c.category_id = pc.category_id
+WHERE
+  ROWNUM <= 5
+GROUP BY
+  p.product_id,
+    p.product_name,
+  p.description,
+  p.base_price,
+  p.discount,
+  p.unit,
+  p.stock,
+  p.product_image,
+  p.seller_id;
+
+
+
+
+
