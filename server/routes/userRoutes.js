@@ -6,6 +6,7 @@ const {
     getSingleProductDetails,
     categoryBasedProductList,
     getPopularProductList,
+    getPopularCategories,
 } = require("../controllers/productControllers");
 
 const router = express.Router();
@@ -16,6 +17,7 @@ router.route("/login").post(login);
 router.route("/get-single-product").get(getSingleProductDetails);
 router.route("/get-category-based-product").get(categoryBasedProductList);
 router.route("/get-popular-products").get(getPopularProductList);
+router.route("/get-popular-categories").get(getPopularCategories);
 //   router.route("/login").post(checkLogin);
 //   router.route("/").get(requireAuth, getUser);
 //   router.route("/forgot-password").post(checkEmail);

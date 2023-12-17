@@ -289,6 +289,7 @@ WITH RankedProducts AS (
     p.product_id
 )
 SELECT
+p.ROWNUM,
   p.product_id,
   p.product_name,
   p.description,
@@ -311,6 +312,7 @@ JOIN
 WHERE
   ROWNUM <= 5
 GROUP BY
+p.ROWNUM,
   p.product_id,
     p.product_name,
   p.description,
@@ -320,6 +322,31 @@ GROUP BY
   p.stock,
   p.product_image,
   p.seller_id;
+
+
+
+// Popular Category
+WITH RankedProducts AS (
+  SELECT
+    c.*,
+    COUNT(op.product_id) AS productCount,
+    ROW_NUMBER() OVER (ORDER BY COUNT(op.product_id) DESC) AS ROWNUM
+  FROM
+    products p
+    JOIN
+    ordered_product op ON p.product_id = op.product_id
+    JOIN product_category_relationship pcr ON p.product_id = pcr.product_id
+    JOIN categories c ON pcr.category_id = c.category_id
+  GROUP BY
+    c.category_id
+)
+SELECT
+  *
+FROM
+  RankedProducts p
+WHERE
+  ROWNUM <= 5;
+
 
 
 

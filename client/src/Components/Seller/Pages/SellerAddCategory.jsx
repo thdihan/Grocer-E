@@ -94,24 +94,22 @@ export default function SellerAddCategory() {
                             Parent Category
                         </button>
                         <ul className="dropdown-menu">
-                            {!categoryLoading &&
-                                !categoryError &&
-                                categoryList.map((category, index) => (
-                                    <li className="p-2" key={index}>
-                                        <label
-                                            htmlFor={`cat${index}`}
-                                            className="d-inline"
-                                        >
-                                            <input
-                                                type="checkbox"
-                                                name={`cat${index}`}
-                                                value={category.category_id}
-                                                id={`cat${index}`}
-                                            />{" "}
-                                            {category.category_name}
-                                        </label>
-                                    </li>
-                                ))}
+                            {categoryList.map((category, index) => (
+                                <li className="p-2" key={index}>
+                                    <label
+                                        htmlFor={`cat${index}`}
+                                        className="d-inline"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name={`cat${index}`}
+                                            value={category.category_id}
+                                            id={`cat${index}`}
+                                        />{" "}
+                                        {category.category_name}
+                                    </label>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                     {error && <p style={{ color: "red" }}>{error}</p>}
