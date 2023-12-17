@@ -153,22 +153,40 @@ const updateCartProducts = async (req, res) => {
     //UPDATING THE CART TABLE PRODUCTLIST ARRAY
     const productsArray = previousCart.rows[0].product_list;
     let previousQuantity;
+    let basePrice;
+    let discountTotal;
+    let discount;
     const indexOfProduct = productsArray.findIndex((product) => {
       if (BigInt(product.product_id) === BigInt(product_id)) {
-        previousQuantity = product.quantity;
+        previousQuantity = parseInt(product.quantity);
+        basePrice = parseFloat(product.base_price);
+        discountTotal = parseFloat(product.discountTotal);
+        discount = parseFloat(product.discount);
         return true; // Return true to stop the iteration once the desired product is found
       }
       return false; // Return false if the product_id doesn't match
     });
+    let newTotal = parseFloat(previousCart.rows[0].total_price);
+    let cart_discount_total = parseFloat(previousCart.rows[0].discount_total);
+
     if (indexOfProduct !== -1) {
       productsArray[indexOfProduct].quantity = parseInt(quantity);
+      newTotal = newTotal - previousQuantity * basePrice + quantity * basePrice;
+      productsArray[indexOfProduct].discountTotal =
+        (parseInt(quantity) * basePrice * discount) / 100;
+      cart_discount_total =
+        cart_discount_total -
+        (previousQuantity * basePrice * discount) / 100 +
+        (quantity * basePrice * discount) / 100;
     }
     /**NEED TO UPDATE THE TOTAL COUNT,TOTAL COST AND DISCOUNT */
     const cart = await pool.query(
       // "UPDATE cart SET product_list = $1,product_count=$2 WHERE customer_id = $3 AND cart_id = $4 returning *;",
-      "UPDATE cart SET product_list = $1 WHERE customer_id = $2 AND cart_id = $3 returning *;",
+      "UPDATE cart SET product_list = $1, total_price=$2, discount_total=$3 WHERE customer_id = $4 AND cart_id = $5 returning *;",
       [
         productsArray,
+        newTotal,
+        cart_discount_total,
         // previousCart.rows[0].product_count - previousQuantity + quantity, //new total
         _id,
         cart_id,

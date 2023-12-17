@@ -99,6 +99,8 @@ export function CartContextProvider(props) {
     setPriceTotal(parseFloat(price.toFixed(2)));
     setDiscountTotal(parseFloat(discount.toFixed(2)));
     setProductList(tempProduct);
+    console.log("PRICE TOTAL: ", parseFloat(price.toFixed(2)));
+    console.log("DISCOUNT TOTAL: ", parseFloat(discount.toFixed(2)));
 
     try {
       /** UPDATE CART */
