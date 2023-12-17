@@ -350,5 +350,19 @@ WHERE
 
 
 
+// Get all category
+select 
+    c.*,
+    count(*) as product_count
+from
+    category c
+left JOIN
+    product_category_relationship pcr ON c.category_i = pcr.category_id
+left JOIN 
+    products p ON p.product_id = pcr.product_id 
+Group BY
+    c.category_id;
+
+
 
 

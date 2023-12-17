@@ -1,5 +1,7 @@
 import classes from "../../../Style/Seller/SellerCategoryTable.module.css";
-export default function SellerCategoryTable() {
+export default function SellerCategoryTable({ category }) {
+    // console.log(category);
+    const { categoryList, categoryLoading, categoryError } = category;
     return (
         <div className={`table-responsive ${classes["category-table"]}`}>
             <table className="w-100 table">
@@ -19,12 +21,27 @@ export default function SellerCategoryTable() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr className="fw-semibold">
-                        <td className="px-3 py-3 align-middle">Bashmoti</td>
-                        <td className="px-3 py-3 align-middle">Rice</td>
-                        <td className="px-3 py-3 align-middle">220kg</td>
-                        <td className="px-3 py-3 align-middle">3.4</td>
-                    </tr>
+                    {!categoryLoading &&
+                        !categoryError &&
+                        categoryList?.map((category, index) => {
+                            // console.log(category.category_name);
+                            return (
+                                <tr className="fw-semibold" key={index}>
+                                    <td className="px-3 py-3 align-middle">
+                                        {category.category_name}
+                                    </td>
+                                    <td className="px-3 py-3 align-middle">
+                                        Rice
+                                    </td>
+                                    <td className="px-3 py-3 align-middle">
+                                        {category.total_product}
+                                    </td>
+                                    <td className="px-3 py-3 align-middle">
+                                        Action
+                                    </td>
+                                </tr>
+                            );
+                        })}
                 </tbody>
             </table>
         </div>
