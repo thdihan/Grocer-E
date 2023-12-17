@@ -134,6 +134,7 @@ const updateCartProducts = async (req, res) => {
   const { authorization } = req.headers;
   const token = authorization.split(" ")[1];
   const { product_id, cart_id, quantity } = req.body;
+
   try {
     const { _id } = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -153,19 +154,22 @@ const updateCartProducts = async (req, res) => {
     const productsArray = previousCart.rows[0].product_list;
     let previousQuantity;
     const indexOfProduct = productsArray.findIndex((product) => {
-      product.product_id === parseInt(product_id);
-      previousQuantity = product.quantity;
+      if (BigInt(product.product_id) === BigInt(product_id)) {
+        previousQuantity = product.quantity;
+        return true; // Return true to stop the iteration once the desired product is found
+      }
+      return false; // Return false if the product_id doesn't match
     });
     if (indexOfProduct !== -1) {
       productsArray[indexOfProduct].quantity = parseInt(quantity);
     }
-
     /**NEED TO UPDATE THE TOTAL COUNT,TOTAL COST AND DISCOUNT */
     const cart = await pool.query(
-      "UPDATE cart SET product_list = $1,product_count=$2 WHERE customer_id = $3 AND cart_id = $4 returning *;",
+      // "UPDATE cart SET product_list = $1,product_count=$2 WHERE customer_id = $3 AND cart_id = $4 returning *;",
+      "UPDATE cart SET product_list = $1 WHERE customer_id = $2 AND cart_id = $3 returning *;",
       [
         productsArray,
-        previousCart.rows[0].product_count - previousQuantity + quantity, //new total
+        // previousCart.rows[0].product_count - previousQuantity + quantity, //new total
         _id,
         cart_id,
       ]
