@@ -50,7 +50,7 @@ const categoryBasedProductList = async (req, res) => {
 const getPopularProductList = async (req, res) => {
     try {
         const products = await pool.query(
-            "SELECT p.product_id, p.product_name, p.description, p.base_price, p.discount, p.unit, p.stock, p.product_image, p.seller_id, array_agg(DISTINCT c.category_name) AS categories, array_agg(DISTINCT pc.parent_category_id) AS parent_categories FROM products p JOIN product_category_relationship pcr ON p.product_id = pcr.product_id JOIN categories c ON pcr.category_id = c.category_id LEFT JOIN category_parent_relationship pc ON c.category_id = pc.category_id GROUP BY p.product_id ORDER BY p.product_id DESC LIMIT 10;"
+            "WITH RankedProducts AS (SELECT products.*, COUNT(ordered_product.product_id) AS productCount, ROW_NUMBER() OVER (ORDER BY COUNT(ordered_product.product_id) DESC) AS ROWNUM FROM products LEFT JOIN ordered_product ON products.product_id = ordered_product.product_id GROUP BY products.product_id) SELECT * FROM RankedProducts WHERE ROWNUM <= 10;"
         );
         res.status(200).json({
             products: {
@@ -61,6 +61,25 @@ const getPopularProductList = async (req, res) => {
     } catch (error) {
         res.status(400).json({
             from: "get popular product",
+            error: error.message,
+        });
+    }
+};
+
+const getPopularCategoryBasedOnOrder = async (req, res) => {
+    try {
+        const categories = await pool.query(
+            "SELECT c.category_id, c.category_name, COUNT(*) AS count FROM categories c JOIN product_category_relationship pcr ON c.category_id = pcr.category_id JOIN products p ON pcr.product_id = p.product_id JOIN orders o ON p.product_id = o.product_id GROUP BY c.category_id ORDER BY count DESC LIMIT 10;"
+        );
+        res.status(200).json({
+            categories: {
+                count: categories?.rowCount,
+                categoryList: categories?.rows,
+            },
+        });
+    } catch (error) {
+        res.status(400).json({
+            from: "get popular category",
             error: error.message,
         });
     }
