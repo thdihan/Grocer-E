@@ -1,0 +1,275 @@
+CREATE TABLE orders (
+    order_id bigserial PRIMARY KEY,
+    cart_id bigint,
+    customer_id bigint,
+    order_date DATE DEFAULT CURRENT_DATE,
+    status VARCHAR(20) DEFAULT 'Pending' CHECK (status IN ('Approved', 'Shipped', 'Pending', 'Completed'))
+);
+
+
+CREATE TABLE ordered_product (
+    product_id bigint,
+    order_id bigint,
+    quantity INTEGER NOT NULL
+);
+
+
+CREATE TABLE products (
+    product_id bigserial PRIMARY KEY,
+    product_name VARCHAR(255) UNIQUE NOT NULL,
+    description VARCHAR(255),
+    base_price NUMERIC NOT NULL,
+    discount NUMERIC DEFAULT 0.00,
+    unit VARCHAR(50) NOT NULL,
+    stock NUMERIC NOT NULL CONSTRAINT check_stock_non_negative CHECK (stock >= 0),
+    product_image VARCHAR(100),
+    seller_id bigint,
+    status VARCHAR(20) DEFAULT 'Published' CHECK (status IN ('Hidden', 'Published')),
+);
+
+
+
+INSERT INTO products (
+    product_name, 
+    description, 
+    base_price, 
+    discount, 
+    unit, 
+    stock, 
+    product_image, 
+    seller_id, 
+    status
+) VALUES 
+(
+    'Laptop XYZ', 
+    'Powerful laptop with high-performance features', 
+    1200.00, 
+    0.10, 
+    'unit', 
+    50, 
+    'laptop_xyz.jpg', 
+    1, 
+    'Published'
+),
+(
+    'Smartphone ABC', 
+    'Latest smartphone with advanced technology', 
+    800.00, 
+    0.05, 
+    'unit', 
+    100, 
+    'smartphone_abc.jpg', 
+    2, 
+    'Published'
+),
+(
+    'Coffee Maker Deluxe', 
+    'Premium coffee maker for coffee enthusiasts', 
+    150.00, 
+    0.00, 
+    'unit', 
+    20, 
+    'coffee_maker_deluxe.jpg', 
+    3, 
+    'Hidden'
+),
+(
+    'Wireless Headphones', 
+    'Noise-canceling wireless headphones for immersive sound', 
+    100.00, 
+    0.15, 
+    'pair', 
+    30, 
+    'wireless_headphones.jpg', 
+    1, 
+    'Published'
+),
+(
+    'Fitness Tracker Pro', 
+    'Advanced fitness tracker with health monitoring features', 
+    75.00, 
+    0.10, 
+    'unit', 
+    40, 
+    'fitness_tracker_pro.jpg', 
+    4, 
+    'Published'
+),
+(
+    'Digital Camera 4K', 
+    'Professional-grade digital camera with 4K video recording', 
+    1200.00, 
+    0.20, 
+    'unit', 
+    15, 
+    'digital_camera_4k.jpg', 
+    2, 
+    'Published'
+),
+(
+    'Portable Bluetooth Speaker', 
+    'Compact and powerful Bluetooth speaker for on-the-go music', 
+    50.00, 
+    0.05, 
+    'unit', 
+    75, 
+    'bluetooth_speaker.jpg', 
+    3, 
+    'Hidden'
+),
+(
+    'Gaming Mouse RGB', 
+    'High-performance gaming mouse with customizable RGB lighting', 
+    80.00, 
+    0.00, 
+    'unit', 
+    50, 
+    'gaming_mouse_rgb.jpg', 
+    4, 
+    'Published'
+),
+(
+    'Smart TV 55-inch', 
+    'Ultra HD Smart TV with a 55-inch display for immersive entertainment', 
+    800.00, 
+    0.10, 
+    'unit', 
+    10, 
+    'smart_tv_55inch.jpg', 
+    1, 
+    'Published'
+),
+(
+    'External Hard Drive 2TB', 
+    'High-capacity external hard drive for data storage and backup', 
+    120.00, 
+    0.05, 
+    'unit', 
+    25, 
+    'external_hard_drive_2tb.jpg', 
+    2, 
+    'Published'
+);
+
+
+
+INSERT INTO orders (cart_id, customer_id, order_date, status) VALUES
+(1, 101, '2023-01-15', 'Approved'),
+(2, 102, '2023-02-20', 'Shipped'),
+(3, 103, '2023-03-10', 'Pending'),
+(4, 104, '2023-04-05', 'Approved'),
+(5, 105, '2023-05-18', 'Shipped'),
+(6, 106, '2023-06-22', 'Pending'),
+(7, 107, '2023-07-07', 'Completed'),
+(8, 108, '2023-08-12', 'Pending'),
+(9, 109, '2023-09-30', 'Approved'),
+(10, 110, '2023-10-25', 'Shipped');
+
+
+-- Insert 100 ordered_product entries
+INSERT INTO ordered_product (product_id, order_id, quantity) VALUES
+-- Order 1
+(1, 1, 2),  -- Laptop XYZ
+(4, 1, 1),  -- Wireless Headphones
+
+-- Order 2
+(2, 2, 1),  -- Smartphone ABC
+(6, 2, 3),  -- Digital Camera 4K
+
+-- Order 3
+(3, 3, 2),  -- Coffee Maker Deluxe
+(8, 3, 1),  -- Gaming Mouse RGB
+
+-- Order 4
+(5, 4, 1),  -- Fitness Tracker Pro
+(10, 4, 2), -- External Hard Drive 2TB
+
+-- Order 5
+(7, 5, 1),  -- Portable Bluetooth Speaker
+(9, 5, 1),  -- Smart TV 55-inch
+
+-- Order 6
+(1, 6, 1),  -- Laptop XYZ
+(3, 6, 1),  -- Coffee Maker Deluxe
+
+-- Order 7
+(4, 7, 2),  -- Wireless Headphones
+(5, 7, 1),  -- Fitness Tracker Pro
+
+-- Order 8
+(6, 8, 1),  -- Digital Camera 4K
+(2, 8, 2),  -- Smartphone ABC
+
+-- Order 9
+(9, 9, 1),  -- Smart TV 55-inch
+(8, 9, 1),  -- Gaming Mouse RGB
+
+-- Order 10
+(10, 10, 1), -- External Hard Drive 2TB
+(7, 10, 2),  -- Portable Bluetooth Speaker
+
+-- Order 11
+(8, 11, 1),  -- Gaming Mouse RGB
+(9, 11, 2),  -- Smart TV 55-inch
+
+-- Order 12
+(10, 12, 2), -- External Hard Drive 2TB
+(6, 12, 1),  -- Digital Camera 4K
+
+-- Order 13
+(4, 13, 1),  -- Wireless Headphones
+(7, 13, 1),  -- Portable Bluetooth Speaker
+
+-- Order 14
+(2, 14, 1),  -- Smartphone ABC
+(8, 14, 2),  -- Gaming Mouse RGB
+
+-- Order 15
+(3, 15, 1),  -- Coffee Maker Deluxe
+(5, 15, 1),  -- Fitness Tracker Pro
+
+-- Order 16
+(6, 16, 1),  -- Digital Camera 4K
+(4, 16, 1),  -- Wireless Headphones
+
+-- Order 17
+(7, 17, 1),  -- Portable Bluetooth Speaker
+(1, 17, 1);  -- Laptop XYZ
+
+-- Order 18
+(8, 18, 1),  -- Gaming Mouse RGB
+(9, 18, 2);  -- Smart TV 55-inch
+
+-- Order 19
+(10, 19, 2), -- External Hard Drive 2TB
+(6, 19, 1);  -- Digital Camera 4K
+
+-- Order 20
+(4, 20, 1),  -- Wireless Headphones
+(7, 20, 1);  -- Portable Bluetooth Speaker
+
+-- Continue the pattern for Orders 21 through 100
+-- ...
+
+
+
+
+// Popular products.
+WITH RankedProducts AS (
+  SELECT
+    products.*,
+    COUNT(ordered_product.product_id) AS productCount,
+    ROW_NUMBER() OVER (ORDER BY COUNT(ordered_product.product_id) DESC) AS ROWNUM
+  FROM
+    products
+  LEFT JOIN
+    ordered_product ON products.product_id = ordered_product.product_id
+  GROUP BY
+    products.product_id
+)
+SELECT
+  *
+FROM
+  RankedProducts
+WHERE
+  ROWNUM <= 5;

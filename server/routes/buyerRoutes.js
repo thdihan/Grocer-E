@@ -3,11 +3,11 @@ const requireAuth = require("../middlewares/requireAuth");
 
 const { getProducts } = require("../controllers/buyerControllers");
 const {
-  addToCart,
-  getCurrentCart,
-  updateCartProducts,
-  getPendingCartProducts,
-  confirmOrder,
+    addToCart,
+    getCurrentCart,
+    updateCartProducts,
+    getPendingCartProducts,
+    confirmOrder,
 } = require("../controllers/cartContollers");
 
 const router = express.Router();
