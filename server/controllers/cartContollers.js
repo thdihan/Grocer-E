@@ -180,18 +180,39 @@ const updateCartProducts = async (req, res) => {
         (quantity * basePrice * discount) / 100;
     }
     /**NEED TO UPDATE THE TOTAL COUNT,TOTAL COST AND DISCOUNT */
-    const cart = await pool.query(
-      // "UPDATE cart SET product_list = $1,product_count=$2 WHERE customer_id = $3 AND cart_id = $4 returning *;",
-      "UPDATE cart SET product_list = $1, total_price=$2, discount_total=$3 WHERE customer_id = $4 AND cart_id = $5 returning *;",
-      [
-        productsArray,
-        newTotal,
-        cart_discount_total,
-        // previousCart.rows[0].product_count - previousQuantity + quantity, //new total
-        _id,
-        cart_id,
-      ]
-    );
+    console.log("QUANTITY: ", quantity);
+    if (quantity !== 0) {
+      const cart = await pool.query(
+        // "UPDATE cart SET product_list = $1,product_count=$2 WHERE customer_id = $3 AND cart_id = $4 returning *;",
+        "UPDATE cart SET product_list = $1, total_price=$2, discount_total=$3 WHERE customer_id = $4 AND cart_id = $5 returning *;",
+        [
+          productsArray,
+          newTotal,
+          cart_discount_total,
+          // previousCart.rows[0].product_count - previousQuantity + quantity, //new total
+          _id,
+          cart_id,
+        ]
+      );
+    } else {
+      console.log("INNNN");
+      const zero_update_cart = await pool.query(
+        "UPDATE cart SET product_list = $1,product_count=$2, total_price=$3, discount_total=$4 WHERE customer_id = $5 AND cart_id = $6 returning *;",
+        [
+          productsArray,
+          previousCart.rows[0].product_count - 1,
+          newTotal,
+          cart_discount_total,
+          // previousCart.rows[0].product_count - previousQuantity + quantity, //new total
+          _id,
+          cart_id,
+        ]
+      );
+      // const final = await pool.query(
+      //   "UPDATE cart SET product_list = NULL WHERE cart_id = $1 returning *",
+      //   [cart_id]
+      // );
+    }
     console.log(cart.rows[0]);
     res.status(200).json({
       cart: cart.rows[0],

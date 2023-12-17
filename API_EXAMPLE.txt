@@ -42,3 +42,8 @@
 
 1. Categories list. 
 2. 20 product (Name, Base price, discount, available stock, unit, description, categories, image - png format transparent image)
+
+
+
+TODO:
+1. After removing a product to 0, the product can't be added again.

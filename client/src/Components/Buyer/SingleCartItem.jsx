@@ -72,7 +72,10 @@ const SingleCartItem = ({ product }) => {
                   className="fa-solid fa-minus ms-2 text-green"
                   onClick={() => {
                     changeQuantity(-1);
-                    updatePriceAndDiscount(product, updatedQuantity - 1);
+                    updatePriceAndDiscount(
+                      product,
+                      updatedQuantity - 1 === 0 ? 0 : updatedQuantity - 1
+                    );
                   }}
                 ></i>
               </span>
