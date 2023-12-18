@@ -14,9 +14,16 @@ CREATE TABLE users (
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     user_type VARCHAR(50) NOT NULL DEFAULT 'admin',
+    address VARCHAR(255),
+    contact VARCHAR(20) DEFAULT 'N/A' CHECK (contact <> ''),
     CONSTRAINT email_user_type_unique UNIQUE (email, user_type),
     CONSTRAINT valid_user_type CHECK (user_type IN ('admin', 'customer'))
 );
+
+-- ALTER TABLE users
+-- ADD COLUMN address VARCHAR(255),
+-- ADD COLUMN contact VARCHAR(20) DEFAULT 'N/A' CHECK (contact <> '');
+
 
 
 drop table categories;
