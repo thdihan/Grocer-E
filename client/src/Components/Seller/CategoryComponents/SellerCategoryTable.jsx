@@ -31,10 +31,12 @@ export default function SellerCategoryTable({ category }) {
                                         {category.category_name}
                                     </td>
                                     <td className="px-3 py-3 align-middle">
-                                        Rice
+                                        {category.parent_name?
+                                            .map((parent) => parent)
+                                            .join(", ")}
                                     </td>
                                     <td className="px-3 py-3 align-middle">
-                                        {category.total_product}
+                                        {category.product_count}
                                     </td>
                                     <td className="px-3 py-3 align-middle">
                                         Action

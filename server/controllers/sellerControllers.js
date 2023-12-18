@@ -82,7 +82,7 @@ const addCategory = async (req, res) => {
     const { authorization } = req.headers;
     const token = authorization.split(" ")[1];
     const categoryObject = req.body;
-    console.log(categoryObject);
+    console.log("categoryObject", categoryObject);
 
     try {
         const { _id } = jwt.verify(token, process.env.JWT_SECRET);
@@ -130,7 +130,7 @@ const addCategory = async (req, res) => {
 const getAllCategories = async (req, res) => {
     try {
         const categories = await pool.query(
-            "select c.*, count(*) as total_product from categories c left JOIN product_category_relationship pcr ON c.category_id = pcr.category_id left JOIN products p ON p.product_id = pcr.product_id Group BY c.category_id;"
+            "WITH allCategories AS ( SELECT pc.category_id, pc.category_name, array_agg(DISTINCT cpr.parent_category_id) AS parent_id, array_agg(DISTINCT c.category_name) AS parent_name FROM categories pc LEFT JOIN category_parent_relationship cpr ON pc.category_id = cpr.category_id LEFT JOIN categories c ON cpr.parent_category_id = c.category_id GROUP BY pc.category_id, pc.category_name ) SELECT c.category_id, c.category_name, c.parent_id, c.parent_name, COUNT(p.product_id) AS product_count FROM allCategories c LEFT JOIN product_category_relationship pcr ON c.category_id = pcr.category_id LEFT JOIN products p ON p.product_id = pcr.product_id GROUP BY c.category_id, c.category_name, c.parent_id, c.parent_name;"
         );
         console.log(categories.rows);
         res.status(200).json({
