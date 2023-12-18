@@ -117,6 +117,8 @@ CREATE TABLE orders (
     CONSTRAINT unique_cart_customer_combination UNIQUE (cart_id, customer_id)
 );
 
+UPDATE orders SET order_date = '2023-12-09' WHERE order_id = 15;
+
 
 CREATE TABLE ordered_product (
     product_id bigint,

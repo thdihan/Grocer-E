@@ -3,10 +3,11 @@ const requireAuth = require("../middlewares/requireAuth");
 
 const { signup, login, getUser } = require("../controllers/userControllers");
 const {
-    getSingleProductDetails,
-    categoryBasedProductList,
-    getPopularProductList,
-    getPopularCategories,
+  getSingleProductDetails,
+  categoryBasedProductList,
+  getPopularProductList,
+  getPopularCategories,
+  getSingleProductRecord,
 } = require("../controllers/productControllers");
 
 const router = express.Router();
@@ -18,6 +19,7 @@ router.route("/get-single-product").get(getSingleProductDetails);
 router.route("/get-category-based-product").get(categoryBasedProductList);
 router.route("/get-popular-products").get(getPopularProductList);
 router.route("/get-popular-categories").get(getPopularCategories);
+router.route("/get-single-product-record").get(getSingleProductRecord);
 //   router.route("/login").post(checkLogin);
 //   router.route("/").get(requireAuth, getUser);
 //   router.route("/forgot-password").post(checkEmail);

@@ -17,3 +17,12 @@ export default axios.create({
 //     "Content-Type": "application/json",
 //   },
 // });
+
+/**SINGLE PRODUCT RECORD */
+/**TIME MUST BE IN STRING (YYYY-MM-DD format) */
+
+// const response = await UserApi.get(`/get-single-product-record?product_id=${product_id}&start_time=${start_time}&end_time=${end_time}`,{
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+// });
