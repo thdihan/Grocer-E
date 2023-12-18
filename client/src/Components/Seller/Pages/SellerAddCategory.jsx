@@ -12,7 +12,8 @@ export default function SellerAddCategory() {
     const { user } = useAuthContext();
     const { categoryList, categoryError, categoryLoading } =
         useCategoryList(user);
-
+    const [parentCategory, setParentCategory] = useState({});
+    console.log("Category List: ", categoryList);
     useEffect(() => {
         toast.onChange((payload) => {
             if (payload.status === "removed") {
@@ -31,18 +32,15 @@ export default function SellerAddCategory() {
         const formData = new FormData(e.target);
         const formDataObject = Object.fromEntries(formData);
         console.log("Form Data Example : ", formDataObject);
-
+        const submitData = { ...formDataObject, ...parentCategory };
+        console.log("Submit Data: ", submitData);
         try {
-            const response = await SellerApi.post(
-                "/add-category",
-                formDataObject,
-                {
-                    headers: {
-                        Authorization: `Bearer ${user}`,
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
+            const response = await SellerApi.post("/add-category", submitData, {
+                headers: {
+                    Authorization: `Bearer ${user}`,
+                    "Content-Type": "application/json",
+                },
+            });
 
             setLoading(false);
             e.target.reset();
@@ -59,6 +57,36 @@ export default function SellerAddCategory() {
             console.log("ADD CAT: ", err);
         }
     }
+
+    // Parent Category Selection Box
+    const [selectedCategory, setSelectedCategory] = useState([]);
+    const addCategorySelection = (e) => {
+        const category_id = e.target.value;
+        const category_name = e.target.nextSibling.textContent;
+        console.log("Category ID: ", category_id);
+        console.log("Category Name: ", category_name);
+        setSelectedCategory((prevSelected) => [...prevSelected, category_name]);
+        setParentCategory((prevSelected) => ({
+            ...prevSelected,
+            [category_name]: category_id,
+        }));
+        // setRelatedCategories((prevSelected) => [...prevSelected, category]);
+    };
+
+    const deleteCategorySelection = (e) => {
+        const category_id = e.target.value;
+        const category = e.target.nextSibling.textContent;
+
+        setSelectedCategory((prevSelected) =>
+            prevSelected.filter((item) => item !== category)
+        );
+
+        const tempObj = { ...parentCategory };
+        delete tempObj[category];
+        setParentCategory(tempObj);
+    };
+
+    // [Todo] : Add Parent Category filter function
     return (
         <>
             <div className="px-3 py-3 border-bottom d-flex justify-content-between align-items-center">
@@ -85,34 +113,78 @@ export default function SellerAddCategory() {
                     <div
                         className={`dropdown ${classes["parent-category"]} col-md-12 p-0`}
                     >
-                        <button
-                            className="btn btn-secondary dropdown-toggle w-100 p-0 m-0"
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
-                            Parent Category
-                        </button>
-                        <ul className="dropdown-menu">
-                            {!categoryLoading &&
-                                !categoryError &&
-                                categoryList.map((category, index) => (
-                                    <li className="p-2" key={index}>
-                                        <label
-                                            htmlFor={`cat${index}`}
-                                            className="d-inline"
-                                        >
-                                            <input
-                                                type="checkbox"
-                                                name={`cat${index}`}
-                                                value={category.category_id}
-                                                id={`cat${index}`}
-                                            />{" "}
-                                            {category.category_name}
-                                        </label>
-                                    </li>
-                                ))}
-                        </ul>
+                        <div className="container-fluid">
+                            <div
+                                className={`${classes["category-header"]} p-2 row`}
+                            >
+                                <div
+                                    className={`col-10 d-flex align-items-center ${classes["selected-category-list"]}`}
+                                >
+                                    <p>Selected Category: </p>{" "}
+                                    <div
+                                        className={`${classes["selected-category"]} d-flex ms-2`}
+                                    >
+                                        {selectedCategory?.map((category) => (
+                                            <p
+                                                key={category}
+                                                className="d-flex align-items-center rounded-pill px-2 me-2"
+                                            >
+                                                <span className="me-2">
+                                                    {category}
+                                                </span>
+                                            </p>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div
+                                    className={`col-2 ${classes["category-search-box"]}`}
+                                >
+                                    <input
+                                        type="text"
+                                        className={`py-2`}
+                                        name=""
+                                        id=""
+                                    />
+                                </div>
+                            </div>
+                            <div
+                                className={`${classes["category-details"]} p-2 row`}
+                            >
+                                <div
+                                    className={`col-12 d-flex flex-wrap ${classes["category-list"]}`}
+                                >
+                                    {categoryList &&
+                                        !categoryLoading &&
+                                        !categoryError &&
+                                        categoryList.map((category, index) => (
+                                            <label
+                                                key={index}
+                                                htmlFor={`checkbox${index + 1}`}
+                                                className="me-3"
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    className="me-2"
+                                                    value={category.category_id}
+                                                    onChange={(e) => {
+                                                        e.target.checked
+                                                            ? addCategorySelection(
+                                                                  e
+                                                              )
+                                                            : deleteCategorySelection(
+                                                                  e
+                                                              );
+                                                    }}
+                                                    checked={selectedCategory?.includes(
+                                                        category.category_name
+                                                    )}
+                                                />
+                                                {category.category_name}
+                                            </label>
+                                        ))}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     {error && <p style={{ color: "red" }}>{error}</p>}
                     <input

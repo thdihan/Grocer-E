@@ -1,7 +1,11 @@
 const express = require("express");
 const requireAuth = require("../middlewares/requireAuth");
 
-const { getProducts } = require("../controllers/buyerControllers");
+const {
+    getProducts,
+    getUserAllOrders,
+    getBuyerProfileInfo,
+} = require("../controllers/buyerControllers");
 const {
     addToCart,
     getCurrentCart,
@@ -18,5 +22,7 @@ router.route("/get-cart").get(requireAuth, getCurrentCart);
 router.route("/get-pending-products").get(requireAuth, getPendingCartProducts);
 router.route("/update-cart").put(requireAuth, updateCartProducts);
 router.route("/confirm-order").post(requireAuth, confirmOrder);
+router.route("/get-all-order").get(requireAuth, getUserAllOrders);
+router.route("/get-profile-info").get(requireAuth, getBuyerProfileInfo);
 
 module.exports = router;

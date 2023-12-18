@@ -7,57 +7,49 @@ export const AuthContextProvider = (props) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [newUser, setNewUser] = useState();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    console.log(user);
     const getUserDetails = async () => {
       const response = await UserApi.get("/", {
         headers: {
           Authorization: `Bearer ${user}`,
         },
       });
+
       setNewUser(response.data.user);
     };
     try {
+      setLoading(true);
+      setError(false);
       if (user) {
         getUserDetails();
       }
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setError();
     }
   }, [user]);
 
-  //   const login = async (email, password) => {
-  //     setLoading(true);
-  //     try {
-  //       const response = await UserLog.post(
-  //         "/login",
-  //         {
-  //           email,
-  //           password,
-  //         },
-  //         {
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //         }
-  //       );
+  const login = async (email, password) => {
+    const response = await UserApi.post(
+      "/login",
+      { email, password },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-  //       const data = response.data;
-  //       localStorage.setItem("user", JSON.stringify(data));
-  //       setUser(data);
+    const data = response.data;
+    localStorage.setItem("user", JSON.stringify(data.token));
+    setUser(data.token);
+    console.log("LOGIN CONTEXT :", response);
 
-  //       setLoading(false);
-  //       return { data: data };
-  //     } catch (err) {
-  //       console.log(err);
-  //       console.log(err.response.data.error);
-  //       setError(err.response.data.error);
-  //       setLoading(false);
-  //       return { error: err.response.data.error };
-  //     }
-  //   };
+    return { data: data };
+  };
 
   const logout = () => {
     localStorage.removeItem("user");
@@ -70,7 +62,7 @@ export const AuthContextProvider = (props) => {
     setUser,
     newUser,
     setNewUser,
-    // login,
+    login,
     loading,
     error,
     logout,

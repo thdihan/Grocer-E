@@ -14,9 +14,16 @@ CREATE TABLE users (
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     user_type VARCHAR(50) NOT NULL DEFAULT 'admin',
+    address VARCHAR(255),
+    contact VARCHAR(20) DEFAULT 'N/A' CHECK (contact <> ''),
     CONSTRAINT email_user_type_unique UNIQUE (email, user_type),
     CONSTRAINT valid_user_type CHECK (user_type IN ('admin', 'customer'))
 );
+
+-- ALTER TABLE users
+-- ADD COLUMN address VARCHAR(255),
+-- ADD COLUMN contact VARCHAR(20) DEFAULT 'N/A' CHECK (contact <> '');
+
 
 
 drop table categories;
@@ -116,6 +123,8 @@ CREATE TABLE orders (
     CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES users(user_id),
     CONSTRAINT unique_cart_customer_combination UNIQUE (cart_id, customer_id)
 );
+
+UPDATE orders SET order_date = '2023-12-09' WHERE order_id = 15;
 
 
 CREATE TABLE ordered_product (

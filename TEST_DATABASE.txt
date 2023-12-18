@@ -268,8 +268,120 @@ WITH RankedProducts AS (
     products.product_id
 )
 SELECT
+  RankedProducts.*, categories.*
+FROM
+  RankedProducts, categories, product_category_relationship
+WHERE
+  RankedProducts.product_id = product_category_relationship.product_id and categories.category_id = product_category_relationship.category_id  and ROWNUM <= 5;
+
+
+// Popular products.
+WITH RankedProducts AS (
+  SELECT
+    p.*,
+    COUNT(op.product_id) AS productCount,
+    ROW_NUMBER() OVER (ORDER BY COUNT(op.product_id) DESC) AS ROWNUM
+  FROM
+    products p
+  LEFT JOIN
+    ordered_product op ON p.product_id = op.product_id
+  GROUP BY
+    p.product_id
+)
+SELECT
+p.ROWNUM,
+  p.product_id,
+  p.product_name,
+  p.description,
+  p.base_price,
+  p.discount,
+  p.unit,
+  p.stock,
+  p.product_image,
+  p.seller_id,
+  array_agg(DISTINCT c.category_name) AS categories,
+  array_agg(DISTINCT pc.parent_category_id) AS parent_categories
+FROM
+  RankedProducts p
+JOIN
+  product_category_relationship pcr ON p.product_id = pcr.product_id
+JOIN
+  categories c ON c.category_id = pcr.category_id
+JOIN
+  category_parent_relationship pc ON c.category_id = pc.category_id
+WHERE
+  ROWNUM <= 5
+GROUP BY
+p.ROWNUM,
+  p.product_id,
+    p.product_name,
+  p.description,
+  p.base_price,
+  p.discount,
+  p.unit,
+  p.stock,
+  p.product_image,
+  p.seller_id;
+
+
+
+// Popular Category
+WITH RankedProducts AS (
+  SELECT
+    c.*,
+    COUNT(op.product_id) AS productCount,
+    ROW_NUMBER() OVER (ORDER BY COUNT(op.product_id) DESC) AS ROWNUM
+  FROM
+    products p
+    JOIN
+    ordered_product op ON p.product_id = op.product_id
+    JOIN product_category_relationship pcr ON p.product_id = pcr.product_id
+    JOIN categories c ON pcr.category_id = c.category_id
+  GROUP BY
+    c.category_id
+)
+SELECT
   *
 FROM
-  RankedProducts
+  RankedProducts p
 WHERE
   ROWNUM <= 5;
+
+
+
+
+// Get all category
+WITH allCategories AS (
+    SELECT 
+        pc.category_id,
+        pc.category_name,
+        array_agg(DISTINCT cpr.parent_category_id) AS parent_id,
+        array_agg(DISTINCT c.category_name) AS parent_name
+    FROM 
+        categories pc
+    LEFT JOIN 
+        category_parent_relationship cpr ON pc.category_id = cpr.category_id
+    LEFT JOIN 
+        categories c ON cpr.parent_category_id = c.category_id
+    GROUP BY 
+        pc.category_id, pc.category_name
+)
+
+SELECT 
+    c.category_id,
+    c.category_name,
+    c.parent_id,
+    c.parent_name,
+    COUNT(p.product_id) AS product_count
+FROM 
+    allCategories c
+LEFT JOIN 
+    product_category_relationship pcr ON c.category_id = pcr.category_id
+LEFT JOIN 
+    products p ON p.product_id = pcr.product_id 
+GROUP BY 
+    c.category_id, c.category_name, c.parent_id, c.parent_name;
+
+
+
+

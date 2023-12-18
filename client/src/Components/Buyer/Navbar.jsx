@@ -2,8 +2,10 @@ import { Link, NavLink } from "react-router-dom";
 import classes from "../../Style/Buyer/Navbar.module.css";
 import MainNav from "./MainNav";
 import { useCartContext } from "../../hooks/useCartContext";
+import { useAuthContext } from "../../hooks/useAuthContext";
 export default function Navbar() {
     const { productCount } = useCartContext();
+    const { user } = useAuthContext();
     return (
         <section className={`${classes["header-area"]} shadow`}>
             <div className="container">
@@ -59,7 +61,42 @@ export default function Navbar() {
                                     )}
                                 </Link>
                             </li>
-                            <li className={`${classes["header-profile"]} `}>
+                            {user ? (
+                                <>
+                                    <li
+                                        className={`${classes["header-profile"]} `}
+                                    >
+                                        <Link
+                                            to={`/profile`}
+                                            className={`px-2 border border-2 d-flex justify-content-end align-items-center rounded`}
+                                        >
+                                            <span
+                                                className={`fw-semibold pe-2`}
+                                            >
+                                                {/* {user.name} */}
+                                                Tanvir
+                                            </span>{" "}
+                                            <i className="bi bi-person-fill p-0"></i>
+                                        </Link>
+                                    </li>
+                                    <li className={`${classes["logout-btn"]}`}>
+                                        <i className="fa-solid fa-right-from-bracket ms-4 p-0"></i>
+                                    </li>
+                                </>
+                            ) : (
+                                <li className={`${classes["header-profile"]} `}>
+                                    <Link
+                                        to={`/account`}
+                                        className={`px-2 border border-2 d-flex justify-content-end align-items-center rounded`}
+                                    >
+                                        <span className={`fw-semibold pe-2`}>
+                                            Login
+                                        </span>{" "}
+                                        <i className="bi bi-person-fill p-0"></i>
+                                    </Link>
+                                </li>
+                            )}
+                            {/* <li className={`${classes["header-profile"]} `}>
                                 <Link
                                     to={`/profile`}
                                     className={`px-2 border border-2 d-flex justify-content-end align-items-center rounded`}
@@ -72,7 +109,7 @@ export default function Navbar() {
                             </li>
                             <li className={`${classes["logout-btn"]}`}>
                                 <i className="fa-solid fa-right-from-bracket ms-4 p-0"></i>
-                            </li>
+                            </li> */}
                         </ul>
                     </nav>
                 </div>

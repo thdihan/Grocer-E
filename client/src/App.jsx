@@ -20,6 +20,7 @@ import CategoryAllProduct from "./Components/Buyer/Pages/CategoryAllProduct";
 import SellerOrderList from "./Components/Seller/Pages/SellerOrderList";
 import SellerSingleOrder from "./Components/Seller/Pages/SellerSingleOrder";
 import SellerSingleProductDetails from "./Components/Seller/Pages/SellerSingleProductDetails";
+import LoginSignup from "./Components/Buyer/Pages/LoginSignup";
 function App() {
     return (
         <AuthContextProvider>
@@ -59,6 +60,7 @@ function App() {
                         <Route path="" element={<Home />} />
                         <Route path="cart" element={<Cart />} />
                         <Route path="checkout" element={<Checkout />} />
+                        <Route path="account" element={<LoginSignup />} />
                         <Route
                             path="product/:id"
                             element={<SingleProductDetails />}

@@ -59,10 +59,18 @@ const signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = await pool.query(
-      "insert into users (fullname,password,email,user_type) values ($1,$2,$3,$4) returning *",
-      [fullname, hashedPassword, email, "admin"]
-    );
+    let newUser;
+    if (user_type && user_type !== "") {
+      newUser = await pool.query(
+        "insert into users (fullname,password,email,user_type) values ($1,$2,$3,$4) returning *",
+        [fullname, hashedPassword, email, user_type]
+      );
+    } else {
+      newUser = await pool.query(
+        "insert into users (fullname,password,email,user_type) values ($1,$2,$3,$4) returning *",
+        [fullname, hashedPassword, email, "admin"]
+      );
+    }
 
     console.log(newUser.rows[0]);
     res.status(201).json({
