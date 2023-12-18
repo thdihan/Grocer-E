@@ -35,3 +35,10 @@ export default axios.create({
 //     "Content-Type": "application/json",
 //   },
 // });
+
+/**GET SEARCH RESULT */
+// const response = await UserApi.get(`/get-search-results?text=${text}`,{
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+// });
