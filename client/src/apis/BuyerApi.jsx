@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default axios.create({
-    baseURL: `http://localhost:${import.meta.env.VITE_BACKEND_PORT}/api/buyer`,
+  baseURL: `http://localhost:${import.meta.env.VITE_BACKEND_PORT}/api/buyer`,
 });
 
 /** ADD TO CART */
@@ -38,6 +38,14 @@ export default axios.create({
 
 /** UPDATE CART */
 // const response = await BuyerApi.put("/update-cart",{ product_id, cart_id, quantity },{
+//   headers: {
+// Authorization: `Bearer ${user}`,
+//     "Content-Type": "application/json",
+//   },
+// });
+
+/** GET ALL ORDERS */
+// const response = await BuyerApi.get("/get-all-order",{
 //   headers: {
 // Authorization: `Bearer ${user}`,
 //     "Content-Type": "application/json",

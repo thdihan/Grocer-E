@@ -30,6 +30,28 @@ const getProducts = async (req, res) => {
   }
 };
 
+const getUserAllOrders = async (req, res) => {
+  const { authorization } = req.headers;
+  const token = authorization.split(" ")[1];
+  try {
+    const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+    console.log(_id);
+    const orders = await pool.query(
+      "SELECT o.order_id, o.order_date, o.status, JSONB_AGG(jsonb_build_object('quantity', op.quantity, 'product_id', p.product_id, 'product_name', p.product_name, 'description', p.description, 'base_price', p.base_price, 'discount', p.discount, 'unit', p.unit, 'stock', p.stock, 'product_image', p.product_image)) AS product_list, u.user_id AS buyer_id, u.fullname AS buyer_username FROM orders o JOIN ordered_product op ON o.order_id = op.order_id JOIN products p ON op.product_id = p.product_id JOIN users u ON o.customer_id = u.user_id WHERE u.user_id = $1 GROUP BY o.order_id, o.order_date, o.status, u.user_id, u.fullname;",
+      [_id]
+    );
+    res.status(200).json({
+      orders: orders.rows,
+    });
+  } catch (error) {
+    res.status(400).json({
+      from: "get user all order",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getProducts,
+  getUserAllOrders,
 };
