@@ -3,13 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import classes from "../../Style/Seller/Login.module.css";
-import UserApi from "../../apis/UserApi";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { login } = useAuthContext();
 
   const navigate = useNavigate();
 
@@ -23,35 +24,30 @@ export default function Login() {
 
   async function handleLogin(e) {
     e.preventDefault();
-    setError(false);
     setLoading(true);
-
+    setError(false);
     // Form Data Object
     const formData = new FormData(e.target);
     const formDataObject = Object.fromEntries(formData);
+    console.log("FORMADATA: ", formDataObject);
 
     try {
-      const response = await UserApi.post("/login", formDataObject, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await login(
+        formDataObject.email,
+        formDataObject.password
+      );
 
-      setLoading(false);
-
-      const data = response.data;
-      localStorage.setItem("user", JSON.stringify(data.token));
+      localStorage.setItem("user", JSON.stringify(response.data.token));
 
       toast.success("Login Successful !! Navigating to dashboard...", {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 1200, // Time in milliseconds to auto-close the toast (1.5 seconds in this case)
       });
-      console.log("LOGIN: ", response);
     } catch (err) {
       setError(err.response.data.error);
       setLoading(false);
 
-      console.log("SIGNUP: ", err);
+      console.log("LOGIN ERR: ", err);
     }
 
     console.log("Handle Login Function Called");
