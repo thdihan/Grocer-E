@@ -44,6 +44,9 @@ export const AuthContextProvider = (props) => {
     );
 
     const data = response.data;
+    localStorage.setItem("user", JSON.stringify(data.token));
+    setUser(data.token);
+    console.log("LOGIN CONTEXT :", response);
 
     return { data: data };
   };

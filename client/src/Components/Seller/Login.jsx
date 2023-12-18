@@ -37,8 +37,6 @@ export default function Login() {
         formDataObject.password
       );
 
-      localStorage.setItem("user", JSON.stringify(response.data.token));
-
       toast.success("Login Successful !! Navigating to dashboard...", {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 1200, // Time in milliseconds to auto-close the toast (1.5 seconds in this case)
