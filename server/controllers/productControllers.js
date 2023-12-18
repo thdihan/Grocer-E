@@ -124,6 +124,7 @@ const getSingleCategoryRecord = async (req, res) => {
     });
   }
 };
+
 const getSearchResult = async (req, res) => {
   const { text } = req.query;
   try {
