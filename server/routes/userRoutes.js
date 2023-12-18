@@ -8,6 +8,7 @@ const {
   getPopularProductList,
   getPopularCategories,
   getSingleProductRecord,
+  getSingleCategoryRecord,
 } = require("../controllers/productControllers");
 
 const router = express.Router();
@@ -20,6 +21,7 @@ router.route("/get-category-based-product").get(categoryBasedProductList);
 router.route("/get-popular-products").get(getPopularProductList);
 router.route("/get-popular-categories").get(getPopularCategories);
 router.route("/get-single-product-record").get(getSingleProductRecord);
+router.route("/get-single-category-record").get(getSingleCategoryRecord);
 //   router.route("/login").post(checkLogin);
 //   router.route("/").get(requireAuth, getUser);
 //   router.route("/forgot-password").post(checkEmail);

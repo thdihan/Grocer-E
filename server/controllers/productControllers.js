@@ -105,10 +105,31 @@ const getSingleProductRecord = async (req, res) => {
   }
 };
 
+const getSingleCategoryRecord = async (req, res) => {
+  const { category_id, start_time, end_time } = req.query;
+  console.log(req.query);
+  try {
+    const category = await pool.query(
+      "SELECT COALESCE(SUM(op.quantity), 0) AS total_quantity_sold FROM ordered_product op JOIN orders o ON op.order_id = o.order_id JOIN product_category_relationship pcr ON op.product_id = pcr.product_id WHERE pcr.category_id = $1 AND o.order_date BETWEEN $2 AND $3;",
+      [category_id, start_time, end_time]
+    );
+    console.log(category.rows[0]);
+    res.status(200).json({
+      category: category.rows[0],
+    });
+  } catch (error) {
+    res.status(400).json({
+      from: "get single product",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getSingleProductDetails,
   categoryBasedProductList,
   getPopularProductList,
   getPopularCategories,
   getSingleProductRecord,
+  getSingleCategoryRecord,
 };

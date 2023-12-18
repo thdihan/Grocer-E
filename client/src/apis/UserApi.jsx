@@ -26,3 +26,12 @@ export default axios.create({
 //     "Content-Type": "application/json",
 //   },
 // });
+
+/**SINGLE CATEGORY RECORD */
+/**TIME MUST BE IN STRING (YYYY-MM-DD format) */
+
+// const response = await UserApi.get(`/get-single-category-record?category=${category_id}&start_time=${start_time}&end_time=${end_time}`,{
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+// });
