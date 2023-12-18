@@ -68,7 +68,7 @@ CREATE TABLE product_category_relationship (
     seller_id bigint,
     CONSTRAINT product_category_pk PRIMARY KEY (product_id, category_id),
     CONSTRAINT category_fk FOREIGN KEY (category_id) REFERENCES categories(category_id) ON delete cascade,
-    CONSTRAINT product_fk FOREIGN KEY (product_id) REFERENCES products(product_id) On delete cascade
+    CONSTRAINT product_fk FOREIGN KEY (product_id) REFERENCES products(product_id) On delete cascade,
     CONSTRAINT seller_fk FOREIGN KEY (seller_id) REFERENCES users(user_id)
 );
 
