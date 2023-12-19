@@ -42,3 +42,10 @@ export default axios.create({
 //     "Content-Type": "application/json",
 //   },
 // });
+
+/**GET RETENTION DETAILS */
+// const response = await UserApi.get("/get-retention-details",{
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+// });

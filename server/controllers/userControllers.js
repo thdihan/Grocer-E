@@ -144,8 +144,25 @@ const getUser = async (req, res) => {
   }
 };
 
+const getRetentionDetails = async (req, res) => {
+  try {
+    const retention = await pool.query(
+      "WITH last_month_customers AS ( SELECT DISTINCT customer_id FROM orders WHERE EXTRACT(YEAR FROM order_date) = EXTRACT(YEAR FROM CURRENT_DATE - INTERVAL '1 month') AND EXTRACT(MONTH FROM order_date) = EXTRACT(MONTH FROM CURRENT_DATE - INTERVAL '1 month') ) SELECT COUNT(DISTINCT current_month.customer_id) AS current_month_customers, COUNT(DISTINCT last_month.customer_id) AS last_month_customers, COUNT(DISTINCT CASE WHEN last_month.customer_id IS NOT NULL THEN current_month.customer_id END) AS retained_customers, COALESCE( CAST(COUNT(DISTINCT CASE WHEN last_month.customer_id IS NOT NULL THEN current_month.customer_id END) AS numeric) / NULLIF(COUNT(DISTINCT last_month.customer_id), 0), 0) * 100 AS retention_rate FROM last_month_customers last_month LEFT JOIN ( SELECT DISTINCT customer_id FROM orders WHERE EXTRACT(YEAR FROM order_date) = EXTRACT(YEAR FROM CURRENT_DATE) AND EXTRACT(MONTH FROM order_date) = EXTRACT(MONTH FROM CURRENT_DATE) ) current_month ON last_month.customer_id = current_month.customer_id;"
+    );
+    res.status(200).json({
+      retention: retention.rows[0],
+    });
+  } catch (error) {
+    res.status(400).json({
+      from: "get retention details",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   signup,
   login,
   getUser,
+  getRetentionDetails,
 };

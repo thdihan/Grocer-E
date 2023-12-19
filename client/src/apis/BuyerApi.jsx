@@ -51,3 +51,11 @@ export default axios.create({
 //     "Content-Type": "application/json",
 //   },
 // });
+
+/** GET FREQUENTLY BOUGHT PRODUCTS */
+// const response = await BuyerApi.get("/get-frequently-bought-products",{
+//   headers: {
+// Authorization: `Bearer ${user}`,
+//     "Content-Type": "application/json",
+//   },
+// });

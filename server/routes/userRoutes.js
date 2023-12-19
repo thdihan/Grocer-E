@@ -1,7 +1,12 @@
 const express = require("express");
 const requireAuth = require("../middlewares/requireAuth");
 
-const { signup, login, getUser } = require("../controllers/userControllers");
+const {
+  signup,
+  login,
+  getUser,
+  getRetentionDetails,
+} = require("../controllers/userControllers");
 const {
   getSingleProductDetails,
   categoryBasedProductList,
@@ -24,6 +29,7 @@ router.route("/get-popular-categories").get(getPopularCategories);
 router.route("/get-single-product-record").get(getSingleProductRecord);
 router.route("/get-single-category-record").get(getSingleCategoryRecord);
 router.route("/get-search-results").get(getSearchResult);
+router.route("/get-retention-details").get(getRetentionDetails);
 //   router.route("/login").post(checkLogin);
 //   router.route("/").get(requireAuth, getUser);
 //   router.route("/forgot-password").post(checkEmail);
