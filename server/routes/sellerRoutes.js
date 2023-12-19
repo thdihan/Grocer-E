@@ -10,6 +10,8 @@ const {
   getProducts,
 } = require("../controllers/sellerControllers");
 
+const { updateOrderStatus } = require("../controllers/cartContollers");
+
 const router = express.Router();
 // Create a multer storage configuration to save the uploaded file
 const storage = multer.diskStorage({
@@ -31,5 +33,6 @@ router
   .route("/add-product")
   .post(requireAuth, upload.array("image"), addProduct);
 router.route("/get-all-categories").get(requireAuth, getAllCategories);
+router.route("/update-order-status").put(requireAuth, updateOrderStatus);
 
 module.exports = router;

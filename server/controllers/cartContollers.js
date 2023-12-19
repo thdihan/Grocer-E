@@ -310,10 +310,57 @@ const confirmOrder = async (req, res) => {
   }
 };
 
+const updateOrderStatus = async (req, res) => {
+  const { order_id, order_status } = req.body;
+  try {
+    const order = await pool.query(
+      "UPDATE orders SET status = $1 WHERE order_id = $2 returning *",
+      [order_status, order_id]
+    );
+
+    //FETCHING THE CUSTOMER DETAILS TO SEND EMAIL
+    const customer_details = await pool.query(
+      "SELECT o.order_id, o.order_date, o.status, o.customer_details, jsonb_agg(jsonb_build_object( 'quantity', op.quantity, 'product_id', p.product_id, 'product_name', p.product_name, 'base_price', p.base_price, 'discount', p.discount, 'unit', p.unit, 'stock', p.stock )) AS product_list, u.fullname AS buyer_name, u.email AS buyer_email FROM orders o JOIN ordered_product op ON o.order_id = op.order_id JOIN products p ON op.product_id = p.product_id JOIN users u ON o.customer_id = u.user_id WHERE o.customer_id = $1 AND o.order_id = $2 GROUP BY o.order_id, o.order_date, o.status, o.customer_details, u.fullname, u.email",
+      [order?.rows[0]?.customer_id, order_id]
+    );
+
+    const record = customer_details.rows[0];
+
+    //SENDING THE EMAIL
+    const message = `Hello ${record?.buyer_name}!\n\n`;
+    const statusMessage = `Your order's (ID: ${order_id}) status has been updated to: ${record.status}\n\n`;
+    const orderListMessage = `Order List:\n${record?.product_list
+      .map(
+        (product) => `- ${product.product_name} (Quantity: ${product.quantity})`
+      )
+      .join("\n")}\n`;
+
+    const message_body = message + statusMessage + orderListMessage;
+
+    sendEmail(
+      record?.buyer_email,
+      "Grocer-E order status update",
+      message_body
+    );
+
+    res.status(200).json({
+      order: customer_details.rows[0],
+    });
+  } catch (error) {
+    res.status(400).json({
+      from: "update order status",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   addToCart,
   getCurrentCart,
   updateCartProducts,
   getPendingCartProducts,
   confirmOrder,
+  updateOrderStatus,
 };
+
+("SELECT o.order_id, o.order_date, o.status, o.customer_details, jsonb_agg(jsonb_build_object( 'quantity', op.quantity, 'product_id', p.product_id, 'product_name', p.product_name, 'base_price', p.base_price, 'discount', p.discount, 'unit', p.unit, 'stock', p.stock )) AS product_list, u.fullname AS buyer_name, u.email AS buyer_email FROM orders o JOIN ordered_product op ON o.order_id = op.order_id JOIN products p ON op.product_id = p.product_id JOIN users u ON o.customer_id = u.user_id WHERE o.customer_id = $1 AND o.order_id = $2 GROUP BY o.order_id, o.order_date, o.status, o.customer_details, u.fullname, u.email");
