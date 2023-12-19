@@ -6,6 +6,7 @@ const {
   getUserAllOrders,
   getBuyerProfileInfo,
   getFrequentBoughtProducts,
+  getLastOrderedDate,
 } = require("../controllers/buyerControllers");
 const {
   addToCart,
@@ -28,5 +29,6 @@ router.route("/get-profile-info").get(requireAuth, getBuyerProfileInfo);
 router
   .route("/get-frequently-bought-products")
   .get(requireAuth, getFrequentBoughtProducts);
+router.route("/get-last-ordered-date").get(requireAuth, getLastOrderedDate);
 
 module.exports = router;

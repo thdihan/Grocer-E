@@ -59,3 +59,11 @@ export default axios.create({
 //     "Content-Type": "application/json",
 //   },
 // });
+
+/** LAST ORDERED DATE */
+// const response = await BuyerApi.get("/get-last-ordered-date",{
+//   headers: {
+// Authorization: `Bearer ${user}`,
+//     "Content-Type": "application/json",
+//   },
+// });

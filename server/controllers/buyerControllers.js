@@ -90,9 +90,35 @@ const getFrequentBoughtProducts = async (req, res) => {
   }
 };
 
+const getLastOrderedDate = async (req, res) => {
+  const { authorization } = req.headers;
+  const token = authorization.split(" ")[1];
+  try {
+    const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+    const ordered_date = await pool.query(
+      "SELECT MAX(order_date) AS last_ordered_date FROM orders WHERE customer_id = $1;",
+      [_id]
+    );
+
+    //CONTVERING THE DATE TO STANDARD TIME
+    const originalDate = new Date(ordered_date.rows[0].last_ordered_date);
+    const newDate = new Date(originalDate.getTime() + 6 * 60 * 60 * 1000);
+
+    res.status(200).json({
+      ordered_date: newDate.toISOString(),
+    });
+  } catch (error) {
+    res.status(400).json({
+      from: "get last ordered date",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getProducts,
   getUserAllOrders,
   getBuyerProfileInfo,
   getFrequentBoughtProducts,
+  getLastOrderedDate,
 };
