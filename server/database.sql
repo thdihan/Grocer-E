@@ -19,9 +19,9 @@ CREATE TABLE USERS (
     CONSTRAINT VALID_USER_TYPE CHECK (USER_TYPE IN ('admin', 'customer'))
 );
 
-ALTER TABLE users
-ADD COLUMN address VARCHAR(255),
-ADD COLUMN contact VARCHAR(20) DEFAULT 'N/A' CHECK (contact <> '');
+-- ALTER TABLE users
+-- ADD COLUMN address VARCHAR(255),
+-- ADD COLUMN contact VARCHAR(20) DEFAULT 'N/A' CHECK (contact <> '');
 
 
 

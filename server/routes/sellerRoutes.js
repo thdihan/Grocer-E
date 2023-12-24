@@ -9,7 +9,6 @@ const {
     addProduct,
     getProducts,
     updateCategory,
-    updateProduct,
     getAllOrder,
     getOrderedProducts,
 } = require("../controllers/sellerControllers");
@@ -37,9 +36,6 @@ router.route("/update-category").post(requireAuth, updateCategory);
 router
     .route("/add-product")
     .post(requireAuth, upload.array("image"), addProduct);
-router
-    .route("/update-product")
-    .put(requireAuth, upload.array("image"), updateProduct);
 router.route("/get-all-categories").get(requireAuth, getAllCategories);
 router.route("/update-order-status").put(requireAuth, updateOrderStatus);
 router.route("/get-all-orders").get(requireAuth, getAllOrder);
