@@ -306,11 +306,66 @@ const getOrderedProducts = async (req, res) => {
         });
     }
 };
+const updateProduct = async (req, res) => {
+    const {
+        product_name,
+        discount,
+        base_price,
+        unit,
+        stock,
+        categories,
+        description,
+    } = req.body;
+
+    const imageFile = req.files[0];
+    console.log(imageFile.filename);
+
+    try {
+        //UPDATE PRODUCT TABLE
+        const updatedProduct = await pool.query(
+            "UPDATE PRODUCTS SET PRODUCT_NAME = COALESCE($1, PRODUCT_NAME), DISCOUNT = COALESCE($2, DISCOUNT), BASE_PRICE = COALESCE($3, BASE_PRICE), UNIT = COALESCE($4, UNIT), STOCK = COALESCE($5, STOCK), DESCRIPTION = COALESCE($6, DESCRIPTION), product_image=COALESCE($7, product_image) WHERE PRODUCT_ID = $8 RETURNING *;",
+            [
+                product_name,
+                discount,
+                base_price,
+                unit,
+                stock,
+                description,
+                imageFile.filename,
+                BigInt(product_id),
+            ]
+        );
+
+        //UPDATE PRODUCT CATEGORY RELATIONSHIP TABLE
+        await pool.query(
+            "DELETE FROM product_category_relationship WHERE product_id = $1",
+            [BigInt(product_id)]
+        );
+
+        const categoryArray = categories.split(",");
+
+        for (const category_id of categoryArray) {
+            await pool.query(
+                "INSERT INTO product_category_relationship (product_id, category_id, seller_id) VALUES ($1, $2, $3)",
+                [BigInt(product_id), BigInt(category_id), BigInt(_id)]
+            );
+        }
+        res.status(200).json({
+            updatedProduct: updatedProduct.rows[0],
+        });
+    } catch (error) {
+        res.status(400).json({
+            from: "update product",
+            error: error.message,
+        });
+    }
+};
 module.exports = {
     addCategory,
     getAllCategories,
     addProduct,
     updateCategory,
+    updateProduct,
     getAllOrder,
     getOrderedProducts,
 };
