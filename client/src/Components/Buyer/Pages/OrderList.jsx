@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom";
 import classes from "../../../Style/Buyer/OrderList.module.css";
-
+import { useGetAllOrder } from "../../../hooks/useGetAllOrder";
+import { useAuthContext } from "../../../hooks/useAuthContext";
+import { formatDateAndTimeFromString } from "../../../utilities/utilities";
 const OrderList = () => {
+    const { user } = useAuthContext();
+    const { orderList, orderLoading, orderError } = useGetAllOrder(user);
+
+    console.log("ORDER LIST : ", orderList);
     return (
         <div className={`${classes["OrderList"]} bg-white border`}>
             <div
@@ -24,7 +30,67 @@ const OrderList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        {!orderLoading && orderList?.length === 0 && (
+                            <tr>
+                                <td colSpan="5" className={`text-center`}>
+                                    No order found
+                                </td>
+                            </tr>
+                        )}
+                        {orderLoading && (
+                            <tr>
+                                <td colSpan="5" className={`text-center`}>
+                                    Loading...
+                                </td>
+                            </tr>
+                        )}
+                        {orderError && (
+                            <tr>
+                                <td colSpan="5" className={`text-center`}>
+                                    {orderError}
+                                </td>
+                            </tr>
+                        )}
+
+                        {!orderLoading &&
+                            orderList?.length > 0 &&
+                            orderList?.map((order, index) => {
+                                const basePrice = order?.product_list?.reduce(
+                                    (acc, curr) => {
+                                        console.log(
+                                            "NUMBER: ",
+                                            parseFloat(curr.discount)
+                                        );
+                                        const basePrice =
+                                            parseFloat(curr.base_price) -
+                                            (parseFloat(curr.base_price) *
+                                                parseFloat(curr.discount)) /
+                                                100.0;
+                                        return acc + basePrice * curr.quantity;
+                                    },
+                                    0
+                                );
+                                return (
+                                    <tr key={index}>
+                                        <td>#{order.order_id}</td>
+                                        <td>
+                                            {formatDateAndTimeFromString(
+                                                order.order_date
+                                            )}
+                                        </td>
+                                        <td>{basePrice} tk</td>
+                                        <td className={`fw-semibold`}>
+                                            {order.status}
+                                        </td>
+                                        <td>
+                                            <Link className={`btn`}>
+                                                View Details
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        {/* <tr>
                             <td>#2025422</td>
                             <td>12-12-2023</td>
                             <td>120 tk</td>
@@ -63,7 +129,7 @@ const OrderList = () => {
                             <td>
                                 <Link className={`btn`}>View Details</Link>
                             </td>
-                        </tr>
+                        </tr> */}
                     </tbody>
                 </table>
             </div>

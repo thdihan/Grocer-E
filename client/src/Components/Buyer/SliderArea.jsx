@@ -3,7 +3,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import Button from "../Common/Button";
-import rice from "../../assets/rice.webp";
 const SliderArea = () => {
     const settings = {
         dots: true,
@@ -15,7 +14,7 @@ const SliderArea = () => {
     return (
         <div className={`${classes.SliderArea} py-5 mb-5`}>
             <div className={`container`}>
-                <div className="row">
+                {/* <div className="row">
                     <div className="col-12 col-md-4">
                         <ul
                             className={`shadow py-4  px-0 ${classes["category-list"]}`}
@@ -107,7 +106,7 @@ const SliderArea = () => {
                             </div>
                         </Slider>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );

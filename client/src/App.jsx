@@ -36,7 +36,7 @@ function App() {
                             element={<SellerSingleProductDetails />}
                         />
                         <Route
-                            path="orders/singleOrder"
+                            path="orders/singleOrder/:orderId"
                             element={<SellerSingleOrder />}
                         />
                         <Route

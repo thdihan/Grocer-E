@@ -1,6 +1,16 @@
 import classes from "../../Style/Seller/SellerDashboardBody.module.css";
 import Products from "./Pages/Products";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import { useNavigate } from "react-router-dom";
 export default function SellerDashboardBody({ setActiveSidebar, children }) {
+    const { logout } = useAuthContext();
+    const navigate = useNavigate();
+
+    function handleLogout(e) {
+        e.preventDefault();
+        logout();
+        navigate("/");
+    }
     return (
         <div
             className={`p-0 col col-12 col-md-10 ${classes["dashboard-body"]}`}
@@ -21,7 +31,11 @@ export default function SellerDashboardBody({ setActiveSidebar, children }) {
                     </div>
                     <div className="col-11 col-md-12 user-profile d-flex justify-content-end p-0 align-items-center">
                         <p className="m-0 pe-2 py-3 ">User 1</p>
-                        <span className="material-symbols-outlined">
+                        <span
+                            className="material-symbols-outlined"
+                            onClick={handleLogout}
+                            style={{ cursor: "pointer" }}
+                        >
                             logout
                         </span>
                     </div>

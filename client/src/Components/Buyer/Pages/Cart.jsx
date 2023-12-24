@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import classes from "../../../Style/Buyer/Cart.module.css";
 import { useState } from "react";
-import img from "../../../assets/rice.webp";
+// import img from "../../../assets/rice.webp";
 import SingleCartItem from "../SingleCartItem";
 import { useCartContext } from "../../../hooks/useCartContext";
 export default function Cart() {

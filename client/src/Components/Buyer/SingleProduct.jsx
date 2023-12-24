@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import classes from "../../Style/Buyer/ProductBox.module.css";
 import { makeSourceURL } from "../../utilities/utilities";
-import demoImg from "../../assets/rice.webp";
 import { useCartContext } from "../../hooks/useCartContext";
 export default function SingleProduct({ product }) {
     const {

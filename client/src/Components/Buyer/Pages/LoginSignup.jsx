@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classes from "../../../Style/Buyer/LoginSignup.module.css";
 import TextInput from "../../Common/FormComponents/TextInput";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import UserApi from "../../../apis/UserApi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useAuthContext } from "../../../hooks/useAuthContext";
 const LoginSignup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -13,11 +16,29 @@ const LoginSignup = () => {
     const [contact, setContact] = useState("");
     const [address, setAddress] = useState("");
 
-    const handleLogin = async (e) => {
+    const { login } = useAuthContext();
+    async function handleLogin(e) {
         e.preventDefault();
-        console.log("Email : ", email, "Password : ", password);
-        // [Todo] : Login Api Call
-    };
+        setLoading(true);
+        setError(false);
+
+        try {
+            const response = await login(email, password);
+            navigate("/");
+            // toast.success("Login Successful !! Navigating to dashboard...", {
+            //     position: toast.POSITION.TOP_RIGHT,
+            //     autoClose: 1200, // Time in milliseconds to auto-close the toast (1.5 seconds in this case)
+            // });
+        } catch (err) {
+            setError(err.response.data.error);
+            setLoading(false);
+
+            console.log("LOGIN ERR: ", err);
+        }
+
+        console.log("Handle Login Function Called");
+    }
+    const navigate = useNavigate();
     const handleSignup = async (e) => {
         e.preventDefault();
         console.log(
@@ -34,8 +55,48 @@ const LoginSignup = () => {
             "Address : ",
             address
         );
+
         // [Todo] : Signup Api Call
+        try {
+            const response = await UserApi.post(
+                "/signup",
+                {
+                    email,
+                    password,
+                    fullname,
+                    contact,
+                    address,
+                    confirm_password: confirmPassword,
+                    user_type: "",
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            setLoading(false);
+            toast.success("Signup Successful !! Navigating to login page...", {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 1500, // Time in milliseconds to auto-close the toast (1.5 seconds in this case)
+            });
+            console.log("SIGNUP: ", response);
+            // navigate("/dashboard/appointment");
+        } catch (err) {
+            setError(err.response.data.error);
+            setLoading(false);
+
+            console.log("SIGNUP: ", err);
+        }
     };
+    useEffect(() => {
+        toast.onChange((payload) => {
+            if (payload.status === "removed") {
+                navigate("/account");
+            }
+        });
+    }, [navigate]);
+
     return (
         <div className={`${classes["LoginSignup"]}`}>
             <div className={`container py-5 `}>
@@ -260,6 +321,7 @@ const LoginSignup = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer position="top-right" />
         </div>
     );
 };

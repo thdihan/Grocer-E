@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import classes from "../../../Style/Buyer/ProfileNav.module.css";
-import img from "../../../assets/user.jpg";
+import img from "../../assets/user.jpg";
 const ProfileNav = () => {
     return (
         <div className={`${classes["ProfileNav"]} bg-white px-3 py-3 border`}>

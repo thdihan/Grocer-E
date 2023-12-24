@@ -1,9 +1,20 @@
 import { useState } from "react";
 import classes from "../../../Style/Seller/SellerSingleOrder.module.css";
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { useLocation, useParams } from "react-router-dom";
+import { useSellerGetAllOrderedProducts } from "../../../hooks/useSellerGetAllOrderedProducts";
+import { useAuthContext } from "../../../hooks/useAuthContext";
+import { formatDateAndTimeFromString } from "../../../utilities/utilities";
 const SellerSingleOrder = () => {
-    const [orderStatus, setOrderStatus] = useState("Pending");
-
+    const location = useLocation();
+    console.log("LOCATION", location);
+    const { order } = location.state;
+    const { user } = useAuthContext();
+    const { orderId } = useParams();
+    const { productList, productLoading, productError } =
+        useSellerGetAllOrderedProducts(user, orderId);
+    const [orderStatus, setOrderStatus] = useState(order?.status);
+    console.log("ORDER : ", order, " PRODUCT_LIST: ", productList);
     const updateStatus = (e) => {
         // Close the modal here
         const modal = document.getElementById("exampleModal");
@@ -27,11 +38,11 @@ const SellerSingleOrder = () => {
                 <table className={`w-100 table`}>
                     <tr>
                         <td>Order Id</td>
-                        <td>#1234</td>
+                        <td>#{order?.order_id}</td>
                     </tr>
                     <tr>
                         <td>Customer Name</td>
-                        <td>ABCD</td>
+                        <td>{order.fullname}</td>
                     </tr>
                     <tr>
                         <td>Customer Email</td>
@@ -40,19 +51,21 @@ const SellerSingleOrder = () => {
                                 href="mailto:
                             "
                             >
-                                username@gmail.columns
+                                {order.email}
                             </a>
                         </td>
                     </tr>
                     <tr>
                         <td>Customer Phone</td>
                         <td>
-                            <a href="tel:1234567890">1234567890</a>
+                            <a href="tel:1234567890">
+                                {order?.customer_details.contact}
+                            </a>
                         </td>
                     </tr>
                     <tr>
                         <td>Customer Address</td>
-                        <td>123, ABCD, XYZ, ABCD</td>
+                        <td>{order?.customer_details.address}</td>
                     </tr>
                     <tr>
                         <td>Payment Method</td>
@@ -74,15 +87,25 @@ const SellerSingleOrder = () => {
                     </tr>
                     <tr>
                         <td>Total Price</td>
-                        <td>1200 tk</td>
+                        <td>
+                            {productList?.reduce((acc, curr) => {
+                                console.log(
+                                    "NUMBER: ",
+                                    parseFloat(curr.discount)
+                                );
+                                const basePrice =
+                                    parseFloat(curr.base_price) -
+                                    (parseFloat(curr.base_price) *
+                                        parseFloat(curr.discount)) /
+                                        100.0;
+                                return acc + basePrice * curr.quantity;
+                            }, 0)}{" "}
+                            tk
+                        </td>
                     </tr>
                     <tr>
-                        <td>Order Date</td>
-                        <td>12/12/2021</td>
-                    </tr>
-                    <tr>
-                        <td>Order Time</td>
-                        <td>12:12:12</td>
+                        <td>Order Date & Time</td>
+                        <td>{formatDateAndTimeFromString(order.order_date)}</td>
                     </tr>
                 </table>
             </div>
@@ -97,20 +120,25 @@ const SellerSingleOrder = () => {
                         <td>Product Quantity</td>
                         <td>Product Total Price</td>
                     </tr>
-                    <tr>
-                        <td>1234</td>
-                        <td>ABCD</td>
-                        <td>1200 tk</td>
-                        <td>1</td>
-                        <td>1200 tk</td>
-                    </tr>
-                    <tr>
-                        <td>1234</td>
-                        <td>ABCD</td>
-                        <td>1200 tk</td>
-                        <td>1</td>
-                        <td>1200 tk</td>
-                    </tr>
+
+                    {productList &&
+                        productList.map((product, index) => {
+                            const basePrice =
+                                parseFloat(product?.base_price) -
+                                (parseFloat(product?.base_price) *
+                                    parseFloat(product?.discount)) /
+                                    100.0;
+                            const qty = parseInt(product.quantity);
+                            return (
+                                <tr key={index}>
+                                    <td>#{product?.product_id}</td>
+                                    <td>{product?.product_name}</td>
+                                    <td>{basePrice.toFixed(2)} tk</td>
+                                    <td>{qty}</td>
+                                    <td>{basePrice * qty} tk</td>
+                                </tr>
+                            );
+                        })}
                 </table>
             </div>
 

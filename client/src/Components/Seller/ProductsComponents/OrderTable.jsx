@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 
-const OrderTable = () => {
+const OrderTable = ({ orderList }) => {
+    console.log("orderList", orderList);
+
     return (
         <div className={`OrderTable`}>
             <div className={`table-responsive `}>
@@ -9,7 +11,6 @@ const OrderTable = () => {
                         <tr className="">
                             <th className="px-3 py-3">Order Id</th>
                             <th className="w-50 px-3 py-3">Customer Name</th>
-                            <th className="px-3 py-3">Total Price</th>
                             <th className="px-3 py-3">Status</th>
                             <th className="px-3 py-3">
                                 <input
@@ -22,24 +23,28 @@ const OrderTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="fw-semibold">
-                            <td className="px-3 py-3 align-middle">#1234</td>
-                            <td className="px-3 py-3 align-middle">
-                                Shajeed Hossain
-                            </td>
-                            <td className="px-3 py-3 align-middle">1200 tk</td>
-                            <td className="px-3 py-3 align-middle">
-                                Pending...
-                            </td>
-                            <td className="px-3 py-3 text-center">
-                                <Link
-                                    to={`/admin/orders/singleOrder`}
-                                    className={`btn text-black fw-semibold`}
-                                >
-                                    View Details
-                                </Link>
-                            </td>
-                        </tr>
+                        {orderList?.map((order, index) => (
+                            <tr key={index} className="fw-semibold">
+                                <td className="px-3 py-3 align-middle">
+                                    #{order.order_id}
+                                </td>
+                                <td className="px-3 py-3 align-middle">
+                                    {order.fullname}
+                                </td>
+                                <td className="px-3 py-3 align-middle">
+                                    {order.status}
+                                </td>
+                                <td className="px-3 py-3 text-center">
+                                    <Link
+                                        to={`/admin/orders/singleOrder/${order.order_id}`}
+                                        state={{ order }}
+                                        className={`btn text-black fw-semibold`}
+                                    >
+                                        View Details
+                                    </Link>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>

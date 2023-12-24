@@ -1,11 +1,18 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import classes from "../../Style/Buyer/Navbar.module.css";
 import MainNav from "./MainNav";
 import { useCartContext } from "../../hooks/useCartContext";
 import { useAuthContext } from "../../hooks/useAuthContext";
 export default function Navbar() {
     const { productCount } = useCartContext();
-    const { user } = useAuthContext();
+    const { user, logout } = useAuthContext();
+
+    const navigate = useNavigate();
+    function handleLogout(e) {
+        e.preventDefault();
+        logout();
+        navigate("/");
+    }
     return (
         <section className={`${classes["header-area"]} shadow`}>
             <div className="container">
@@ -79,7 +86,10 @@ export default function Navbar() {
                                             <i className="bi bi-person-fill p-0"></i>
                                         </Link>
                                     </li>
-                                    <li className={`${classes["logout-btn"]}`}>
+                                    <li
+                                        className={`${classes["logout-btn"]}`}
+                                        onClick={handleLogout}
+                                    >
                                         <i className="fa-solid fa-right-from-bracket ms-4 p-0"></i>
                                     </li>
                                 </>

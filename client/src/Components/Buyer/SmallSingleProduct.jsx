@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import classes from "../../Style/Buyer/ProductBox.module.css";
 import { makeSourceURL } from "../../utilities/utilities";
-import demoImg from "../../assets/rice.webp";
+// import demoImg from "../../assets/rice.webp";
 export default function SmallSingleProduct({ product }) {
     const {
         product_id,
