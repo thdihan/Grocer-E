@@ -27,8 +27,8 @@ app.use("/api/seller", sellerRoutes);
 app.use("/api/buyer", buyerRoutes);
 
 //listening the server
-app.listen(process.env.SERVER_PORT || 5001, () => {
-  console.log(
-    `App listening on http://localhost:${process.env.SERVER_PORT || 5001}`
-  );
+app.listen(process.env.SERVER_PORT || 3001, () => {
+    console.log(
+        `App listening on http://localhost:${process.env.SERVER_PORT || 3001}`
+    );
 });
