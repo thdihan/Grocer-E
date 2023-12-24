@@ -28,7 +28,9 @@ export default function SingleProduct({ product }) {
                 <div
                     className={`${classes["product-thumnail"]} d-flex justify-content-center align-items-center w-100 px-4 py-2`}
                 >
-                    <div className={`${classes["image-container"]} mt-3`}>
+                    <div
+                        className={`${classes["image-container"]} mt-3 d-flex justify-content-center`}
+                    >
                         <img
                             className="img-fluid"
                             src={makeSourceURL(product_image)}

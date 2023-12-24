@@ -127,6 +127,55 @@ const addCategory = async (req, res) => {
     }
 };
 
+const updateCategory = async (req, res) => {
+    const { authorization } = req.headers;
+    const token = authorization.split(" ")[1];
+    const categoryObject = req.body;
+    console.log("categoryObject", categoryObject);
+
+    try {
+        const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+        // console.log(Object.keys(categoryObject).length);
+        const deleteParentEntries = await pool.query(
+            "delete from category_parent_relationship where category_id=$1",
+            [categoryObject.category_id]
+        );
+        console.log("deleteParentEntries", deleteParentEntries.rows);
+        const updateCategory = await pool.query(
+            "update categories set category_name=$1 where category_id=$2 returning *",
+            [categoryObject.category_name, categoryObject.category_id]
+        );
+        console.log("updateCategory", updateCategory.rows);
+
+        let data;
+        for (const key in categoryObject) {
+            if (key !== "category_name" && key !== "category_id") {
+                console.log("INN");
+                const parentId = BigInt(categoryObject[key]);
+                console.log(
+                    "DATA: ",
+                    BigInt(_id),
+                    categoryObject.category_name,
+                    parentId
+                );
+                const addedChildCategory = await addChildCategory(
+                    _id,
+                    categoryObject.category_name,
+                    parentId
+                );
+                console.log("ADDED: ", addedChildCategory);
+                data = addedChildCategory;
+            }
+        }
+        res.status(200).json({ addedChildCategory: data });
+    } catch (error) {
+        res.status(400).json({
+            from: "add category",
+            error: error.message,
+        });
+    }
+};
+
 const getAllCategories = async (req, res) => {
     try {
         const categories = await pool.query(
@@ -211,6 +260,7 @@ module.exports = {
     addCategory,
     getAllCategories,
     addProduct,
+    updateCategory,
 };
 
 // ("SELECT p.product_id, p.product_name, p.description, p.base_price, p.discount, p.unit, p.stock, p.product_image, array_agg(c.category_id) AS category_ids, array_agg(c.category_name) AS category_names FROM products AS p INNER JOIN product_category_relationship AS pcr ON p.product_id = pcr.product_id INNER JOIN categories AS c ON pcr.category_id = c.category_id GROUP BY p.product_id, p.product_name, p.description, p.base_price, p.discount, p.unit, p.stock, p.product_image;");

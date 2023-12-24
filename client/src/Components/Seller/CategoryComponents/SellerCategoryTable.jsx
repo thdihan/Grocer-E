@@ -1,4 +1,5 @@
 import classes from "../../../Style/Seller/SellerCategoryTable.module.css";
+import { Link } from "react-router-dom";
 export default function SellerCategoryTable({ category }) {
     // console.log(category);
     const { categoryList, categoryLoading, categoryError } = category;
@@ -31,15 +32,21 @@ export default function SellerCategoryTable({ category }) {
                                         {category.category_name}
                                     </td>
                                     <td className="px-3 py-3 align-middle">
-                                        {category.parent_name?
-                                            .map((parent) => parent)
+                                        {category.parent_name
+                                            ?.map((parent) => parent)
                                             .join(", ")}
                                     </td>
                                     <td className="px-3 py-3 align-middle">
                                         {category.product_count}
                                     </td>
                                     <td className="px-3 py-3 align-middle">
-                                        Action
+                                        <Link
+                                            to="/admin/add-category"
+                                            state={{ category }}
+                                        >
+                                            <i className="fa-solid fa-pen-to-square"></i>{" "}
+                                            Edit
+                                        </Link>
                                     </td>
                                 </tr>
                             );

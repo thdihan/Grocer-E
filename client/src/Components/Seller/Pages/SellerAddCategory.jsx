@@ -5,6 +5,7 @@ import classes from "../../../Style/Seller/SellerAddCategory.module.css";
 import SellerApi from "../../../apis/SellerApi";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import { useCategoryList } from "../../../hooks/useCategoryList";
+import { useLocation } from "react-router-dom";
 
 export default function SellerAddCategory() {
     const [error, setError] = useState(false);
@@ -14,6 +15,13 @@ export default function SellerAddCategory() {
         useCategoryList(user);
     const [parentCategory, setParentCategory] = useState({});
     console.log("Category List: ", categoryList);
+
+    const location = useLocation();
+    const { category } = location.state ? location.state : {};
+    console.log("Category: ", category);
+    const [editMode, setEditMode] = useState(category ? true : false);
+    const [editCategory, setEditCategory] = useState(category ? category : {});
+
     useEffect(() => {
         toast.onChange((payload) => {
             if (payload.status === "removed") {
@@ -22,6 +30,59 @@ export default function SellerAddCategory() {
             }
         });
     }, []);
+
+    useEffect(() => {
+        if (category) {
+            for (let i = 0; i < category.parent_name.length; i++) {
+                setParentCategory((prevSelected) => ({
+                    ...prevSelected,
+                    [category.parent_name[i]]: category.parent_id[i],
+                }));
+            }
+        }
+    }, [category]);
+
+    async function handleUpate(e) {
+        e.preventDefault();
+        setError(false);
+        setLoading(true);
+
+        const formData = new FormData(e.target);
+        const formDataObject = Object.fromEntries(formData);
+        console.log("Form Data Example : ", formDataObject);
+        const submitData = {
+            category_id: category.category_id,
+            ...formDataObject,
+            ...parentCategory,
+        };
+        console.log("Update Data: ", submitData);
+        try {
+            const response = await SellerApi.post(
+                "/update-category",
+                submitData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${user}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            setLoading(false);
+            e.target.reset();
+
+            toast.success("Category added successfully...", {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 1200, // Time in milliseconds to auto-close the toast (1.5 seconds in this case)
+            });
+            console.log("ADD CAT: ", response);
+        } catch (err) {
+            setError(err.response.data.error);
+            setLoading(false);
+
+            console.log("ADD CAT: ", err);
+        }
+    }
 
     async function handleSubmit(e) {
         console.log(user);
@@ -59,7 +120,9 @@ export default function SellerAddCategory() {
     }
 
     // Parent Category Selection Box
-    const [selectedCategory, setSelectedCategory] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(
+        category ? category.parent_name : []
+    );
     const addCategorySelection = (e) => {
         const category_id = e.target.value;
         const category_name = e.target.nextSibling.textContent;
@@ -94,7 +157,7 @@ export default function SellerAddCategory() {
             </div>
             <div className="p-3 d-flex justify-content-center">
                 <form
-                    onSubmit={handleSubmit}
+                    onSubmit={editMode ? handleUpate : handleSubmit}
                     className={`row mt-md-5 g-3 ${classes["add-category-form"]}`}
                 >
                     <div className="col-md-12 p-0">
@@ -107,6 +170,7 @@ export default function SellerAddCategory() {
                             type="text"
                             className="form-control p-2"
                             id="category"
+                            defaultValue={editCategory.category_name}
                         />
                     </div>
 

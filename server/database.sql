@@ -1,23 +1,22 @@
-create database grocere;
+CREATE DATABASE GROCERE;
 
 \l --Use this to see all the databases present in your system
 \c grocere -- Use this to connect to the grocere database
 \dt --use this to see all the relations in the database
 \! cls -- to clear screen
 
+DROP TABLE USERS;
 
-drop table users;
-
-CREATE TABLE users (
-    user_id bigserial PRIMARY KEY,
-    fullname VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    user_type VARCHAR(50) NOT NULL DEFAULT 'admin',
-    address VARCHAR(255),
-    contact VARCHAR(20) DEFAULT 'N/A' CHECK (contact <> ''),
-    CONSTRAINT email_user_type_unique UNIQUE (email, user_type),
-    CONSTRAINT valid_user_type CHECK (user_type IN ('admin', 'customer'))
+CREATE TABLE USERS (
+    USER_ID BIGSERIAL PRIMARY KEY,
+    FULLNAME VARCHAR(255) NOT NULL,
+    EMAIL VARCHAR(255) NOT NULL,
+    PASSWORD VARCHAR(255) NOT NULL,
+    USER_TYPE VARCHAR(50) NOT NULL DEFAULT 'admin',
+    ADDRESS VARCHAR(255),
+    CONTACT VARCHAR(20) DEFAULT 'N/A' CHECK (CONTACT <> ''),
+    CONSTRAINT EMAIL_USER_TYPE_UNIQUE UNIQUE (EMAIL, USER_TYPE),
+    CONSTRAINT VALID_USER_TYPE CHECK (USER_TYPE IN ('admin', 'customer'))
 );
 
 -- ALTER TABLE users
@@ -26,170 +25,121 @@ CREATE TABLE users (
 
 
 
-drop table categories;
-drop table parent_categories;
+DROP TABLE CATEGORIES;
 
-CREATE TABLE categories (
-    category_id serial PRIMARY KEY,
-    category_name varchar(255) NOT NULL,
-    seller_id bigint,
-    CONSTRAINT category_user_fk FOREIGN KEY (seller_id) REFERENCES users(user_id)
+DROP TABLE PARENT_CATEGORIES;
+
+CREATE TABLE CATEGORIES (
+    CATEGORY_ID SERIAL PRIMARY KEY,
+    CATEGORY_NAME VARCHAR(255) NOT NULL,
+    SELLER_ID BIGINT,
+    CONSTRAINT CATEGORY_USER_FK FOREIGN KEY (SELLER_ID) REFERENCES USERS(USER_ID)
 );
 
-CREATE TABLE category_parent_relationship (
-    category_id bigint,
-    parent_category_id bigint,
-    seller_id bigint,
-    CONSTRAINT category_parent_pk PRIMARY KEY (category_id, parent_category_id),
-    CONSTRAINT category_fk FOREIGN KEY (category_id) REFERENCES categories(category_id) ON delete cascade,
-    CONSTRAINT parent_category_fk FOREIGN KEY (parent_category_id) REFERENCES categories(category_id) On delete cascade
+CREATE TABLE CATEGORY_PARENT_RELATIONSHIP (
+    CATEGORY_ID BIGINT,
+    PARENT_CATEGORY_ID BIGINT,
+    SELLER_ID BIGINT,
+    CONSTRAINT CATEGORY_PARENT_PK PRIMARY KEY (CATEGORY_ID, PARENT_CATEGORY_ID),
+    CONSTRAINT CATEGORY_FK FOREIGN KEY (CATEGORY_ID) REFERENCES CATEGORIES(CATEGORY_ID) ON DELETE CASCADE,
+    CONSTRAINT PARENT_CATEGORY_FK FOREIGN KEY (PARENT_CATEGORY_ID) REFERENCES CATEGORIES(CATEGORY_ID) ON DELETE CASCADE
 );
 
-drop table products;
+DROP TABLE PRODUCTS;
 
-CREATE TABLE products (
-    product_id bigserial PRIMARY KEY,
-    product_name VARCHAR(255) UNIQUE NOT NULL,
-    description VARCHAR(255),
-    base_price NUMERIC NOT NULL,
-    discount NUMERIC DEFAULT 0.00,
-    unit VARCHAR(50) NOT NULL,
-    stock NUMERIC NOT NULL CONSTRAINT check_stock_non_negative CHECK (stock >= 0),
-    product_image VARCHAR(100),
-    seller_id bigint,
-    status VARCHAR(20) DEFAULT 'Published' CHECK (status IN ('Hidden', 'Published')),
-    CONSTRAINT category_user_fk FOREIGN KEY (seller_id) REFERENCES users(user_id)
+CREATE TABLE PRODUCTS (
+    PRODUCT_ID BIGSERIAL PRIMARY KEY,
+    PRODUCT_NAME VARCHAR(255) UNIQUE NOT NULL,
+    DESCRIPTION VARCHAR(255),
+    BASE_PRICE NUMERIC NOT NULL,
+    DISCOUNT NUMERIC DEFAULT 0.00,
+    UNIT VARCHAR(50) NOT NULL,
+    STOCK NUMERIC NOT NULL CONSTRAINT CHECK_STOCK_NON_NEGATIVE CHECK (STOCK >= 0),
+    PRODUCT_IMAGE VARCHAR(100),
+    SELLER_ID BIGINT,
+    STATUS VARCHAR(20) DEFAULT 'Published' CHECK (STATUS IN ('Hidden', 'Published')),
+    CONSTRAINT CATEGORY_USER_FK FOREIGN KEY (SELLER_ID) REFERENCES USERS(USER_ID)
 );
 
--- ALTER TABLE products
--- ADD COLUMN status VARCHAR(20) DEFAULT 'Published' CHECK (status IN ('Hidden', 'Published'));
+ALTER TABLE PRODUCTS ADD COLUMN STATUS VARCHAR(20) DEFAULT 'Published' CHECK (STATUS IN ('Hidden', 'Published'));
 
 -- UPDATE products
 -- SET status = 'Published'
 -- WHERE status IS NULL;
 
-drop table product_category_relationship;
-CREATE TABLE product_category_relationship (
-    product_id bigint,
-    category_id bigint,
-    seller_id bigint,
-    CONSTRAINT product_category_pk PRIMARY KEY (product_id, category_id),
-    CONSTRAINT category_fk FOREIGN KEY (category_id) REFERENCES categories(category_id) ON delete cascade,
-    CONSTRAINT product_fk FOREIGN KEY (product_id) REFERENCES products(product_id) On delete cascade,
-    CONSTRAINT seller_fk FOREIGN KEY (seller_id) REFERENCES users(user_id)
+DROP TABLE PRODUCT_CATEGORY_RELATIONSHIP;
+
+CREATE TABLE PRODUCT_CATEGORY_RELATIONSHIP (
+    PRODUCT_ID BIGINT,
+    CATEGORY_ID BIGINT,
+    SELLER_ID BIGINT,
+    CONSTRAINT PRODUCT_CATEGORY_PK PRIMARY KEY (PRODUCT_ID, CATEGORY_ID),
+    CONSTRAINT CATEGORY_FK FOREIGN KEY (CATEGORY_ID) REFERENCES CATEGORIES(CATEGORY_ID) ON DELETE CASCADE,
+    CONSTRAINT PRODUCT_FK FOREIGN KEY (PRODUCT_ID) REFERENCES PRODUCTS(PRODUCT_ID) ON DELETE CASCADE,
+    CONSTRAINT SELLER_FK FOREIGN KEY (SELLER_ID) REFERENCES USERS(USER_ID)
 );
 
-drop table cart;
+DROP TABLE CART;
 
-CREATE TABLE cart (
-    cart_id bigserial PRIMARY KEY,
-    customer_id bigint,
-    product_list JSONB[],
-    total_price NUMERIC NOT NULL,
-    discount_total NUMERIC NOT NULL DEFAULT 0.0,
-    product_count INTEGER NOT NULL DEFAULT 0,
-    status VARCHAR(20) NOT NULL DEFAULT 'pending',
-    CONSTRAINT valid_status CHECK (status IN ('pending', 'done')),
-    CONSTRAINT category_cart_fk FOREIGN KEY (customer_id) REFERENCES users(user_id)
+CREATE TABLE CART (
+    CART_ID BIGSERIAL PRIMARY KEY,
+    CUSTOMER_ID BIGINT,
+    PRODUCT_LIST JSONB[],
+    TOTAL_PRICE NUMERIC NOT NULL,
+    DISCOUNT_TOTAL NUMERIC NOT NULL DEFAULT 0.0,
+    PRODUCT_COUNT INTEGER NOT NULL DEFAULT 0,
+    STATUS VARCHAR(20) NOT NULL DEFAULT 'pending',
+    CONSTRAINT VALID_STATUS CHECK (STATUS IN ('pending', 'done')),
+    CONSTRAINT CATEGORY_CART_FK FOREIGN KEY (CUSTOMER_ID) REFERENCES USERS(USER_ID)
 );
 
-drop table cart_product;
+DROP TABLE CART_PRODUCT;
 
-CREATE TABLE cart_product (
-    cart_id bigint,
-    product_id bigint,
-    customer_id bigint,
-    quantity INTEGER NOT NULL,
-    status VARCHAR(20) NOT NULL DEFAULT 'pending',
-    CONSTRAINT valid_cart_product_status CHECK (status IN ('pending', 'done')),
-    CONSTRAINT cart_product_fk_cart FOREIGN KEY (cart_id) REFERENCES cart(cart_id),
-    CONSTRAINT cart_product_fk_product FOREIGN KEY (product_id) REFERENCES products(product_id),
-    CONSTRAINT cart_product_fk_customer FOREIGN KEY (customer_id) REFERENCES users(user_id),
-    CONSTRAINT unique_cart_product_combination UNIQUE (cart_id, product_id, customer_id)
+CREATE TABLE CART_PRODUCT (
+    CART_ID BIGINT,
+    PRODUCT_ID BIGINT,
+    CUSTOMER_ID BIGINT,
+    QUANTITY INTEGER NOT NULL,
+    STATUS VARCHAR(20) NOT NULL DEFAULT 'pending',
+    CONSTRAINT VALID_CART_PRODUCT_STATUS CHECK (STATUS IN ('pending', 'done')),
+    CONSTRAINT CART_PRODUCT_FK_CART FOREIGN KEY (CART_ID) REFERENCES CART(CART_ID),
+    CONSTRAINT CART_PRODUCT_FK_PRODUCT FOREIGN KEY (PRODUCT_ID) REFERENCES PRODUCTS(PRODUCT_ID),
+    CONSTRAINT CART_PRODUCT_FK_CUSTOMER FOREIGN KEY (CUSTOMER_ID) REFERENCES USERS(USER_ID),
+    CONSTRAINT UNIQUE_CART_PRODUCT_COMBINATION UNIQUE (CART_ID, PRODUCT_ID, CUSTOMER_ID)
 );
 
-drop table ordered_product;
-drop table orders;
+DROP TABLE ORDERED_PRODUCT;
 
-CREATE TABLE orders (
-    order_id bigserial PRIMARY KEY,
-    cart_id bigint,
-    customer_id bigint,
-    order_date DATE DEFAULT CURRENT_DATE,
-    customer_details JSONB,
-    status VARCHAR(20) DEFAULT 'Pending' CHECK (status IN ('Approved', 'Shipped', 'Pending', 'Completed')),
-    
-    CONSTRAINT cart_fk FOREIGN KEY (cart_id) REFERENCES cart(cart_id),
-    CONSTRAINT customer_fk FOREIGN KEY (customer_id) REFERENCES users(user_id),
-    CONSTRAINT unique_cart_customer_combination UNIQUE (cart_id, customer_id)
+DROP TABLE ORDERS;
+
+CREATE TABLE ORDERS (
+    ORDER_ID BIGSERIAL PRIMARY KEY,
+    CART_ID BIGINT,
+    CUSTOMER_ID BIGINT,
+    ORDER_DATE DATE DEFAULT CURRENT_DATE,
+    CUSTOMER_DETAILS JSONB,
+    STATUS VARCHAR(20) DEFAULT 'Pending' CHECK (STATUS IN ('Approved', 'Shipped', 'Pending', 'Completed')),
+    CONSTRAINT CART_FK FOREIGN KEY (CART_ID) REFERENCES CART(CART_ID),
+    CONSTRAINT CUSTOMER_FK FOREIGN KEY (CUSTOMER_ID) REFERENCES USERS(USER_ID),
+    CONSTRAINT UNIQUE_CART_CUSTOMER_COMBINATION UNIQUE (CART_ID, CUSTOMER_ID)
 );
 
-UPDATE orders SET order_date = '2023-12-09' WHERE order_id = 15;
+UPDATE ORDERS
+SET
+    ORDER_DATE = '2023-12-09'
+WHERE
+    ORDER_ID = 15;
 
-
-CREATE TABLE ordered_product (
-    product_id bigint,
-    order_id bigint,
-    quantity INTEGER NOT NULL,
-    
-    CONSTRAINT order_product_pk PRIMARY KEY (product_id,order_id),
-    CONSTRAINT product_fk FOREIGN KEY (product_id) REFERENCES products(product_id),
-    CONSTRAINT order_fk FOREIGN KEY (order_id) REFERENCES orders(order_id)
+CREATE TABLE ORDERED_PRODUCT (
+    PRODUCT_ID BIGINT,
+    ORDER_ID BIGINT,
+    QUANTITY INTEGER NOT NULL,
+    CONSTRAINT ORDER_PRODUCT_PK PRIMARY KEY (PRODUCT_ID, ORDER_ID),
+    CONSTRAINT PRODUCT_FK FOREIGN KEY (PRODUCT_ID) REFERENCES PRODUCTS(PRODUCT_ID),
+    CONSTRAINT ORDER_FK FOREIGN KEY (ORDER_ID) REFERENCES ORDERS(ORDER_ID)
 );
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--- { 
+-- {
 --     "cart_id":626,
 --     "customer_details":{
 --         "address":"abcd",
@@ -203,15 +153,15 @@ CREATE TABLE ordered_product (
 
 
 
--- { 
+-- {
 --     "productList":
 --     [
 --         {"product_id":5, "quantity":4,"product_name":"Chicken Egg"},
 --         {"product_id":6, "quantity":3,"product_name":"Tofu"},
 --         {"product_id":7, "quantity":1,"product_name":"Rupchanda Fortified Soyabean Oil"}
---     ], 
---     "priceTotal":1230, 
---     "discountTotal":200, 
+--     ],
+--     "priceTotal":1230,
+--     "discountTotal":200,
 --     "productCount":8,
 --     "cart_id":626
 -- }
@@ -279,6 +229,3 @@ CREATE TABLE ordered_product (
 -- AFTER DELETE ON parent_categories
 -- FOR EACH ROW
 -- EXECUTE FUNCTION delete_empty_categories();
-
-
-
