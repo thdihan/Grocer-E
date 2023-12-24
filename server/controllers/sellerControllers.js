@@ -256,63 +256,12 @@ const addProduct = async (req, res) => {
     }
 };
 
-// const getAllOrder = async (req, res) => {
-//     console.log("WORKED");
-
-//     try {
-//         const order = await pool.query(
-//             "select * from orders o join ordered_product op on o.order_id = op.order_id"
-//         );
-//         res.status(200).json({
-//             order: order.rows,
-//         });
-//     } catch (error) {
-//         res.status(400).json({
-//             from: "get all order",
-//             error: error.message,
-//         });
-//     }
-// };
-const getAllOrder = async (req, res) => {
-    try {
-        const order = await pool.query(
-            "select * from orders o join users u on o.customer_id = u.user_id;"
-        );
-        res.status(200).json({
-            order: order.rows,
-        });
-    } catch (error) {
-        res.status(400).json({
-            from: "get all order",
-            error: error.message,
-        });
-    }
-};
-
-const getOrderedProducts = async (req, res) => {
-    const orderId = req.params.orderId;
-    try {
-        const order = await pool.query(
-            "select * from orders o join ordered_product op on o.order_id = op.order_id join products p on op.product_id = p.product_id where o.order_id=$1",
-            [orderId]
-        );
-        res.status(200).json({
-            order: order.rows,
-        });
-    } catch (error) {
-        res.status(400).json({
-            from: "get all order",
-            error: error.message,
-        });
-    }
-};
 module.exports = {
     addCategory,
     getAllCategories,
     addProduct,
     updateCategory,
+    updateProduct,
     getAllOrder,
     getOrderedProducts,
 };
-
-// ("SELECT p.product_id, p.product_name, p.description, p.base_price, p.discount, p.unit, p.stock, p.product_image, array_agg(c.category_id) AS category_ids, array_agg(c.category_name) AS category_names FROM products AS p INNER JOIN product_category_relationship AS pcr ON p.product_id = pcr.product_id INNER JOIN categories AS c ON pcr.category_id = c.category_id GROUP BY p.product_id, p.product_name, p.description, p.base_price, p.discount, p.unit, p.stock, p.product_image;");

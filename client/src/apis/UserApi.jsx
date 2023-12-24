@@ -49,3 +49,18 @@ export default axios.create({
 //     "Content-Type": "application/json",
 //   },
 // });
+
+/**UPDATE USER */
+// const response = await UserApi.put("/update-profile",{
+//   current_password,
+//   new_password,
+//   confirm_password,
+//   address,
+//   contact,
+//   fullname,
+// } ,{
+//   headers: {
+// Authorization: `Bearer ${user}`,
+//     "Content-Type": "application/json",
+//   },
+// });
