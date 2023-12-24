@@ -6,6 +6,7 @@ const {
   login,
   getUser,
   getRetentionDetails,
+  updateUser,
 } = require("../controllers/userControllers");
 const {
   getSingleProductDetails,
@@ -30,6 +31,7 @@ router.route("/get-single-product-record").get(getSingleProductRecord);
 router.route("/get-single-category-record").get(getSingleCategoryRecord);
 router.route("/get-search-results").get(getSearchResult);
 router.route("/get-retention-details").get(getRetentionDetails);
+router.route("/update-profile").put(requireAuth, updateUser);
 //   router.route("/login").post(checkLogin);
 //   router.route("/").get(requireAuth, getUser);
 //   router.route("/forgot-password").post(checkEmail);
