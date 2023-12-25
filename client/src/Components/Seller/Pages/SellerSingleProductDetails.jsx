@@ -35,6 +35,7 @@ const SellerSingleProductDetails = () => {
             setCategoryNames(productDetails.categories);
         }
     }, [productDetails, product_Id]);
+
     return (
         <div className={classes.SellerSingleProductDetails}>
             <div className="px-3 py-3 border-bottom d-flex justify-content-between align-items-center">

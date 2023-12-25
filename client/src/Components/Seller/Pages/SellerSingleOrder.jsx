@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classes from "../../../Style/Seller/SellerSingleOrder.module.css";
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useLocation, useParams } from "react-router-dom";
 import { useSellerGetAllOrderedProducts } from "../../../hooks/useSellerGetAllOrderedProducts";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import { formatDateAndTimeFromString } from "../../../utilities/utilities";
+import SellerApi from "../../../apis/SellerApi";
 const SellerSingleOrder = () => {
     const location = useLocation();
     console.log("LOCATION", location);
@@ -15,7 +16,8 @@ const SellerSingleOrder = () => {
         useSellerGetAllOrderedProducts(user, orderId);
     const [orderStatus, setOrderStatus] = useState(order?.status);
     console.log("ORDER : ", order, " PRODUCT_LIST: ", productList);
-    const updateStatus = (e) => {
+
+    const updateStatus = async (e) => {
         // Close the modal here
         const modal = document.getElementById("exampleModal");
         const modalInstance = bootstrap.Modal.getInstance(modal);
@@ -28,6 +30,21 @@ const SellerSingleOrder = () => {
         }
 
         // [Todo] : Update the order status here
+        try {
+            const response = await SellerApi.put(
+                "/update-order-status",
+                { order_id: orderId, order_status: orderStatus },
+                {
+                    headers: {
+                        Authorization: `Bearer ${user}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            console.log("RESPONSE: ", response);
+        } catch (error) {
+            console.log("ERROR: ", error);
+        }
     };
     return (
         <div className={`${classes["SellerSingleOrder"]}`}>
@@ -176,11 +193,9 @@ const SellerSingleOrder = () => {
                                     }
                                 >
                                     <option value="Pending">Pending</option>
-                                    <option value="Processing">
-                                        Processing
-                                    </option>
-                                    <option value="Delivered">Delivered</option>
-                                    <option value="Cancelled">Cancelled</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Shipped">Shipped</option>
+                                    <option value="Completed">Completed</option>
                                 </select>
                             </form>
                         </div>
