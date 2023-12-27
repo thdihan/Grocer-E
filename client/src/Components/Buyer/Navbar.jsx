@@ -5,7 +5,7 @@ import { useCartContext } from "../../hooks/useCartContext";
 import { useAuthContext } from "../../hooks/useAuthContext";
 export default function Navbar() {
     const { productCount } = useCartContext();
-    const { user, logout } = useAuthContext();
+    const { user, logout, newUser } = useAuthContext();
 
     const navigate = useNavigate();
     function handleLogout(e) {
@@ -80,8 +80,11 @@ export default function Navbar() {
                                             <span
                                                 className={`fw-semibold pe-2`}
                                             >
-                                                {/* {user.name} */}
-                                                Tanvir
+                                                {
+                                                    newUser?.fullname?.split(
+                                                        " "
+                                                    )[0]
+                                                }
                                             </span>{" "}
                                             <i className="bi bi-person-fill p-0"></i>
                                         </Link>
