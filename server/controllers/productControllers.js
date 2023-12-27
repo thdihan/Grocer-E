@@ -48,6 +48,7 @@ const categoryBasedProductList = async (req, res) => {
 };
 
 const getPopularProductList = async (req, res) => {
+    console.log("get popular product list");
     try {
         const products = await pool.query(
             "WITH RankedProducts AS (SELECT p.*, COUNT(op.product_id) AS productCount, ROW_NUMBER() OVER (ORDER BY COUNT(op.product_id) DESC) AS ROWNUM FROM products p JOIN ordered_product op ON p.product_id = op.product_id GROUP BY p.product_id) SELECT P.ROWNUM, p.product_id, p.product_name, p.description, p.base_price, p.discount, p.unit, p.stock, p.product_image, p.seller_id, array_agg(DISTINCT c.category_name) AS categories, array_agg(DISTINCT pc.parent_category_id) AS parent_categories FROM RankedProducts p JOIN product_category_relationship pcr ON p.product_id = pcr.product_id JOIN categories c ON c.category_id = pcr.category_id LEFT JOIN category_parent_relationship pc ON c.category_id = pc.category_id WHERE ROWNUM <= 5 GROUP BY p.ROWNUM, p.product_id, p.product_name, p.description, p.base_price, p.discount, p.unit, p.stock, p.product_image, p.seller_id; "
