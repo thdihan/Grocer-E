@@ -6,8 +6,11 @@ import {
 } from "../../utilities/utilities";
 import ProductBox from "./ProductBox";
 import { useState } from "react";
+import { useAuthContext } from "../../hooks/useAuthContext";
 export default function SingleProductDetails() {
     const location = useLocation();
+    const { newUser } = useAuthContext();
+    console.log("New User : ", newUser);
     const {
         product_id,
         product_name,
@@ -31,7 +34,7 @@ export default function SingleProductDetails() {
         const singleReview = {
             rating,
             review,
-            reviewer: "John Doe",
+            reviewer: newUser,
             review_date: new Date().toISOString(),
         };
         console.log(review);
@@ -179,7 +182,10 @@ export default function SingleProductDetails() {
                                                 >
                                                     <div>
                                                         <h5 className={`mb-2`}>
-                                                            {review.reviewer}
+                                                            {
+                                                                review?.reviewer
+                                                                    ?.fullname
+                                                            }
                                                         </h5>
                                                         <p
                                                             className={`mb-1 fst-italic fs-6 text-secondary`}
