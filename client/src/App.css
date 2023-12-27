@@ -43,7 +43,7 @@
 
 @media (min-width: 1400px) {
     .container {
-        min-width: 1600px !important;
+        min-width: 1400px !important;
         margin: 0 auto !important;
     }
 }

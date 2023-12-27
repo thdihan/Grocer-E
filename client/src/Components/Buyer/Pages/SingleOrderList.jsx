@@ -1,7 +1,9 @@
 import { useLocation } from "react-router-dom";
 import classes from "../../../Style/Buyer/SingleOrderList.module.css";
+import { formatDateAndTimeFromString } from "../../../utilities/utilities";
 
 const SingleOrderList = () => {
+    console.log(window.screen.width);
     const location = useLocation();
     console.log("location : ", location.state);
     const { order } = location.state;
@@ -10,9 +12,9 @@ const SingleOrderList = () => {
         order_id,
         buyer_username,
         order_date,
-        order_total,
-        order_status,
+        status,
         product_list,
+        customer_details,
     } = order;
     return (
         <div className={`${classes["SingleOrderList"]} bg-white border`}>
@@ -40,7 +42,7 @@ const SingleOrderList = () => {
                         </tr>
                         <tr>
                             <th>Customer Phone</th>
-                            <td>Customer Phone</td>
+                            <td>{customer_details?.contact}</td>
                         </tr>
                         <tr>
                             <th>Customer Address</th>
@@ -49,15 +51,28 @@ const SingleOrderList = () => {
 
                         <tr>
                             <th>Order Date</th>
-                            <td>12/12/2021</td>
+                            <td>{formatDateAndTimeFromString(order_date)}</td>
                         </tr>
                         <tr>
                             <th>Order Total</th>
-                            <td>5000</td>
+                            <td>
+                                {product_list?.reduce((acc, curr) => {
+                                    console.log(
+                                        "NUMBER: ",
+                                        parseFloat(curr.discount)
+                                    );
+                                    const basePrice =
+                                        parseFloat(curr.base_price) -
+                                        (parseFloat(curr.base_price) *
+                                            parseFloat(curr.discount)) /
+                                            100.0;
+                                    return acc + basePrice * curr.quantity;
+                                }, 0)}
+                            </td>
                         </tr>
                         <tr>
                             <th>Order Status</th>
-                            <td>Delivered</td>
+                            <td>{status}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -74,30 +89,21 @@ const SingleOrderList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Product Name</td>
-                            <td>Product Price</td>
-                            <td>Product Quantity</td>
-                            <td>Product Total</td>
-                        </tr>
-                        <tr>
-                            <td>Product Name</td>
-                            <td>Product Price</td>
-                            <td>Product Quantity</td>
-                            <td>Product Total</td>
-                        </tr>
-                        <tr>
-                            <td>Product Name</td>
-                            <td>Product Price</td>
-                            <td>Product Quantity</td>
-                            <td>Product Total</td>
-                        </tr>
-                        <tr>
-                            <td>Product Name</td>
-                            <td>Product Price</td>
-                            <td>Product Quantity</td>
-                            <td>Product Total</td>
-                        </tr>
+                        {product_list?.map((product, index) => {
+                            const basePrice =
+                                parseFloat(product.base_price) -
+                                (parseFloat(product.base_price) *
+                                    parseFloat(product.discount)) /
+                                    100.0;
+                            return (
+                                <tr key={index}>
+                                    <td>{product.product_name}</td>
+                                    <td>{basePrice}</td>
+                                    <td>{product.quantity}</td>
+                                    <td>{basePrice * product.quantity}</td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>
