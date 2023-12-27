@@ -21,6 +21,7 @@ import SellerOrderList from "./Components/Seller/Pages/SellerOrderList";
 import SellerSingleOrder from "./Components/Seller/Pages/SellerSingleOrder";
 import SellerSingleProductDetails from "./Components/Seller/Pages/SellerSingleProductDetails";
 import LoginSignup from "./Components/Buyer/Pages/LoginSignup";
+import SingleOrderList from "./Components/Buyer/Pages/SingleOrderList";
 function App() {
     return (
         <AuthContextProvider>
@@ -72,6 +73,10 @@ function App() {
                         <Route path="profile/*" element={<Profile />}>
                             <Route path="" element={<UserInfo />} />
                             <Route path="orders" element={<OrderList />} />
+                            <Route
+                                path="single-order-list"
+                                element={<SingleOrderList />}
+                            />
                         </Route>
                     </Route>
                 </Routes>

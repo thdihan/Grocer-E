@@ -83,7 +83,11 @@ const OrderList = () => {
                                             {order.status}
                                         </td>
                                         <td>
-                                            <Link className={`btn`}>
+                                            <Link
+                                                state={{ order }}
+                                                to={`/profile/single-order-list`}
+                                                className={`btn`}
+                                            >
                                                 View Details
                                             </Link>
                                         </td>
