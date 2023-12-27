@@ -1,17 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classes from "../../../Style/Buyer/UserInfo.module.css";
 import TextInput from "../../Common/FormComponents/TextInput";
-
+import useGetProfileInfo from "../../../hooks/useGetProfileInfo";
+import { useAuthContext } from "../../../hooks/useAuthContext";
+import BuyerApi from "../../../apis/BuyerApi";
 const UserInfo = () => {
     const [editMode, setEditMode] = useState(false);
-
-    const [profileInfo, setProfileInfo] = useState({
-        name: "Tanvir Hossain Dihan",
-        email: "username@gmail.com",
-        contact: "017********",
-        address:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, vero.",
-    });
+    const { user } = useAuthContext();
+    const { profile, loading } = useGetProfileInfo(user);
+    const [profileInfo, setProfileInfo] = useState();
+    useEffect(() => {
+        const tempProfile = {
+            fullname: profile?.user?.fullname,
+            email: profile?.user?.email,
+            contact: profile?.user?.contact,
+            address: profile?.user?.address,
+        };
+        setProfileInfo(tempProfile);
+    }, [profile]);
 
     // [ToDo] : Get data from hook.
 
@@ -22,10 +28,26 @@ const UserInfo = () => {
         setProfileInfo(tempObj);
     };
 
-    const submitChange = (e) => {
+    const submitChange = async (e) => {
         e.preventDefault();
         setEditMode((prev) => !prev);
         // [ToDo] : Send data to server
+        console.log("Update Profile Info : ", profileInfo);
+        try {
+            const response = await BuyerApi.put(
+                "/update-profile-info",
+                profileInfo,
+                {
+                    headers: {
+                        Authorization: `Bearer ${user}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            console.log("PROFILE UPDATED : ", response);
+        } catch (error) {
+            console.log(error);
+        }
     };
     return (
         <div className={`${classes["UserInfo"]} bg-white border `}>
@@ -64,13 +86,13 @@ const UserInfo = () => {
                                 {editMode ? (
                                     <TextInput
                                         type="text"
-                                        name="name"
+                                        name="fullname"
                                         placeholder="Enter your name"
-                                        value={profileInfo.name}
+                                        value={profileInfo.fullname}
                                         onChange={handleEdit}
                                     />
                                 ) : (
-                                    "Tanvir Hossain Dihan"
+                                    profileInfo?.fullname
                                 )}
                             </td>
                         </tr>
@@ -86,7 +108,7 @@ const UserInfo = () => {
                                         onChange={handleEdit}
                                     />
                                 ) : (
-                                    "username@gmail.com"
+                                    profileInfo?.email
                                 )}
                             </td>
                         </tr>
@@ -102,7 +124,7 @@ const UserInfo = () => {
                                         onChange={handleEdit}
                                     />
                                 ) : (
-                                    "017********"
+                                    profileInfo?.contact
                                 )}
                             </td>
                         </tr>
@@ -118,7 +140,7 @@ const UserInfo = () => {
                                         onChange={handleEdit}
                                     />
                                 ) : (
-                                    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, vero."
+                                    profileInfo?.address
                                 )}
                             </td>
                         </tr>
