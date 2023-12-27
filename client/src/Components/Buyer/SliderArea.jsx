@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import Button from "../Common/Button";
 import { useGetPopularCategory } from "../../hooks/useGetPopularCategory";
+import { Link } from "react-router-dom";
 const SliderArea = () => {
     const settings = {
         dots: true,
@@ -33,7 +34,12 @@ const SliderArea = () => {
                                 categoryList?.map((category, index) => (
                                     <li key={index}>
                                         <i className="bi bi-tags-fill"></i>{" "}
-                                        {category?.category_name}
+                                        <Link
+                                            to={`/category-all-product/${category?.category_id}`}
+                                            key={index}
+                                        >
+                                            {category?.category_name}
+                                        </Link>
                                     </li>
                                 ))}
                         </ul>
