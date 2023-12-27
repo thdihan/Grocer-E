@@ -3,6 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import Button from "../Common/Button";
+import { useGetPopularCategory } from "../../hooks/useGetPopularCategory";
 const SliderArea = () => {
     const settings = {
         dots: true,
@@ -11,10 +12,14 @@ const SliderArea = () => {
         slidesToShow: 1,
         slidesToScroll: 1,
     };
+
+    const { categoryList, categoryLoading, categoryError } =
+        useGetPopularCategory();
+    console.log("Category List : ", categoryList);
     return (
         <div className={`${classes.SliderArea} py-5 mb-5`}>
             <div className={`container`}>
-                {/* <div className="row">
+                <div className="row">
                     <div className="col-12 col-md-4">
                         <ul
                             className={`shadow py-4  px-0 ${classes["category-list"]}`}
@@ -23,37 +28,14 @@ const SliderArea = () => {
                                 <i className="fa-solid fa-border-all"></i>
                                 &nbsp; &nbsp; Top Categories
                             </h5>
-                            <li>
-                                <i className="bi bi-tags-fill"></i> Dairy and
-                                Eggs
-                            </li>
-                            <li>
-                                <i className="bi bi-tags-fill"></i> Meat and
-                                Poultry
-                            </li>
-                            <li>
-                                <i className="bi bi-tags-fill"></i> Frozen Foods
-                            </li>
-                            <li>
-                                <i className="bi bi-tags-fill"></i> Canned Goods
-                            </li>
-                            <li>
-                                <i className="bi bi-tags-fill"></i> Bakery
-                            </li>
-                            <li>
-                                <i className="bi bi-tags-fill"></i> Beverages
-                            </li>
-                            <li>
-                                <i className="bi bi-tags-fill"></i> Snacks
-                            </li>
-                            <li>
-                                <i className="bi bi-tags-fill"></i> Condiments
-                                and Sauces
-                            </li>
-                            <li>
-                                <i className="bi bi-tags-fill"></i> Grains and
-                                Pasta
-                            </li>
+                            {!categoryLoading &&
+                                !categoryError &&
+                                categoryList?.map((category, index) => (
+                                    <li key={index}>
+                                        <i className="bi bi-tags-fill"></i>{" "}
+                                        {category?.category_name}
+                                    </li>
+                                ))}
                         </ul>
                     </div>
                     <div className="col-12 col-md-8 py-5">
@@ -78,7 +60,7 @@ const SliderArea = () => {
                                 </div>
 
                                 <div>
-                                    <img src={rice} alt="" />
+                                    <img src={``} alt="" />
                                 </div>
                             </div>
                             <div
@@ -101,12 +83,12 @@ const SliderArea = () => {
                                 </div>
 
                                 <div>
-                                    <img src={rice} alt="" />
+                                    <img src={``} alt="" />
                                 </div>
                             </div>
                         </Slider>
                     </div>
-                </div> */}
+                </div>
             </div>
         </div>
     );
