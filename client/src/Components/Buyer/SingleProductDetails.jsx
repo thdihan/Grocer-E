@@ -1,6 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import classes from "../../Style/Buyer/SingleProductDetails.module.css";
-import { makeSourceURL } from "../../utilities/utilities";
+import {
+    formatDateAndTimeFromString,
+    makeSourceURL,
+} from "../../utilities/utilities";
 import ProductBox from "./ProductBox";
 import { useState } from "react";
 export default function SingleProductDetails() {
@@ -18,6 +21,48 @@ export default function SingleProductDetails() {
         category_names,
     } = location.state;
     const [quantity, setQuantity] = useState(1);
+    const [reviews, setReviews] = useState([]);
+    const [review, setReview] = useState("");
+    const [rating, setRating] = useState(0);
+
+    const addReview = (e) => {
+        e.preventDefault();
+        console.log("Review Added");
+        const singleReview = {
+            rating,
+            review,
+            reviewer: "John Doe",
+            review_date: new Date().toISOString(),
+        };
+        console.log(review);
+        setReviews([...reviews, singleReview]);
+        // Write API HERE
+    };
+
+    const randerStars = (rating) => {
+        const stars = [];
+        for (let i = 0; i < 5; i++) {
+            if (i < rating) {
+                stars.push(
+                    <i
+                        key={i}
+                        className={`fa-solid fa-star text-warning`}
+                        onClick={() => setRating(i + 1)}
+                    ></i>
+                );
+            } else {
+                stars.push(
+                    <i
+                        key={i}
+                        className={`fa-regular fa-star text-warning`}
+                        onClick={() => setRating(i + 1)}
+                    ></i>
+                );
+            }
+        }
+        return stars;
+    };
+
     return (
         <div className={`py-5`}>
             <div className={`${classes["single-product-details"]} pb-5`}>
@@ -107,6 +152,109 @@ export default function SingleProductDetails() {
                     </div>
                 </div>
             </div>
+
+            <div className={`${classes["review-box"]} pb-5 bg-white`}>
+                <div className={`container border `}>
+                    <div className={`row`}>
+                        <div
+                            className={`col-12 px-4 py-3 border-bottom d-flex justify-content-between align-items-center`}
+                        >
+                            <h5 className={`m-0`}>
+                                <i className="fa-solid fa-message"></i> Reviews
+                            </h5>
+                        </div>
+
+                        {/* Previous Reviews  */}
+                        {reviews?.length > 0 &&
+                            reviews?.map((review, index) => (
+                                <div
+                                    className={`col-12 px-4 py-3 border-bottom`}
+                                    key={index}
+                                >
+                                    <div className={`row`}>
+                                        <div className={`col-12`}>
+                                            <div className={`row`}>
+                                                <div
+                                                    className={`col-12 col-md-6 d-flex align-items-center`}
+                                                >
+                                                    <div>
+                                                        <h5 className={`mb-2`}>
+                                                            {review.reviewer}
+                                                        </h5>
+                                                        <p
+                                                            className={`mb-1 fst-italic fs-6 text-secondary`}
+                                                        >
+                                                            {formatDateAndTimeFromString(
+                                                                review.review_date
+                                                            )}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    className={`col-12 col-md-6 d-flex justify-content-end`}
+                                                >
+                                                    <div
+                                                        className={`me-3 d-flex`}
+                                                    >
+                                                        <div
+                                                            className={`${classes["ratings"]} pe-2 text-warning`}
+                                                        >
+                                                            {randerStars(
+                                                                review.rating
+                                                            )}
+                                                        </div>
+
+                                                        <p className={`m-0`}>
+                                                            {review.rating}/5
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div className={`col-12`}>
+                                                    <p>{review.review}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        {/* Review Input Area */}
+
+                        <div className={`col-12 px-4 py-3 border-bottom`}>
+                            <form
+                                className={`${classes["review-input"]}`}
+                                onSubmit={addReview}
+                            >
+                                <div>
+                                    <textarea
+                                        name="review"
+                                        id=""
+                                        className={`w-100 p-2`}
+                                        placeholder="Write your review here."
+                                        value={review}
+                                        onChange={(e) => {
+                                            setReview(e.target.value);
+                                        }}
+                                    ></textarea>
+                                </div>
+                                <div>
+                                    <span className={`pe-2`}>
+                                        Rate the product
+                                    </span>{" "}
+                                    {randerStars(rating)}
+                                </div>
+                                <div className={`text-end`}>
+                                    <input
+                                        type="submit"
+                                        value="Submit"
+                                        className={`btn px-4 py-2`}
+                                    />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <ProductBox
                 itemCount={4}
                 boxTitle={`Related Product`}
