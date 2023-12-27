@@ -42,11 +42,10 @@ export default function SellerAddCategory() {
         }
     }, [category]);
 
-    async function handleUpate(e) {
+    async function handleUpdate(e) {
         e.preventDefault();
         setError(false);
         setLoading(true);
-
         const formData = new FormData(e.target);
         const formDataObject = Object.fromEntries(formData);
         console.log("Form Data Example : ", formDataObject);
@@ -157,7 +156,7 @@ export default function SellerAddCategory() {
             </div>
             <div className="p-3 d-flex justify-content-center">
                 <form
-                    onSubmit={editMode ? handleUpate : handleSubmit}
+                    onSubmit={editMode ? handleUpdate : handleSubmit}
                     className={`row mt-md-5 g-3 ${classes["add-category-form"]}`}
                 >
                     <div className="col-md-12 p-0">
@@ -251,12 +250,21 @@ export default function SellerAddCategory() {
                         </div>
                     </div>
                     {error && <p style={{ color: "red" }}>{error}</p>}
-                    <input
-                        disabled={loading}
-                        className={`btn py-2 mt-2 ${classes["add-category-btn"]}`}
-                        type="submit"
-                        value="Add Category"
-                    />
+                    {editMode ? (
+                        <input
+                            disabled={loading}
+                            className={`btn py-2 mt-2 ${classes["add-category-btn"]}`}
+                            type="submit"
+                            value="Update Category"
+                        />
+                    ) : (
+                        <input
+                            disabled={loading}
+                            className={`btn py-2 mt-2 ${classes["add-category-btn"]}`}
+                            type="submit"
+                            value="Add Category"
+                        />
+                    )}
                 </form>
             </div>
             <ToastContainer position="top-right" />
