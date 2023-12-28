@@ -2,20 +2,21 @@ const express = require("express");
 const requireAuth = require("../middlewares/requireAuth");
 
 const {
-    signup,
-    login,
-    getUser,
-    getRetentionDetails,
-    updateUser,
+  signup,
+  login,
+  getUser,
+  getRetentionDetails,
+  updateUser,
+  getReviews,
 } = require("../controllers/userControllers");
 const {
-    getSingleProductDetails,
-    categoryBasedProductList,
-    getPopularProductList,
-    getPopularCategories,
-    getSingleProductRecord,
-    getSingleCategoryRecord,
-    getSearchResult,
+  getSingleProductDetails,
+  categoryBasedProductList,
+  getPopularProductList,
+  getPopularCategories,
+  getSingleProductRecord,
+  getSingleCategoryRecord,
+  getSearchResult,
 } = require("../controllers/productControllers");
 
 const router = express.Router();
@@ -32,6 +33,7 @@ router.route("/get-single-category-record").get(getSingleCategoryRecord);
 router.route("/get-search-results").get(getSearchResult);
 router.route("/get-retention-details").get(getRetentionDetails);
 router.route("/update-profile").put(requireAuth, updateUser);
+router.route("/get-reviews").get(getReviews);
 //   router.route("/login").post(checkLogin);
 //   router.route("/").get(requireAuth, getUser);
 //   router.route("/forgot-password").post(checkEmail);

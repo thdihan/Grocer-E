@@ -137,13 +137,18 @@ CREATE TABLE ORDERED_PRODUCT (
     CONSTRAINT ORDER_FK FOREIGN KEY (ORDER_ID) REFERENCES ORDERS(ORDER_ID)
 );
 
--- {
---     "cart_id":626,
---     "customer_details":{
---         "address":"abcd",
---         "contact":"01222222222"
---     }
--- }
+CREATE TABLE reviews (
+    review_id bigserial PRIMARY KEY,
+    rating INTEGER NOT NULL CHECK (rating >= 0 AND rating <= 5),
+    review_text TEXT,
+    reviewer_id bigint,
+    reviewer_fullname VARCHAR(255),
+    review_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    product_id bigint,
+    
+    CONSTRAINT reviewer_fk FOREIGN KEY (reviewer_id) REFERENCES users(user_id),
+    CONSTRAINT product_fk FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
 
 
 
@@ -151,79 +156,6 @@ CREATE TABLE ORDERED_PRODUCT (
 
 
 
--- {
---     "productList":
---     [
---         {"product_id":5, "quantity":4,"product_name":"Chicken Egg"},
---         {"product_id":6, "quantity":3,"product_name":"Tofu"},
---         {"product_id":7, "quantity":1,"product_name":"Rupchanda Fortified Soyabean Oil"}
---     ],
---     "priceTotal":1230,
---     "discountTotal":200,
---     "productCount":8,
---     "cart_id":626
--- }
 
 
 
-
--- CREATE OR REPLACE FUNCTION before_cart_insert_update()
--- RETURNS TRIGGER AS $$
--- BEGIN
---   IF NEW.status = 'pending' THEN
---     IF EXISTS (
---       SELECT 1
---       FROM cart
---       WHERE customer_id = NEW.customer_id AND status = 'pending'
---     ) THEN
---       UPDATE cart
---       SET
---         product_list = NEW.product_list,
---         total_price = NEW.total_price,
---         discount_total = NEW.discount_total,
---         product_count = NEW.product_count
---       WHERE customer_id = NEW.customer_id AND status = 'pending';
---       RETURN NULL; -- Cancel the original insert/update
---     END IF;
---   END IF;
-
---   -- Insert a new record
---   INSERT INTO cart (customer_id, product_list, total_price, discount_total, product_count, status)
---   VALUES (NEW.customer_id, NEW.product_list, NEW.total_price, NEW.discount_total, NEW.product_count, NEW.status);
---   RETURN NEW; -- Allow the original insert/update to proceed
--- END;
--- $$ LANGUAGE plpgsql;
-
-
--- CREATE OR REPLACE TRIGGER  before_cart_insert_update_trigger
--- BEFORE INSERT OR UPDATE
--- ON cart
--- FOR EACH ROW
--- EXECUTE FUNCTION before_cart_insert_update();
-
-
-
-
-
--- -- Trigger function to handle parent category deletion and category updates
--- CREATE OR REPLACE FUNCTION delete_empty_categories()
--- RETURNS TRIGGER AS $$
--- BEGIN
---   -- Remove the category fr
---   DELETE from categories
---   SET parent_category_id = array_remove(parent_category_id, OLD.parent_category_id)
---   WHERE OLD.parent_category_id = ANY(parent_category_id);
-
---   -- Delete the category if its parent_category_id array becomes empty
---   DELETE FROM category_parent_relationship
---   WHERE parent_category_id = OLD.parent_category_id;
-
---   RETURN NEW;
--- END;
--- $$ LANGUAGE plpgsql;
-
--- -- Trigger to run after the deletion of a parent category
--- CREATE TRIGGER after_delete_parent_category
--- AFTER DELETE ON parent_categories
--- FOR EACH ROW
--- EXECUTE FUNCTION delete_empty_categories();

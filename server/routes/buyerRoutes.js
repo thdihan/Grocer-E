@@ -2,19 +2,20 @@ const express = require("express");
 const requireAuth = require("../middlewares/requireAuth");
 
 const {
-    getProducts,
-    getUserAllOrders,
-    getBuyerProfileInfo,
-    getFrequentBoughtProducts,
-    getLastOrderedDate,
-    updateBuyerProfileInfo,
+  getProducts,
+  getUserAllOrders,
+  getBuyerProfileInfo,
+  getFrequentBoughtProducts,
+  getLastOrderedDate,
+  updateBuyerProfileInfo,
+  postReview,
 } = require("../controllers/buyerControllers");
 const {
-    addToCart,
-    getCurrentCart,
-    updateCartProducts,
-    getPendingCartProducts,
-    confirmOrder,
+  addToCart,
+  getCurrentCart,
+  updateCartProducts,
+  getPendingCartProducts,
+  confirmOrder,
 } = require("../controllers/cartContollers");
 
 const router = express.Router();
@@ -29,8 +30,9 @@ router.route("/get-all-order").get(requireAuth, getUserAllOrders);
 router.route("/get-profile-info").get(requireAuth, getBuyerProfileInfo);
 router.route("/update-profile-info").put(requireAuth, updateBuyerProfileInfo);
 router
-    .route("/get-frequently-bought-products")
-    .get(requireAuth, getFrequentBoughtProducts);
+  .route("/get-frequently-bought-products")
+  .get(requireAuth, getFrequentBoughtProducts);
 router.route("/get-last-ordered-date").get(requireAuth, getLastOrderedDate);
+router.route("/add-review").post(requireAuth, postReview);
 
 module.exports = router;
