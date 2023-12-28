@@ -16,14 +16,13 @@ export default function NavItems({ items }) {
                         index === activeIndex ? classes["active"] : ""
                     }`}
                 >
-                    <a
+                    <Link
                         className="p-0 nav-link fw-normal"
-                        aria-current="page"
-                        href="#"
+                        to={item.to}
                         onClick={() => handleItemClick(index)}
                     >
-                        {item}
-                    </a>
+                        {item.text}
+                    </Link>
                 </li>
             ))}
 

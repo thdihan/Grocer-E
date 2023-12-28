@@ -18,7 +18,14 @@ export default function MainNav() {
                     </button>
                     <div className="collapse  navbar-collapse" id="navbarNav">
                         <NavItems
-                            items={["Home", "New Products", "All Categories"]}
+                            items={[
+                                { text: "Home", to: "/" },
+                                { text: "New Products", to: "/" },
+                                {
+                                    text: "All Categories",
+                                    to: "/all-categories",
+                                },
+                            ]}
                         />
                     </div>
                 </div>

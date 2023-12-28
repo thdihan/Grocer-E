@@ -23,6 +23,7 @@ import SellerSingleProductDetails from "./Components/Seller/Pages/SellerSinglePr
 import LoginSignup from "./Components/Buyer/Pages/LoginSignup";
 import SingleOrderList from "./Components/Buyer/Pages/SingleOrderList";
 import SearchResult from "./Components/Buyer/Pages/SearchResult";
+import AllCategories from "./Components/Buyer/Pages/AllCategories";
 function App() {
     return (
         <AuthContextProvider>
@@ -60,6 +61,10 @@ function App() {
                     </Route>
                     <Route path="/*" element={<Layout />}>
                         <Route path="" element={<Home />} />
+                        <Route
+                            path="all-categories"
+                            element={<AllCategories />}
+                        />
                         <Route
                             path="search/:searchQuery"
                             element={<SearchResult />}

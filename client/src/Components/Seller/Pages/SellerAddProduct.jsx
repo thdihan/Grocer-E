@@ -35,6 +35,7 @@ export default function SellerAddProduct() {
     console.log("product_Id: ", product_Id);
     const { productDetails, productDetailsError, productDetailsLoading } =
         useGetSingleProduct(product_Id);
+    const [editMode, setEditMode] = useState(false);
     useEffect(() => {
         if (product_Id) {
             console.log("product_Id: ", product_Id);
@@ -48,6 +49,7 @@ export default function SellerAddProduct() {
             setCategoryIds(productDetails.category_ids);
             setCategoryNames(productDetails.category_names);
             setSelectedCategory(productDetails.categories);
+            setEditMode(true);
         }
     }, [productDetails, product_Id]);
 
@@ -173,6 +175,84 @@ export default function SellerAddProduct() {
             console.log("ADD CAT: ", err);
         }
     }
+
+    async function handleUpdate(e) {
+        e.preventDefault();
+        setLoading(true);
+        setError(false);
+        const formData = new FormData(e.target);
+        const formDataObject = Object.fromEntries(formData);
+        console.log("Update FORMDATAAAA: ", formDataObject);
+        if (!selectedFiles[0]) {
+            //if no file selected/invalid files
+            setFileError(true);
+            setLoading(false);
+            return;
+        }
+        // formDataObject["product_image"] = selectedFiles[0];
+        if (!isNumber(formDataObject["base_price"])) {
+            setError("Base price must be a number");
+            setLoading(false);
+            return;
+        }
+        if (!isNumber(formDataObject["discount"])) {
+            setError("Discount must be a number");
+            setLoading(false);
+            return;
+        }
+        if (!isNumber(formDataObject["stock"])) {
+            setError("Stock must be a number");
+            setLoading(false);
+            return;
+        }
+        formDataObject["base_price"] = parseFloat(formDataObject["base_price"]);
+        formDataObject["discount"] = parseFloat(formDataObject["discount"]);
+        formDataObject["stock"] = parseFloat(formDataObject["stock"]);
+        if (selectedCategory.length === 0) {
+            setError("Please select a category");
+            setLoading(false);
+            return;
+        }
+        const selectedCategoryIds = selectedCategory.map(
+            (selectedCategoryName) => {
+                console.log("CATNAMES: ", selectedCategoryName);
+                const selectedCategory = categoryList.find(
+                    (category) =>
+                        category.category_name === selectedCategoryName
+                );
+                return selectedCategory ? selectedCategory.category_id : null; // Handle if the category name is not found
+            }
+        );
+        // formDataObject["categories"] = selectedCategoryIds;
+
+        formData.append("categories", selectedCategoryIds);
+        formData.append("image", selectedFiles[0]);
+
+        console.log("Update : Form Data Example : ", formDataObject);
+        console.log(formData);
+        try {
+            const response = await SellerApi.put("/update-product", formData, {
+                headers: {
+                    Authorization: `Bearer ${user}`,
+                },
+            });
+
+            toast.success("Product updated successfully...", {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 1100, // Time in milliseconds to auto-close the toast (1.5 seconds in this case)
+            });
+
+            setSelectedCategory([]);
+            e.target.reset();
+
+            console.log("ADD CAT: ", response.data);
+        } catch (err) {
+            setError(err.response.data.error);
+            setLoading(false);
+
+            console.log("ADD CAT: ", err);
+        }
+    }
     return (
         <>
             <div className="px-3 py-3 border-bottom d-flex justify-content-between align-items-center">
@@ -180,7 +260,7 @@ export default function SellerAddProduct() {
             </div>
             <div className="p-3">
                 <form
-                    onSubmit={handleSubmit}
+                    onSubmit={editMode ? handleUpdate : handleSubmit}
                     encType="multipart/form-data"
                     className={`row gx-3 ${classes["add-category-form"]}`}
                 >
@@ -347,7 +427,6 @@ export default function SellerAddProduct() {
                             name="image"
                             id="product-image"
                             onChange={handleFileChange}
-                            required
                         />
                     </div>
                     {fileError && (
