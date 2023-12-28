@@ -3,6 +3,7 @@ import classes from "../../../Style/Seller/SellerSingleProductDetails.module.css
 import { useGetSingleProduct } from "../../../hooks/useGetSingleProduct";
 import { Link, useParams } from "react-router-dom";
 import { makeSourceURL } from "../../../utilities/utilities";
+import { useSingleProductRecord } from "../../../hooks/useSingleProductRecord";
 
 const SellerSingleProductDetails = () => {
     const [product_name, setProductName] = useState("");
@@ -36,6 +37,13 @@ const SellerSingleProductDetails = () => {
         }
     }, [productDetails, product_Id]);
 
+    // Get Product Info
+    const { infoList, infoLoading, error } = useSingleProductRecord(
+        product_Id,
+        "yearly"
+    );
+
+    console.log("infoList: ", infoList);
     return (
         <div className={classes.SellerSingleProductDetails}>
             <div className="px-3 py-3 border-bottom d-flex justify-content-between align-items-center">
