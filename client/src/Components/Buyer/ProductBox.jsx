@@ -50,10 +50,6 @@ export default function ProductBox({
                                         key={index}
                                         product={product}
                                     />
-                                    <SmallSingleProduct
-                                        key={index}
-                                        product={product}
-                                    />
                                 </>
                             )}
                         </>
