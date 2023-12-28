@@ -7,7 +7,7 @@ const AllProducts = ({ category }) => {
     return (
         <div>
             <ProductBox
-                itemCount={6}
+                itemCount={100}
                 boxTitle={`All Product`}
                 boxSize="big"
                 productList={productList}
