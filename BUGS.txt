@@ -5,4 +5,5 @@
     [desc] : Category name is coming as category_names in all product ,
              categories in search result, 
              and no category name in category based product api.
+    [expected] : same name for categories in each api.
     
