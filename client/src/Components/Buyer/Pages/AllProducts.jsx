@@ -4,6 +4,7 @@ import ProductBox from "../ProductBox";
 const AllProducts = ({ category }) => {
     const { productList, productLoading, productError } =
         useGetProduct(category);
+    console.log("ALL PRODUCT LIST: ", productList);
     return (
         <div>
             <ProductBox

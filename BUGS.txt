@@ -1,0 +1,8 @@
+1. Cart problem:
+    [desc] : After creating a new account, add any product to cart. Refresh. Cart will be empty. But if any product is added again, it will work
+
+2. Category name problem:
+    [desc] : Category name is coming as category_names in all product ,
+             categories in search result, 
+             and no category name in category based product api.
+    

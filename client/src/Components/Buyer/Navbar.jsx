@@ -3,9 +3,11 @@ import classes from "../../Style/Buyer/Navbar.module.css";
 import MainNav from "./MainNav";
 import { useCartContext } from "../../hooks/useCartContext";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { useState } from "react";
 export default function Navbar() {
     const { productCount } = useCartContext();
     const { user, logout, newUser } = useAuthContext();
+    const [searchQuery, setSearchQuery] = useState("");
 
     const navigate = useNavigate();
     function handleLogout(e) {
@@ -13,6 +15,7 @@ export default function Navbar() {
         logout();
         navigate("/");
     }
+
     return (
         <section className={`${classes["header-area"]} shadow`}>
             <div className="container">
@@ -36,12 +39,17 @@ export default function Navbar() {
                                 id="search-box"
                                 className="w-75"
                                 placeholder="Search"
+                                value={searchQuery}
+                                onChange={(e) => {
+                                    setSearchQuery(e.target.value);
+                                }}
                             />
-                            <span
+                            <Link
+                                to={`search/${searchQuery}`}
                                 className={`${classes["custom-search-button"]}`}
                             >
                                 <i className="bi bi-search"></i>
-                            </span>
+                            </Link>
                         </label>
                     </div>
                     <nav
