@@ -5,6 +5,7 @@ import ProductBox from "../ProductBox";
 const PopularProducts = () => {
     const { productList, productLoading, productError } =
         useGetPopularProduct();
+    console.log("Popular PRODUCT LIST: ", productList);
     return (
         <div>
             <ProductBox

@@ -13,9 +13,8 @@ export default function SmallSingleProduct({ product }) {
         stock,
         product_image,
         category_ids,
-        category_names,
+        categories,
     } = product;
-    console.log(category_names);
 
     return (
         <div
@@ -51,7 +50,7 @@ export default function SmallSingleProduct({ product }) {
                             <span
                                 className={`${classes["product-category"]} ms-2`}
                             >
-                                {category_names?.map((category, index) => (
+                                {categories?.map((category, index) => (
                                     <Link key={index}> {category} </Link>
                                 ))}
                             </span>

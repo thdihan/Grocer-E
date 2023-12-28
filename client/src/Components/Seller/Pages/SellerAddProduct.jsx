@@ -45,7 +45,7 @@ export default function SellerAddProduct() {
             setDiscount(productDetails.discount);
             setUnit(productDetails.unit);
             setStock(productDetails.stock);
-            setProductImage(productDetails.product_image);
+            setSelectedFiles([productDetails.product_image]);
             setCategoryIds(productDetails.category_ids);
             setCategoryNames(productDetails.category_names);
             setSelectedCategory(productDetails.categories);
@@ -205,6 +205,7 @@ export default function SellerAddProduct() {
             setLoading(false);
             return;
         }
+        formDataObject["product_id"] = product_Id;
         formDataObject["base_price"] = parseFloat(formDataObject["base_price"]);
         formDataObject["discount"] = parseFloat(formDataObject["discount"]);
         formDataObject["stock"] = parseFloat(formDataObject["stock"]);
@@ -418,7 +419,7 @@ export default function SellerAddProduct() {
 
                     <div className="col-12">
                         <div>
-                            <img src={makeSourceURL(product_image)} alt="" />
+                            <img src={makeSourceURL(selectedFiles[0])} alt="" />
                         </div>
                         <label htmlFor="product-image">Product Image</label>
                         <input

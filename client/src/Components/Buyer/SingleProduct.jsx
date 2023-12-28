@@ -13,11 +13,11 @@ export default function SingleProduct({ product }) {
         stock,
         product_image,
         category_ids,
-        category_names,
+        categories,
     } = product;
-    console.log(category_names);
 
     const { addProductToCart } = useCartContext();
+    console.log("Category IDS", category_ids, product_name);
 
     return (
         <div className={`${classes["single-product"]} py-2 col-12 col-md-4`}>
@@ -53,7 +53,7 @@ export default function SingleProduct({ product }) {
                             <span
                                 className={`${classes["product-category"]} ms-2`}
                             >
-                                {category_names?.map((category, index) => {
+                                {categories?.map((category, index) => {
                                     console.log(
                                         "Category Index",
                                         category_ids[index]
