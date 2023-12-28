@@ -87,16 +87,25 @@ const getPopularCategories = async (req, res) => {
 };
 
 const getSingleProductRecord = async (req, res) => {
-    const { product_id, start_time, end_time } = req.query;
-    console.log(req.query);
+    const { product_id, flag } = req.params;
+    console.log("product_id: ", product_id, "flag: ", flag);
     try {
-        const product = await pool.query(
-            "SELECT  COALESCE(SUM(op.quantity), 0) AS total_quantity_sold FROM ordered_product op JOIN  orders o ON op.order_id = o.order_id WHERE op.product_id = $1 AND o.order_date BETWEEN $2 AND $3;",
-            [product_id, start_time, end_time]
-        );
+        let query;
+        if (flag === "monthly") {
+            query =
+                "SELECT sale_date, COALESCE(SUM(op.quantity), 0) AS total_quantity_sold FROM generate_series (CURRENT_DATE - INTERVAL '1 month',CURRENT_DATE, INTERVAL '1 day') sale_date LEFT JOIN orders o ON sale_date::DATE = o.order_date LEFT JOIN ordered_product op ON o.order_id = op.order_id AND op.product_id = $1 GROUP BY sale_date ORDER BY sale_date DESC;";
+        } else {
+            query =
+                "SELECT   TO_CHAR(sale_date, 'YYYY-MM') AS month,   TO_CHAR(sale_date, 'Month') AS month_name,   COALESCE(SUM(op.quantity), 0) AS total_quantity_sold FROM   generate_series(     CURRENT_DATE - INTERVAL '365 days',     CURRENT_DATE,     INTERVAL '1 day'   ) sale_date LEFT JOIN   orders o ON sale_date::DATE = o.order_date LEFT JOIN   ordered_product op ON o.order_id = op.order_id AND op.product_id = $1 GROUP BY   month, month_name ORDER BY   month DESC;";
+        }
+        const product = await pool.query(query, [product_id]);
+        // const product = await pool.query(
+        //     "SELECT  COALESCE(SUM(op.quantity), 0) AS total_quantity_sold FROM ordered_product op JOIN  orders o ON op.order_id = o.order_id WHERE op.product_id = $1 AND o.order_date BETWEEN $2 AND $3;",
+        //     [product_id, start_time, end_time]
+        // );
         console.log(product.rows[0]);
         res.status(200).json({
-            product: product.rows[0],
+            product: product.rows,
         });
     } catch (error) {
         res.status(400).json({
