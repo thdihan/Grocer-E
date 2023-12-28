@@ -229,6 +229,7 @@ const confirmOrder = async (req, res) => {
   const { authorization } = req.headers;
   const token = authorization.split(" ")[1];
   const { cart_id, customer_details } = req.body;
+  console.log("req done ", req.body);
   try {
     const { _id } = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -240,6 +241,7 @@ const confirmOrder = async (req, res) => {
 
     //Updating the product in cart_product table
     const record = cart?.rows[0];
+    console.log("added  done ",record);
     for (const product of record?.product_list) {
       await pool.query(
         "UPDATE cart_product SET status='done' WHERE customer_id = $1 AND cart_id = $2 AND product_id=$3",
