@@ -1,6 +1,32 @@
+import { useEffect, useState } from "react";
 import classes from "../../../Style/Seller/DashboardHome.module.css";
+import useGetProductStatusCount from "../../../hooks/useGetProductStatusCount";
 
 const DashboardHome = () => {
+    const { productStatusCount, loading, error } = useGetProductStatusCount();
+    console.log("productStatusCount", productStatusCount);
+    const [pending, setPending] = useState(0);
+    const [onShipment, setOnShipment] = useState(0);
+    const [completed, setCompleted] = useState(0);
+    const [retention, setRetention] = useState(0);
+
+    useEffect(() => {
+        if (productStatusCount) {
+            productStatusCount?.map((item) => {
+                const count = parseInt(item.count);
+                if (item.status === "Pending") {
+                    setPending((prev) => prev + count);
+                } else if (item.status === "Approved") {
+                    setPending((prev) => prev + count);
+                } else if (item.status === "Shipped") {
+                    setOnShipment((prev) => prev + count);
+                } else if (item.status === "Completed") {
+                    setCompleted((prev) => prev + count);
+                }
+            });
+        }
+    }, [productStatusCount]);
+
     return (
         <div className={`${classes["Home"]} px-3 py-3`}>
             <div
@@ -13,7 +39,7 @@ const DashboardHome = () => {
                         <h4 className="m-0">Pending Orders</h4>
                     </div>
                     <div className={`${classes["report-body"]} card-body`}>
-                        <h1 className="m-0">10</h1>
+                        <h1 className="m-0">{pending}</h1>
                     </div>
                 </div>
                 <div
@@ -23,7 +49,7 @@ const DashboardHome = () => {
                         <h4 className="m-0">On Shipment</h4>
                     </div>
                     <div className={`${classes["report-body"]} card-body`}>
-                        <h1 className="m-0">10</h1>
+                        <h1 className="m-0">{onShipment}</h1>
                     </div>
                 </div>
                 <div
@@ -33,7 +59,7 @@ const DashboardHome = () => {
                         <h4 className="m-0">Completed Order</h4>
                     </div>
                     <div className={`${classes["report-body"]} card-body`}>
-                        <h1 className="m-0">10</h1>
+                        <h1 className="m-0">{completed}</h1>
                     </div>
                 </div>
                 <div

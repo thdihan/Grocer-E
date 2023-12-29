@@ -12,6 +12,7 @@ const {
     updateProduct,
     getAllOrder,
     getOrderedProducts,
+    getOrderStatusCount,
 } = require("../controllers/sellerControllers");
 
 const { updateOrderStatus } = require("../controllers/cartContollers");
@@ -46,5 +47,6 @@ router.route("/get-all-orders").get(requireAuth, getAllOrder);
 router
     .route("/get-ordered-products/:orderId")
     .get(requireAuth, getOrderedProducts);
+router.route("/get-order-status-count").get(getOrderStatusCount);
 
 module.exports = router;

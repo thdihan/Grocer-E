@@ -6,6 +6,7 @@ export default function SellerDashboardBody({ setActiveSidebar, children }) {
     const { logout } = useAuthContext();
     const navigate = useNavigate();
 
+    const { newUser } = useAuthContext();
     function handleLogout(e) {
         e.preventDefault();
         logout();
@@ -16,9 +17,9 @@ export default function SellerDashboardBody({ setActiveSidebar, children }) {
             className={`p-0 col col-12 col-md-10 ${classes["dashboard-body"]}`}
         >
             <div
-                className={`${classes["dashboard-body-header"]} border-bottom px-2 container`}
+                className={`${classes["dashboard-body-header"]} border-bottom px-2`}
             >
-                <div className={`row px-4 bg-white`}>
+                <div className={`row px-4 bg-white ms-2`}>
                     <div className="col-1 col-md-0 menu-toggle d-flex d-md-none align-items-center">
                         <span
                             className="material-symbols-outlined fs-2 fw-bold"
@@ -30,7 +31,7 @@ export default function SellerDashboardBody({ setActiveSidebar, children }) {
                         </span>
                     </div>
                     <div className="col-11 col-md-12 user-profile d-flex justify-content-end p-0 align-items-center">
-                        <p className="m-0 pe-2 py-3 ">User 1</p>
+                        <p className="m-0 pe-2 py-3 ">{newUser?.fullname}</p>
                         <span
                             className="material-symbols-outlined"
                             onClick={handleLogout}
