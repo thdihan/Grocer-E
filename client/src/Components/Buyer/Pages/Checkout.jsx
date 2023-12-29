@@ -125,23 +125,26 @@ const Checkout = () => {
                                 </h5>
                             </div>
                             <div className={`py-3 px-4`}>
-                                <table className={`w-100 `}>
+                                <table className={`w-100`}>
                                     <tr>
                                         <td>Total: </td>
                                         <td className={`text-end py-2`}>
-                                            {priceTotal} tk
+                                            {priceTotal.toFixed(2)} tk
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Discount: </td>
                                         <td className={`text-end py-2`}>
-                                            {discountTotal} tk
+                                            {discountTotal.toFixed(2)} tk
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Sub-total: </td>
                                         <td className={`text-end py-2`}>
-                                            {priceTotal - discountTotal} tk
+                                            {(
+                                                priceTotal - discountTotal
+                                            ).toFixed(2)}{" "}
+                                            tk
                                         </td>
                                     </tr>
                                 </table>

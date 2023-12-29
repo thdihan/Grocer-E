@@ -11,7 +11,7 @@ const FrequentlyBoughtProducts = () => {
             {user && productList?.length > 0 && (
                 <ProductBox
                     itemCount={6}
-                    boxTitle={`Frequent Product`}
+                    boxTitle={`Frequently Bought Products`}
                     boxSize="small"
                     productList={productList}
                 />

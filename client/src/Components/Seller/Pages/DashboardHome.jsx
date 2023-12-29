@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import classes from "../../../Style/Seller/DashboardHome.module.css";
 import useGetProductStatusCount from "../../../hooks/useGetProductStatusCount";
+import UserApi from "../../../apis/UserApi";
 
 const DashboardHome = () => {
     const { productStatusCount, loading, error } = useGetProductStatusCount();
@@ -27,6 +28,25 @@ const DashboardHome = () => {
         }
     }, [productStatusCount]);
 
+    useEffect(() => {
+        async function fetchRetention() {
+            try {
+                const response = await UserApi.get("get-retention-details");
+                console.log("RETENTION : ", response.data);
+                const {
+                    current_month_customer_count,
+                    last_month_customer_count,
+                    retained_customer_count,
+                    retention_rate,
+                } = response.data.retention;
+
+                setRetention(retention_rate || 0);
+            } catch (error) {
+                //
+            }
+        }
+        fetchRetention();
+    }, []);
     const iconList = {
         Checked: "fa-solid fa-trash text-danger",
         "Not Checked": "fa-solid fa-circle-check text-success",
@@ -81,7 +101,7 @@ const DashboardHome = () => {
                         <h4 className="m-0">Retention Rate</h4>
                     </div>
                     <div className={`${classes["report-body"]} card-body`}>
-                        <h1 className="m-0">10</h1>
+                        <h1 className="m-0">{retention}%</h1>
                     </div>
                 </div>
             </div>

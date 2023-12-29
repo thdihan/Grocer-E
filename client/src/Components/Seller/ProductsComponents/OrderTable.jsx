@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const OrderTable = ({ orderList }) => {
@@ -9,6 +10,24 @@ const OrderTable = ({ orderList }) => {
         Completed: "bg-success",
         Shipped: "bg-primary",
     };
+
+    const [reverseOrderList, setReverseOrderList] = useState([]);
+    useEffect(() => {
+        // Reverse Order List
+        const temp = orderList.reverse();
+        setReverseOrderList(temp);
+    }, [orderList]);
+
+    const [search, setSearch] = useState("");
+    const [filteredOrderList, setFilteredOrderList] = useState([]);
+    useEffect(() => {
+        if (reverseOrderList) {
+            const filtered = reverseOrderList?.filter((order) =>
+                order.order_id.includes(search)
+            );
+            setFilteredOrderList(filtered);
+        }
+    }, [search, reverseOrderList]);
     return (
         <div className={`OrderTable`}>
             <div className={`table-responsive `}>
@@ -24,18 +43,20 @@ const OrderTable = ({ orderList }) => {
                                     name="search"
                                     id=""
                                     className="w-100"
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
                                 />
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {orderList?.map((order, index) => (
+                        {filteredOrderList?.map((order, index) => (
                             <tr key={index} className="fw-semibold">
                                 <td className="px-3 py-3 align-middle">
                                     #{order.order_id}
                                 </td>
                                 <td className="px-3 py-3 align-middle">
-                                    {order.fullname}
+                                    {order.customer_details.full_name}
                                 </td>
                                 <td className="px-3 py-3 align-middle">
                                     <span

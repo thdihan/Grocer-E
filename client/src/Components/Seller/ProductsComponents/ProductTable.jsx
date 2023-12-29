@@ -1,9 +1,22 @@
+import { useEffect, useState } from "react";
 import classes from "../../../Style/Seller/ProductTable.module.css";
 import { useGetProduct } from "../../../hooks/useGetProduct";
 import SellerSingleProduct from "./SellerSingleProduct";
 export default function ProductTable() {
     const { productList, productLoading, productError } = useGetProduct(null);
     console.log("All Products : ", productList);
+    const [search, setSearch] = useState("");
+    const [filteredProductList, setFilteredProductList] = useState([]);
+    useEffect(() => {
+        if (productList) {
+            const filtered = productList.filter((product) =>
+                product.product_name
+                    .toLowerCase()
+                    .includes(search.toLowerCase())
+            );
+            setFilteredProductList(filtered);
+        }
+    }, [search, productList]);
     return (
         <div className={`table-responsive ${classes["product-table"]}`}>
             <table className="w-100 table">
@@ -20,12 +33,14 @@ export default function ProductTable() {
                                 name="search"
                                 id=""
                                 className="w-100"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
                             />
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    {productList?.map((product, index) => (
+                    {filteredProductList?.map((product, index) => (
                         <SellerSingleProduct product={product} key={index} />
                     ))}
                 </tbody>

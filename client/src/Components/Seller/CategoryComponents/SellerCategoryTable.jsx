@@ -1,8 +1,21 @@
+import { useEffect, useState } from "react";
 import classes from "../../../Style/Seller/SellerCategoryTable.module.css";
 import { Link } from "react-router-dom";
 export default function SellerCategoryTable({ category }) {
     // console.log(category);
     const { categoryList, categoryLoading, categoryError } = category;
+    const [search, setSearch] = useState("");
+    const [filteredCategoryList, setFilteredCategoryList] = useState([]);
+    useEffect(() => {
+        if (categoryList) {
+            const filtered = categoryList.filter((category) =>
+                category.category_name
+                    .toLowerCase()
+                    .includes(search.toLowerCase())
+            );
+            setFilteredCategoryList(filtered);
+        }
+    }, [search, categoryList]);
     return (
         <div className={`table-responsive ${classes["category-table"]}`}>
             <table className="w-100 table">
@@ -17,6 +30,8 @@ export default function SellerCategoryTable({ category }) {
                                 name="search"
                                 id=""
                                 className="w-100"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
                             />
                         </th>
                     </tr>
@@ -24,7 +39,7 @@ export default function SellerCategoryTable({ category }) {
                 <tbody>
                     {!categoryLoading &&
                         !categoryError &&
-                        categoryList?.map((category, index) => {
+                        filteredCategoryList?.map((category, index) => {
                             // console.log(category.category_name);
                             return (
                                 <tr className="fw-semibold" key={index}>

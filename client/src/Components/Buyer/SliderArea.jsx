@@ -54,11 +54,10 @@ const SliderArea = () => {
                                 >
                                     <h1>20% Discount In First Order</h1>
                                     <p className={`py-3`}>
-                                        Lorem ipsum dolor sit amet consectetur
-                                        adipisicing elit. Consequuntur doloribus
-                                        labore ratione? Optio accusamus
-                                        repudiandae libero esse debitis ipsam
-                                        aperiam.
+                                        Experience the ease of life with our
+                                        GROCERE's swift delivery of food and
+                                        daily necessities, bringing convenience
+                                        right to your doorstep.
                                     </p>
                                     <div>
                                         <Button text={`Click Here`} />

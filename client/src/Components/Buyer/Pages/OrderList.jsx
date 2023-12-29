@@ -3,9 +3,16 @@ import classes from "../../../Style/Buyer/OrderList.module.css";
 import { useGetAllOrder } from "../../../hooks/useGetAllOrder";
 import { useAuthContext } from "../../../hooks/useAuthContext";
 import { formatDateAndTimeFromString } from "../../../utilities/utilities";
+import { useEffect, useState } from "react";
 const OrderList = () => {
     const { user } = useAuthContext();
     const { orderList, orderLoading, orderError } = useGetAllOrder(user);
+    const [reverseOrderList, setReverseOrderList] = useState([]);
+    useEffect(() => {
+        // Reverse Order List
+        const temp = orderList.reverse();
+        setReverseOrderList(temp);
+    }, [orderList]);
 
     console.log("ORDER LIST : ", orderList);
     const badgeColor = {
@@ -60,7 +67,7 @@ const OrderList = () => {
 
                         {!orderLoading &&
                             orderList?.length > 0 &&
-                            orderList?.map((order, index) => {
+                            reverseOrderList?.map((order, index) => {
                                 const basePrice = order?.product_list?.reduce(
                                     (acc, curr) => {
                                         console.log(
@@ -84,7 +91,7 @@ const OrderList = () => {
                                                 order.order_date
                                             )}
                                         </td>
-                                        <td>{basePrice} tk</td>
+                                        <td>{basePrice.toFixed(2)} tk</td>
                                         <td className={`fw-semibold`}>
                                             <span
                                                 className={`badge ${

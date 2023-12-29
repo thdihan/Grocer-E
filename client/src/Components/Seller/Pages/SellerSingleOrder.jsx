@@ -59,7 +59,7 @@ const SellerSingleOrder = () => {
                     </tr>
                     <tr>
                         <td>Customer Name</td>
-                        <td>{order.fullname}</td>
+                        <td>{order.customer_details.full_name}</td>
                     </tr>
                     <tr>
                         <td>Customer Email</td>

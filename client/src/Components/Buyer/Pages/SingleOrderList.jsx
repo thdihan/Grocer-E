@@ -34,19 +34,16 @@ const SingleOrderList = () => {
                     <tbody>
                         <tr>
                             <th>Customer Name</th>
-                            <td>{buyer_username}</td>
+                            <td>{customer_details.full_name}</td>
                         </tr>
-                        <tr>
-                            <th>Customer Email</th>
-                            <td>Customer Email</td>
-                        </tr>
+
                         <tr>
                             <th>Customer Phone</th>
                             <td>{customer_details?.contact}</td>
                         </tr>
                         <tr>
                             <th>Customer Address</th>
-                            <td>Customer Address</td>
+                            <td>{customer_details.address}</td>
                         </tr>
 
                         <tr>
@@ -56,18 +53,20 @@ const SingleOrderList = () => {
                         <tr>
                             <th>Order Total</th>
                             <td>
-                                {product_list?.reduce((acc, curr) => {
-                                    console.log(
-                                        "NUMBER: ",
-                                        parseFloat(curr.discount)
-                                    );
-                                    const basePrice =
-                                        parseFloat(curr.base_price) -
-                                        (parseFloat(curr.base_price) *
-                                            parseFloat(curr.discount)) /
-                                            100.0;
-                                    return acc + basePrice * curr.quantity;
-                                }, 0)}
+                                {product_list
+                                    ?.reduce((acc, curr) => {
+                                        console.log(
+                                            "NUMBER: ",
+                                            parseFloat(curr.discount)
+                                        );
+                                        const basePrice =
+                                            parseFloat(curr.base_price) -
+                                            (parseFloat(curr.base_price) *
+                                                parseFloat(curr.discount)) /
+                                                100.0;
+                                        return acc + basePrice * curr.quantity;
+                                    }, 0)
+                                    .toFixed(2)}
                             </td>
                         </tr>
                         <tr>
@@ -98,9 +97,13 @@ const SingleOrderList = () => {
                             return (
                                 <tr key={index}>
                                     <td>{product.product_name}</td>
-                                    <td>{basePrice}</td>
+                                    <td>{basePrice.toFixed(2)}</td>
                                     <td>{product.quantity}</td>
-                                    <td>{basePrice * product.quantity}</td>
+                                    <td>
+                                        {(basePrice * product.quantity).toFixed(
+                                            2
+                                        )}
+                                    </td>
                                 </tr>
                             );
                         })}

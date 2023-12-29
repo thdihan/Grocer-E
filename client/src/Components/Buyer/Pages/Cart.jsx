@@ -57,19 +57,22 @@ export default function Cart() {
                                     <tr>
                                         <td>Total: </td>
                                         <td className={`text-end py-2`}>
-                                            {priceTotal} tk
+                                            {priceTotal.toFixed(2)} tk
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Discount: </td>
                                         <td className={`text-end py-2`}>
-                                            {discountTotal} tk
+                                            {discountTotal.toFixed(2)} tk
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Sub-total: </td>
                                         <td className={`text-end py-2`}>
-                                            {priceTotal - discountTotal} tk
+                                            {(
+                                                priceTotal - discountTotal
+                                            ).toFixed(2)}{" "}
+                                            tk
                                         </td>
                                     </tr>
                                 </table>

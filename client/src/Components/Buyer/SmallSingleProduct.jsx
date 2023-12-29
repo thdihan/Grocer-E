@@ -35,11 +35,13 @@ export default function SmallSingleProduct({ product }) {
                         />
                     </div>
 
-                    <span
-                        className={`${classes["special-message"]} rounded-pill fw-semibold`}
-                    >
-                        {discount}% Off
-                    </span>
+                    {discount > 0 && (
+                        <span
+                            className={`${classes["special-message"]} rounded-pill fw-semibold`}
+                        >
+                            {discount}% Off
+                        </span>
+                    )}
                 </div>
                 <div
                     className={`${classes["product-info"]} d-flex align-items-start flex-column px-4`}
