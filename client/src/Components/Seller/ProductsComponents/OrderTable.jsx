@@ -3,6 +3,12 @@ import { Link } from "react-router-dom";
 const OrderTable = ({ orderList }) => {
     console.log("orderList", orderList);
 
+    const badgeColor = {
+        Pending: "bg-danger",
+        Approved: "bg-warning",
+        Completed: "bg-success",
+        Shipped: "bg-primary",
+    };
     return (
         <div className={`OrderTable`}>
             <div className={`table-responsive `}>
@@ -32,7 +38,13 @@ const OrderTable = ({ orderList }) => {
                                     {order.fullname}
                                 </td>
                                 <td className="px-3 py-3 align-middle">
-                                    {order.status}
+                                    <span
+                                        className={`badge ${
+                                            badgeColor[order.status]
+                                        }`}
+                                    >
+                                        {order.status}
+                                    </span>
                                 </td>
                                 <td className="px-3 py-3 text-center">
                                     <Link

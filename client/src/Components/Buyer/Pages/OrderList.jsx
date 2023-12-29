@@ -8,6 +8,12 @@ const OrderList = () => {
     const { orderList, orderLoading, orderError } = useGetAllOrder(user);
 
     console.log("ORDER LIST : ", orderList);
+    const badgeColor = {
+        Pending: "bg-danger",
+        Approved: "bg-warning",
+        Completed: "bg-success",
+        Shipped: "bg-primary",
+    };
     return (
         <div className={`${classes["OrderList"]} bg-white border`}>
             <div
@@ -80,7 +86,13 @@ const OrderList = () => {
                                         </td>
                                         <td>{basePrice} tk</td>
                                         <td className={`fw-semibold`}>
-                                            {order.status}
+                                            <span
+                                                className={`badge ${
+                                                    badgeColor[order.status]
+                                                }`}
+                                            >
+                                                {order.status}
+                                            </span>
                                         </td>
                                         <td>
                                             <Link
