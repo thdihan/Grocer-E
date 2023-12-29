@@ -152,14 +152,38 @@ const getUser = async (req, res) => {
   }
 };
 
+("WITH last_month_customers AS ( SELECT DISTINCT customer_id FROM orders WHERE EXTRACT(YEAR FROM order_date) = EXTRACT(YEAR FROM CURRENT_DATE - INTERVAL '1 month') AND EXTRACT(MONTH FROM order_date) = EXTRACT(MONTH FROM CURRENT_DATE - INTERVAL '1 month') ) current_month_customers AS ( SELECT DISTINCT customer_id FROM orders WHERE EXTRACT(YEAR FROM order_date) = EXTRACT(YEAR FROM CURRENT_DATE) AND EXTRACT(MONTH FROM order_date) = EXTRACT(MONTH FROM CURRENT_DATE) ) SELECT COUNT(DISTINCT current_month.customer_id) AS current_month_customers, COUNT(DISTINCT last_month.customer_id) AS last_month_customers, COUNT(DISTINCT CASE WHEN last_month.customer_id IS NOT NULL THEN current_month.customer_id END) AS retained_customers, COALESCE( CAST(COUNT(DISTINCT CASE WHEN last_month.customer_id IS NOT NULL THEN current_month.customer_id END) AS numeric) / NULLIF(COUNT(DISTINCT last_month.customer_id), 0), 0 ) * 100 AS retention_rate FROM last_month_customers last_month LEFT JOIN current_month_customers current_month ON last_month.customer_id = current_month.customer_id;");
+
 const getRetentionDetails = async (req, res) => {
   try {
-    const retention = await pool.query(
-      "WITH last_month_customers AS ( SELECT DISTINCT customer_id FROM orders WHERE EXTRACT(YEAR FROM order_date) = EXTRACT(YEAR FROM CURRENT_DATE - INTERVAL '1 month') AND EXTRACT(MONTH FROM order_date) = EXTRACT(MONTH FROM CURRENT_DATE - INTERVAL '1 month') ) SELECT COUNT(DISTINCT current_month.customer_id) AS current_month_customers, COUNT(DISTINCT last_month.customer_id) AS last_month_customers, COUNT(DISTINCT CASE WHEN last_month.customer_id IS NOT NULL THEN current_month.customer_id END) AS retained_customers, COALESCE( CAST(COUNT(DISTINCT CASE WHEN last_month.customer_id IS NOT NULL THEN current_month.customer_id END) AS numeric) / NULLIF(COUNT(DISTINCT last_month.customer_id), 0), 0) * 100 AS retention_rate FROM last_month_customers last_month LEFT JOIN ( SELECT DISTINCT customer_id FROM orders WHERE EXTRACT(YEAR FROM order_date) = EXTRACT(YEAR FROM CURRENT_DATE) AND EXTRACT(MONTH FROM order_date) = EXTRACT(MONTH FROM CURRENT_DATE) ) current_month ON last_month.customer_id = current_month.customer_id;"
+    const last_month_count = await pool.query(
+      "SELECT count(DISTINCT customer_id) FROM orders WHERE EXTRACT(YEAR FROM order_date) = EXTRACT(YEAR FROM CURRENT_DATE - INTERVAL '1 month') AND EXTRACT(MONTH FROM order_date) = EXTRACT(MONTH FROM CURRENT_DATE - INTERVAL '1 month');"
     );
-    res.status(200).json({
-      retention: retention.rows[0],
-    });
+    const current_month_count = await pool.query(
+      "SELECT count(DISTINCT customer_id) FROM orders WHERE EXTRACT(YEAR FROM order_date) = EXTRACT(YEAR FROM CURRENT_DATE) AND EXTRACT(MONTH FROM order_date) = EXTRACT(MONTH FROM CURRENT_DATE);"
+    );
+    const retained_count = await pool.query(
+      "WITH last_month_customers AS ( SELECT DISTINCT customer_id FROM orders WHERE EXTRACT(YEAR FROM order_date) = EXTRACT(YEAR FROM CURRENT_DATE - INTERVAL '1 month') AND EXTRACT(MONTH FROM order_date) = EXTRACT(MONTH FROM CURRENT_DATE - INTERVAL '1 month') ), current_month_customers AS ( SELECT DISTINCT customer_id FROM orders WHERE EXTRACT(YEAR FROM order_date) = EXTRACT(YEAR FROM CURRENT_DATE) AND EXTRACT(MONTH FROM order_date) = EXTRACT(MONTH FROM CURRENT_DATE) ) SELECT COUNT(DISTINCT CASE WHEN last_month.customer_id IS NOT NULL THEN current_month.customer_id END) AS retained_customers FROM last_month_customers last_month LEFT JOIN current_month_customers current_month ON last_month.customer_id = current_month.customer_id;"
+    );
+
+    const last_month_customer_count = parseFloat(
+      last_month_count.rows[0].count
+    );
+    const current_month_customer_count = parseFloat(
+      current_month_count.rows[0].count
+    );
+    const retained_customer_count = parseFloat(
+      retained_count.rows[0].retained_customers
+    );
+
+    const retention_details = {
+      last_month_customer_count,
+      current_month_customer_count,
+      retained_customer_count,
+      retention_rate:
+        (retained_customer_count / last_month_customer_count) * 100,
+    };
+    res.status(200).json(retention_details);
   } catch (error) {
     res.status(400).json({
       from: "get retention details",
