@@ -73,6 +73,44 @@ const DashboardHome = () => {
                     </div>
                 </div>
             </div>
+
+            <div
+                className={`${classes["notification-table table-responsive"]} mt-5 bg-white border px-4 py-3`}
+            >
+                <h4 className="mb-3">Notification Table</h4>
+                <table className={`table w-100`}>
+                    <thead>
+                        <tr>
+                            <th>Order Id</th>
+                            <th>Customer Name</th>
+                            <th>Order Date & Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>12/12/2021</td>
+                            <td>
+                                <span className="badge bg-danger">
+                                    Not Checked
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>12/12/2021</td>
+                            <td>
+                                <span className="badge bg-success">
+                                    Checked
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };
