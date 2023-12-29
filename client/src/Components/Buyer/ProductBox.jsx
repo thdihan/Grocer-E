@@ -24,7 +24,7 @@ export default function ProductBox({
     //   const SingleProductCount = Array(itemCount).fill(null);
     return (
         <div className="container">
-            <div className={`${classes["product-box"]} w-100`}>
+            <div className={`${classes["product-box"]} w-100 mt-5`}>
                 <div
                     className={`${classes["product-box-header"]}  py-2 d-flex justify-content-between align-items-center`}
                 >
@@ -34,7 +34,11 @@ export default function ProductBox({
                     </p>
                     {/* View All Button  */}
                     {viewAll && (
-                        <Link className={`fw-bol`} to={`#`}>
+                        <Link
+                            to="/products"
+                            state={{ productList, boxTitle }}
+                            className={`fw-bol`}
+                        >
                             View All <i className="bi bi-caret-right-fill"></i>
                         </Link>
                     )}

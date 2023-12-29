@@ -25,6 +25,7 @@ import SingleOrderList from "./Components/Buyer/Pages/SingleOrderList";
 import SearchResult from "./Components/Buyer/Pages/SearchResult";
 import AllCategories from "./Components/Buyer/Pages/AllCategories";
 import DashboardHome from "./Components/Seller/Pages/DashboardHome";
+import ProductsList from "./Components/Buyer/Pages/ProductsList";
 function App() {
     return (
         <AuthContextProvider>
@@ -63,6 +64,7 @@ function App() {
                     </Route>
                     <Route path="/*" element={<Layout />}>
                         <Route path="" element={<Home />} />
+                        <Route path="products" element={<ProductsList />} />
                         <Route
                             path="all-categories"
                             element={<AllCategories />}
