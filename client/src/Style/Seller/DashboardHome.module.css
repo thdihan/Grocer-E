@@ -1,3 +1,8 @@
 .report {
     width: 24.5%;
 }
+
+.notification-table tr td i {
+    font-size: 20px;
+    cursor: pointer;
+}

@@ -27,6 +27,18 @@ const DashboardHome = () => {
         }
     }, [productStatusCount]);
 
+    const iconList = {
+        Checked: "fa-solid fa-trash text-danger",
+        "Not Checked": "fa-solid fa-circle-check text-success",
+    };
+
+    const handleCheck = () => {
+        console.log("Checked");
+    };
+
+    const handleDelete = () => {
+        console.log("Deleted");
+    };
     return (
         <div className={`${classes["Home"]} px-3 py-3`}>
             <div
@@ -75,7 +87,7 @@ const DashboardHome = () => {
             </div>
 
             <div
-                className={`${classes["notification-table table-responsive"]} mt-5 bg-white border px-4 py-3`}
+                className={`${classes["notification-table"]} table-responsive mt-5 bg-white border px-4 py-3`}
             >
                 <h4 className="mb-3">Notification Table</h4>
                 <table className={`table w-100`}>
@@ -85,6 +97,7 @@ const DashboardHome = () => {
                             <th>Customer Name</th>
                             <th>Order Date & Time</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -97,6 +110,12 @@ const DashboardHome = () => {
                                     Not Checked
                                 </span>
                             </td>
+                            <td>
+                                <i
+                                    onClick={handleCheck}
+                                    className={`${iconList["Not Checked"]}`}
+                                ></i>
+                            </td>
                         </tr>
                         <tr>
                             <td>1</td>
@@ -106,6 +125,12 @@ const DashboardHome = () => {
                                 <span className="badge bg-success">
                                     Checked
                                 </span>
+                            </td>
+                            <td>
+                                <i
+                                    onClick={handleDelete}
+                                    className={`${iconList["Checked"]}`}
+                                ></i>
                             </td>
                         </tr>
                     </tbody>
