@@ -24,18 +24,23 @@ const AllCategories = () => {
                 >
                     {!categoryLoading &&
                         !categoryError &&
-                        categoryList?.map((category, index) => (
-                            <div
-                                key={index}
-                                className={`${classes["category"]} px-3 py-2 border rounded mx-2 my-2 btn`}
-                            >
-                                <Link to={`/category/rice`}>
-                                    <p className={`text-center m-0`}>
-                                        {category.category_name}
-                                    </p>
-                                </Link>
-                            </div>
-                        ))}
+                        categoryList?.map((category, index) => {
+                            console.log("category", category);
+                            return (
+                                <div
+                                    key={index}
+                                    className={`${classes["category"]} px-3 py-2 border rounded mx-2 my-2 btn`}
+                                >
+                                    <Link
+                                        to={`/category-all-product/${category?.category_id}}`}
+                                    >
+                                        <p className={`text-center m-0`}>
+                                            {category.category_name}
+                                        </p>
+                                    </Link>
+                                </div>
+                            );
+                        })}
                 </div>
             </div>
         </div>
