@@ -24,10 +24,6 @@ const LoginSignup = () => {
     try {
       const response = await login(email, password);
       navigate("/");
-      // toast.success("Login Successful !! Navigating to dashboard...", {
-      //     position: toast.POSITION.TOP_RIGHT,
-      //     autoClose: 1200, // Time in milliseconds to auto-close the toast (1.5 seconds in this case)
-      // });
     } catch (err) {
       setError(err.response.data.error);
       setLoading(false);
@@ -66,7 +62,7 @@ const LoginSignup = () => {
           contact,
           address,
           confirm_password: confirmPassword,
-          user_type: "",
+          user_type: "customer",
         },
         {
           headers: {

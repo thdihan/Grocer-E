@@ -150,6 +150,20 @@ CREATE TABLE reviews (
     CONSTRAINT product_fk FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
+drop table notifications;
+
+CREATE TABLE notifications (
+    notification_id bigserial PRIMARY KEY,
+    order_id bigint,
+    customer_name VARCHAR(255) NOT NULL,
+    seller_id bigint,
+    order_date DATE,
+    status VARCHAR(20) DEFAULT 'not checked' CHECK (status IN ('checked', 'not checked')),
+    CONSTRAINT order_fk FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
+    CONSTRAINT customer_fk FOREIGN KEY (seller_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+
 
 
 

@@ -166,5 +166,3 @@ module.exports = {
   updateBuyerProfileInfo,
   postReview,
 };
-
-("WITH AggregatedCategories AS ( SELECT pcr.product_id, array_agg(c.category_id) AS category_ids, array_agg(c.category_name) AS categories FROM product_category_relationship AS pcr INNER JOIN categories AS c ON pcr.category_id = c.category_id GROUP BY pcr.product_id ) SELECT p.product_id, p.product_name, p.description, p.base_price, p.discount, p.unit, p.stock, p.product_image, ac.category_ids, ac.categories, COUNT(op.order_id) AS order_count FROM products p JOIN ordered_product op ON p.product_id = op.product_id JOIN orders o ON op.order_id = o.order_id LEFT JOIN AggregatedCategories ac ON p.product_id = ac.product_id WHERE o.customer_id = $1 GROUP BY p.product_id, ac.category_ids,  -- Include category_ids in the GROUP BY clause ac.categories ORDER BY order_count DESC;");

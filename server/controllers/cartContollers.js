@@ -8,9 +8,6 @@ const addToCart = async (req, res) => {
   const { productList, priceTotal, discountTotal, productCount, cart_id } =
     req.body;
 
-  console.log("Request Body: ", req.body);
-  // console.log("PRODUCT LIST: ", productList);
-  // console.log("PRICE TOTAL: ", typeof priceTotal);
   console.log("CART ID: ", cart_id);
   try {
     const { _id } = jwt.verify(token, process.env.JWT_SECRET);
@@ -45,27 +42,6 @@ const addToCart = async (req, res) => {
     //adding the product in cart_product table
     const record = cart?.rows[0];
     for (const product of record?.product_list) {
-      // if (cart_flag) {
-      //     await pool.query(
-      //         "UPDATE cart_product SET quantity=$1 where cart_id=$2 AND product_id=$3 AND customer_id=$4",
-      //         [
-      //             product?.quantity,
-      //             record?.cart_id,
-      //             product?.product_id,
-      //             record?.customer_id,
-      //         ]
-      //     );
-      // } else {
-      //     await pool.query(
-      //         "INSERT INTO cart_product (cart_id, product_id, customer_id,quantity) VALUES ($1, $2, $3,$4) ON CONFLICT (cart_id, product_id, customer_id) DO NOTHING",
-      //         [
-      //             record?.cart_id,
-      //             product?.product_id,
-      //             record?.customer_id,
-      //             product?.quantity,
-      //         ]
-      //     );
-      // }
       await pool.query(
         "INSERT INTO cart_product (cart_id, product_id, customer_id,quantity) VALUES ($1, $2, $3,$4) ON CONFLICT (cart_id, product_id, customer_id) DO NOTHING",
         [
@@ -183,16 +159,8 @@ const updateCartProducts = async (req, res) => {
     console.log("QUANTITY: ", quantity);
     if (quantity !== 0) {
       const cart = await pool.query(
-        // "UPDATE cart SET product_list = $1,product_count=$2 WHERE customer_id = $3 AND cart_id = $4 returning *;",
         "UPDATE cart SET product_list = $1, total_price=$2, discount_total=$3 WHERE customer_id = $4 AND cart_id = $5 returning *;",
-        [
-          productsArray,
-          newTotal,
-          cart_discount_total,
-          // previousCart.rows[0].product_count - previousQuantity + quantity, //new total
-          _id,
-          cart_id,
-        ]
+        [productsArray, newTotal, cart_discount_total, _id, cart_id]
       );
     } else {
       console.log("INNNN");
@@ -203,15 +171,10 @@ const updateCartProducts = async (req, res) => {
           previousCart.rows[0].product_count - 1,
           newTotal,
           cart_discount_total,
-          // previousCart.rows[0].product_count - previousQuantity + quantity, //new total
           _id,
           cart_id,
         ]
       );
-      // const final = await pool.query(
-      //   "UPDATE cart SET product_list = NULL WHERE cart_id = $1 returning *",
-      //   [cart_id]
-      // );
     }
     console.log(cart.rows[0]);
     res.status(200).json({
@@ -223,6 +186,19 @@ const updateCartProducts = async (req, res) => {
       error: error.message,
     });
   }
+};
+
+const addNotification = async (
+  order_id,
+  customer_name,
+  order_date,
+  seller_id
+) => {
+  const notification = await pool.query(
+    "INSERT INTO notifications (order_id, customer_name, order_date, seller_id) VALUES ($1, $2, $3,$4) returning *",
+    [order_id, customer_name, order_date, seller_id]
+  );
+  console.log("NEW NOTIFICATION: ", notification.rows[0]);
 };
 
 const confirmOrder = async (req, res) => {
@@ -241,7 +217,7 @@ const confirmOrder = async (req, res) => {
 
     //Updating the product in cart_product table
     const record = cart?.rows[0];
-    console.log("added  done ",record);
+    console.log("added  done ", record);
     for (const product of record?.product_list) {
       await pool.query(
         "UPDATE cart_product SET status='done' WHERE customer_id = $1 AND cart_id = $2 AND product_id=$3",
@@ -278,6 +254,15 @@ const confirmOrder = async (req, res) => {
         "UPDATE products SET stock = $1 WHERE product_id = $2 returning *",
         [new_stock, product?.product_id]
       );
+
+      //ADDING THE NOTIFICATION
+      await addNotification(
+        order.rows[0].order_id,
+        customer_details.full_name,
+        order.rows[0].order_date,
+        product_update?.rows[0].seller_id
+      );
+
       if (new_stock >= 0 && new_stock < 10) {
         //UPDATE STATUS
         if (new_stock === 0) {
@@ -299,6 +284,24 @@ const confirmOrder = async (req, res) => {
         sendEmail(seller_record.email, subject, message);
       }
     }
+
+    // //Sending order confirmation email
+    const customer = await pool.query(
+      "select email, fullname from users where user_id=$1",
+      [_id]
+    );
+
+    const subject = "Grocer-E Order Confirmation";
+
+    const productDetails = record?.product_list
+      .map((product) => {
+        return `Product ID: ${product.product_id}\nProduct Name: ${product.product_name}\nQuantity: ${product.quantity}\n\n`;
+      })
+      .join("");
+
+    const message = `Dear Customer,\n\nThank you for placing your order with us. Your order is now being processed. Below are the details:\n\nOrder ID: ${order.rows[0].order_id}\nOrder Date: ${order.rows[0].order_date}\n\nProduct Details:\n${productDetails}`;
+
+    sendEmail(customer.rows[0].email, subject, message);
 
     // console.log(order.rows[0]);
     res.status(200).json({
