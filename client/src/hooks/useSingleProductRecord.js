@@ -24,7 +24,7 @@ export const useSingleProductRecord = (product_id, flag) => {
                 );
 
                 console.log("INFO: ", response.data);
-                setInfoList(response.data.orders);
+                setInfoList(response.data.product);
                 setInfoLoading(false);
             } catch (error) {
                 console.log("INFO ERROR : ");
