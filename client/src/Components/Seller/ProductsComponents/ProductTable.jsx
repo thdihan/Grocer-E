@@ -10,10 +10,10 @@ export default function ProductTable() {
                 <thead>
                     <tr className="">
                         <th className="w-50 px-3 py-3">Product Name</th>
-                        <th className="px-3 py-3">Base Price</th>
+                        <th className="px-3 py-3">Price</th>
                         <th className="px-3 py-3">Discount</th>
                         <th className="px-3 py-3">Stock</th>
-                        <th className="px-3 py-3">Rating</th>
+                        <th className="px-3 py-3">Total Sell</th>
                         <th className="px-3 py-3">
                             <input
                                 type="text"

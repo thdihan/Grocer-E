@@ -12,8 +12,10 @@ export default function SellerSingleProduct({ product }) {
         stock,
         product_image,
         category_ids,
-        category_names,
+        categories,
+        sell_quantity,
     } = product;
+    console.log(product);
     return (
         <tr className="fw-semibold">
             <td className="d-flex align-items-center px-3 py-3">
@@ -30,14 +32,14 @@ export default function SellerSingleProduct({ product }) {
                         {/* {category_names?.map((cat, index) => {
                             return cat;
                         })} */}
-                        {category_names?.map((cat, index) => cat).join(", ")}
+                        {categories?.map((cat, index) => cat).join(", ")}
                     </p>
                 </div>
             </td>
             <td className="px-3 py-3 align-middle">{base_price} tk</td>
             <td className="px-3 py-3 align-middle">{discount} %</td>
             <td className="px-3 py-3 align-middle">{stock}</td>
-            <td className="px-3 py-3 align-middle">3.4</td>
+            <td className="px-3 py-3 align-middle">{sell_quantity}</td>
             <td className="px-3 py-3 align-middle text-end">
                 <Link
                     to={`/admin/product/${product_id}`}

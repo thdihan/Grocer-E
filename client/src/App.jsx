@@ -24,6 +24,7 @@ import LoginSignup from "./Components/Buyer/Pages/LoginSignup";
 import SingleOrderList from "./Components/Buyer/Pages/SingleOrderList";
 import SearchResult from "./Components/Buyer/Pages/SearchResult";
 import AllCategories from "./Components/Buyer/Pages/AllCategories";
+import DashboardHome from "./Components/Seller/Pages/DashboardHome";
 function App() {
     return (
         <AuthContextProvider>
@@ -32,6 +33,7 @@ function App() {
                     <Route path="/admin/login" element={<Login />} />
                     <Route path="/admin/signup" element={<Signup />} />
                     <Route path="/admin/*" element={<SellerDashboard />}>
+                        <Route path="" element={<DashboardHome />} />
                         <Route path="products" element={<Products />} />
                         <Route path="orders" element={<SellerOrderList />} />
                         <Route
