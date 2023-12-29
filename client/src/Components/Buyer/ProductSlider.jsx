@@ -2,11 +2,23 @@ import classes from "../../Style/Buyer/ProductSlider.module.css";
 import Slider from "react-slick";
 import { demoProducts } from "../../demoData/demoProducts";
 import SingleProduct from "./SingleProduct";
-import { useRef } from "react";
-const ProductSlider = ({ itemCount }) => {
-    const productList = demoProducts;
+import { useEffect, useRef, useState } from "react";
+import { useGetProduct } from "../../hooks/useGetProduct";
+const ProductSlider = ({ itemCount, category }) => {
     const sliderRef = useRef(null);
+    const { productList, productLoading, productError } =
+        useGetProduct(category);
 
+    const [discountedProductList, setDiscountedProductList] = useState([]);
+    useEffect(() => {
+        const discountedProductList = productList.filter(
+            (product) => product.discount > 0
+        );
+        const sortedDiscountedProductList = discountedProductList.sort(
+            (a, b) => b.discount - a.discount
+        );
+        setDiscountedProductList(sortedDiscountedProductList);
+    }, [productList]);
     var settings = {
         dots: true,
         infinite: true,
@@ -59,7 +71,7 @@ const ProductSlider = ({ itemCount }) => {
                         className={`${classes["prev-btn"]} fa-solid fa-circle-chevron-left`}
                     ></i>
                     <Slider {...settings} ref={sliderRef}>
-                        {productList
+                        {discountedProductList
                             ?.slice(0, itemCount)
                             .map((product, index) => (
                                 <div
