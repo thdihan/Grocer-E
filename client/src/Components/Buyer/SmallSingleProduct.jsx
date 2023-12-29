@@ -18,7 +18,7 @@ export default function SmallSingleProduct({ product }) {
 
     return (
         <div
-            className={`${classes["small-single-product"]} py-2 col-6 col-md-2`}
+            className={`${classes["small-single-product"]} py-2 col-6 col-md-3`}
         >
             <div
                 className={`${classes["small-single-product-inner-box"]}  rounded border border-light-subtle`}
