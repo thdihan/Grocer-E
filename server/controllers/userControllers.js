@@ -180,8 +180,8 @@ const getRetentionDetails = async (req, res) => {
       last_month_customer_count,
       current_month_customer_count,
       retained_customer_count,
-      retention_rate:
-        (retained_customer_count / last_month_customer_count) * 100,
+      retention_rate: last_month_customer_count !== 0 ?
+        (retained_customer_count / last_month_customer_count) * 100 : 0
     };
     res.status(200).json(retention_details);
   } catch (error) {

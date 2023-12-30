@@ -54,17 +54,17 @@ const DashboardHome = () => {
         async function fetchRetention() {
             try {
                 const response = await UserApi.get("get-retention-details");
-                console.log("RETENTION : ", response.data);
+                console.log("RETENTION : ", response?.data);
                 const {
                     current_month_customer_count,
                     last_month_customer_count,
                     retained_customer_count,
                     retention_rate,
-                } = response.data.retention;
+                } = response?.data;
 
-                setRetention(retention_rate || 0);
+                setRetention(retention_rate);
             } catch (error) {
-                console.log("RETENTION ERROR: ", error.response.data);
+                console.log("RETENTION ERROR: ", error?.response?.data);
             }
         }
         fetchRetention();
