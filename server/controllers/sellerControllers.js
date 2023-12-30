@@ -2,15 +2,6 @@ const pool = require("../db");
 const jwt = require("jsonwebtoken");
 
 async function addParentCategory(user_id, category_name) {
-  //   const alreadyAddedByUser = await pool.query(
-  //     "select * from parent_categories where adder_id=$1 and parent_category_name=$2",
-  //     [user_id, category_name]
-  //   );
-
-  //   if (alreadyAddedByUser.rowCount) {
-  //     throw Error("You added this parent category once already");
-  //   }
-
   const alreadyAddedByUser = await pool.query(
     "select * from categories where category_name=$1",
     [category_name]
@@ -80,7 +71,6 @@ const addCategory = async (req, res) => {
 
   try {
     const { _id } = jwt.verify(token, process.env.JWT_SECRET);
-    // console.log(Object.keys(categoryObject).length);
     if (Object.keys(categoryObject).length === 2) {
       //if object with only one property (i.e. category_name) then it is added to parent category
       const addedParentCategory = await addParentCategory(
@@ -119,8 +109,7 @@ const updateCategory = async (req, res) => {
   const { authorization } = req.headers;
   const token = authorization.split(" ")[1];
   const categoryObject = req.body;
-  //   console.log("categoryObject", categoryObject);
-  console.log("IN");
+
   try {
     console.log("BODY: ", categoryObject.category_id);
     const deleteParentEntries = await pool.query(
@@ -220,7 +209,7 @@ const addProduct = async (req, res) => {
       ]
     );
 
-    const product_id = productEntry.rows[0].product_id; // Assuming _id is the product ID
+    const product_id = productEntry.rows[0].product_id;
 
     const categoryArray = categories.split(",");
     // Insert records into product_category for each category ID
@@ -243,23 +232,6 @@ const addProduct = async (req, res) => {
   }
 };
 
-// const getAllOrder = async (req, res) => {
-//     console.log("WORKED");
-
-//     try {
-//         const order = await pool.query(
-//             "select * from orders o join ordered_product op on o.order_id = op.order_id"
-//         );
-//         res.status(200).json({
-//             order: order.rows,
-//         });
-//     } catch (error) {
-//         res.status(400).json({
-//             from: "get all order",
-//             error: error.message,
-//         });
-//     }
-// };
 const getAllOrder = async (req, res) => {
   try {
     const order = await pool.query(

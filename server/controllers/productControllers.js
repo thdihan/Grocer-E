@@ -99,10 +99,6 @@ const getSingleProductRecord = async (req, res) => {
         "SELECT   TO_CHAR(sale_date, 'YYYY-MM') AS month,   TO_CHAR(sale_date, 'Month') AS month_name,   COALESCE(SUM(op.quantity), 0) AS total_quantity_sold FROM   generate_series(     CURRENT_DATE - INTERVAL '365 days',     CURRENT_DATE,     INTERVAL '1 day'   ) sale_date LEFT JOIN   orders o ON sale_date::DATE = o.order_date LEFT JOIN   ordered_product op ON o.order_id = op.order_id AND op.product_id = $1 GROUP BY   month, month_name ORDER BY   month DESC;";
     }
     const product = await pool.query(query, [product_id]);
-    // const product = await pool.query(
-    //     "SELECT  COALESCE(SUM(op.quantity), 0) AS total_quantity_sold FROM ordered_product op JOIN  orders o ON op.order_id = o.order_id WHERE op.product_id = $1 AND o.order_date BETWEEN $2 AND $3;",
-    //     [product_id, start_time, end_time]
-    // );
     console.log(product.rows[0]);
     res.status(200).json({
       product: product.rows,

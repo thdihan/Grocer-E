@@ -303,7 +303,6 @@ const confirmOrder = async (req, res) => {
 
     sendEmail(customer.rows[0].email, subject, message);
 
-    // console.log(order.rows[0]);
     res.status(200).json({
       order: order.rows[0],
     });
@@ -367,5 +366,3 @@ module.exports = {
   confirmOrder,
   updateOrderStatus,
 };
-
-("SELECT o.order_id, o.order_date, o.status, o.customer_details, jsonb_agg(jsonb_build_object( 'quantity', op.quantity, 'product_id', p.product_id, 'product_name', p.product_name, 'base_price', p.base_price, 'discount', p.discount, 'unit', p.unit, 'stock', p.stock )) AS product_list, u.fullname AS buyer_name, u.email AS buyer_email FROM orders o JOIN ordered_product op ON o.order_id = op.order_id JOIN products p ON op.product_id = p.product_id JOIN users u ON o.customer_id = u.user_id WHERE o.customer_id = $1 AND o.order_id = $2 GROUP BY o.order_id, o.order_date, o.status, o.customer_details, u.fullname, u.email");
